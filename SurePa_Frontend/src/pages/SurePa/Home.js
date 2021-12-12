@@ -1,31 +1,29 @@
 
 import React from 'react';
-import { Text, View } from 'react-native';
-import { roundToNearestPixel } from 'react-native/Libraries/Utilities/PixelRatio';
-import { NativeRouter, Route, Link, Router, Routes } from "react-router-native";
+import { View } from 'react-native';
+import { NativeRouter, Route, Routes } from "react-router-native";
 import Login from '../../components/loginPage';
+import Main from '../../components/mainPage';
 
 const Home = () => {
     const routes = [
-        { path: '/', component: <Login /> }
+        { path: '/', component: <Login /> },
+        { path: '/main', component: <Main /> }
     ]
     return (
         <NativeRouter>
             <View>
                 <Routes>
                     {routes.map(route => {
-                    const { path, component } = route;
-                    console.log(path,component);
-                    console.log('patates');
-                    return (
-                        <Route exact
-                            key={path}
-                            path={path}
-                            element={component}
-                        />
-                    );
-                })}
-                    {/* <Route path='/' element={<Login />}></Route> */}
+                        const { path, component } = route;
+                        return (
+                            <Route exact
+                                key={path}
+                                path={path}
+                                element={component}
+                            />
+                        );
+                    })}
                 </Routes>
             </View>
         </NativeRouter>
