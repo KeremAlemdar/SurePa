@@ -9,10 +9,10 @@ const Stack = createNativeStackNavigator();
 
 const App = () => {
     const routes = [
+        { name: 'Main', component: Main, options: {title: 'Home'}},
         { name: 'Login', component: Login, options: {title: 'Login Page'}},
         { name: 'Home', component: Home, options: {title: 'Home Page'}},
-        { name: 'Signup', component: Signup, options: {title: 'Signup Page'}},
-        { name: 'Main', component: Main, options: {title: 'Main Page'}}
+        { name: 'Signup', component: Signup, options: {title: 'Signup Page'}}
     ]
     return (
         <NavigationContainer>
