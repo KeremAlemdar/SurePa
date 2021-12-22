@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { View, TextInput, Button, Text, Redirect } from 'react-native';
+import { View, TextInput, Button, Text } from 'react-native';
 import { fbLogin } from '../../services/SurePaServices';
-import { Link, NativeRouter, Route, Routes } from "react-router-native";
 import { auth } from '../../services/SurePaServices';
+import { CommonActions } from '@react-navigation/native';
 
 const Login = ({ navigation }) => {
   const [email, setEmail] = useState('');
@@ -10,22 +10,23 @@ const Login = ({ navigation }) => {
   const [directMain, setDirectMain] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
 
-  useEffect((async) => {
-    const user = auth.currentUser;
-    console.log(user);
-    if (user) {
-      console.log("GİRİLİ");
-      navigation.navigate('Home')
-    } else {
-      console.log("GİRİLİ DEĞİL");
-    }
-  }, []);
+  const resetAction = () => {
+    navigation.dispatch(
+      CommonActions.reset({
+        index: 0,
+        routes: [
+          { name: 'HomePage'}
+        ],
+      })
+    );
+  };
 
   useEffect(() => {
     const user = auth.currentUser;
     if (user) {
       console.log("GİRİLİ");
-      navigation.navigate('Home')
+      // navigation.navigate('HomePage');
+      resetAction();
     } else {
       console.log("GİRİLİ DEGİL");
     }
@@ -34,7 +35,6 @@ const Login = ({ navigation }) => {
   const loginClicked = () => {
     fbLogin(email, pass)
       .then((userCredential) => {
-        console.log(userCredential);
         const user = userCredential.user;
         setDirectMain(true);
       })

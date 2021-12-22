@@ -1,18 +1,24 @@
 import React from 'react';
-import Home from './pages/SurePa';
-import { NavigationContainer, StackActions } from '@react-navigation/native';
+import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Login from './components/loginPage';
-import Main from './components/mainPage';
+import HomePage from './components/homePage';
 import Signup from './components/signUpPage';
+import ProfilePage from './components/profilePage';
+import AddMedicinePage from './components/addMedicinePage';
+import AddCareGiverPage from './components/addCareGiverPage';
+import MedicinesPage from './components/medicinesPage/MedicinesPage';
 const Stack = createNativeStackNavigator();
 
 const App = () => {
     const routes = [
-        { name: 'Main', component: Main, options: {title: 'Home'}},
-        { name: 'Login', component: Login, options: {title: 'Login Page'}},
-        { name: 'Home', component: Home, options: {title: 'Home Page'}},
-        { name: 'Signup', component: Signup, options: {title: 'Signup Page'}}
+        { name: 'Login', component: Login, options: {title: 'Login'}},
+        { name: 'HomePage', component: HomePage, options: {title: 'Home'}},
+        { name: 'ProfilePage', component: ProfilePage, options: {title: 'Profile'}},
+        { name: 'AddMedicinePage', component: AddMedicinePage, options: {title: 'Add Medicine'}},
+        { name: 'AddCareGiverPage', component: AddCareGiverPage, options: {title: 'Add Care Giver'}},
+        { name: 'MedicinesPage', component: MedicinesPage, options: {title: 'Medicines'}},
+        { name: 'Signup', component: Signup, options: {title: 'Signup'}}
     ]
     return (
         <NavigationContainer>
@@ -21,6 +27,7 @@ const App = () => {
                         const { name, component, options } = route;
                         return (
                             <Stack.Screen
+                                key={name}
                                 name={name}
                                 component={component}
                                 options={options}
