@@ -1,39 +1,69 @@
-import { Picker } from '@react-native-picker/picker';
 import React, { useEffect, useState } from 'react';
 import { View, Text } from 'react-native';
+import SearchableDropdown from 'react-native-searchable-dropdown';
 import { db } from '../../services/DbCon';
 
 const AddMedicinePage = ({ navigation }) => {
-    const [open, setOpen] = useState(false);
-    const [selectedValue, setSelectedValue] = useState("java");
+    const [serverData, setServerData] = useState([]);
 
-    const [ready, setReady] = useState(false);
     useEffect(() => {
-
-    }, []);
-
-    const setItems = () => {
-        var count = 0;
+        const arr = [];
+        let id = 0;
         db.collection("medicines").get().then((querySnapshot) => {
             querySnapshot.forEach((doc) => {
-                return (<Picker.Item label={doc.data().Medicine_name} value={doc.data().Medicine_name} />)
-                // setItems(items.push(doc.data().Medicine_name));
+                arr.push({id: id++, name: doc.data().Medicine_name});
             });
+            setServerData(arr);
         });
-        setReady(true);
-        console.log(items);
-    }
+    }, []);
+
+
     return (
         <View>
             <Text> AddMedicinePag </Text>
             <View>
-                <Picker
-                    selectedValue={selectedValue}
-                    style={{ height: 50, width: 150 }}
-                    onValueChange={(itemValue, itemIndex) => setSelectedValue(itemValue)}
-                >
-                    {setItems()}
-                </Picker>
+                <SearchableDropdown
+                    onTextChange={(text) => console.log(text)}
+                    //On text change listner on the searchable input
+                    onItemSelect={(item) => alert(JSON.stringify(item))}
+                    //onItemSelect called after the selection from the dropdown
+                    containerStyle={{ padding: 5 }}
+                    //suggestion container style
+                    textInputStyle={{
+                        //inserted text style
+                        padding: 12,
+                        borderWidth: 1,
+                        borderColor: '#ccc',
+                        backgroundColor: '#FAF7F6',
+                    }}
+                    itemStyle={{
+                        //single dropdown item style
+                        padding: 10,
+                        marginTop: 2,
+                        backgroundColor: '#FAF9F8',
+                        borderColor: '#bbb',
+                        borderWidth: 1,
+                    }}
+                    itemTextStyle={{
+                        //text style of a single dropdown item
+                        color: '#222',
+                    }}
+                    itemsContainerStyle={{
+                        //items container style you can pass maxHeight
+                        //to restrict the items dropdown hieght
+                        maxHeight: '50%',
+                    }}
+                    items={serverData}
+                    //mapping of item array
+                    defaultIndex={2}
+                    //default selected item index
+                    placeholder="placeholder"
+                    //place holder for the search input
+                    resetValue={false}
+                    //reset textInput Value with true and false state
+                    underlineColorAndroid="transparent"
+                //To remove the underline from the android input
+                />
             </View>
 
         </View>
