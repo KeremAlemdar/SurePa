@@ -40,11 +40,11 @@ const DropDown = ({
             }}
             items={serverData}
             //mapping of item array
-            defaultIndex={1}
+            defaultIndex={0}
             //default selected item index
             placeholder="placeholder"
             //place holder for the search input
-            resetValue={true}
+            resetValue={false}
             //reset textInput Value with true and false state
             underlineColorAndroid="transparent"
         //To remove the underline from the android input

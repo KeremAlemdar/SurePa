@@ -36,6 +36,7 @@ const Login = ({ navigation }) => {
     fbLogin(email, pass)
       .then((userCredential) => {
         const user = userCredential.user;
+        console.log(user);
         setDirectMain(true);
       })
       .catch((error) => {

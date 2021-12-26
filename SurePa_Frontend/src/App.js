@@ -12,10 +12,10 @@ const Stack = createNativeStackNavigator();
 
 const App = () => {
     const routes = [
+        { name: 'Login', component: Login, options: {title: 'Login'}},
         { name: 'HomePage', component: HomePage, options: {title: 'Home'}},
         { name: 'ProfilePage', component: ProfilePage, options: {title: 'Profile'}},
-        { name: 'AddMedicinePage', component: AddMedicinePage, options: {title: 'Add Medicine'}},
-        { name: 'Login', component: Login, options: {title: 'Login'}},
+        { name: 'AddMedicinePage', component: AddMedicinePage, options: {title: 'Add Medicine'}},        
         { name: 'AddCareGiverPage', component: AddCareGiverPage, options: {title: 'Add Care Giver'}},
         { name: 'MedicinesPage', component: MedicinesPage, options: {title: 'Medicines'}},
         { name: 'Signup', component: Signup, options: {title: 'Signup'}}

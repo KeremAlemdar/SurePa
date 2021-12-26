@@ -1,10 +1,5 @@
-import React, { useEffect } from 'react';
-import { View, Text, Button } from 'react-native';
-import { db } from '../../services/DbCon';
-
-
-
-// Initialize Firebase
+import React from 'react';
+import { View, Text } from 'react-native';
 
 
 const MedicinesPage = ({ navigation }) => {
