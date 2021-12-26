@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { View, TextInput, Button, Text } from 'react-native';
-import { fbLogin } from '../../services/SurePaServices';
-import { auth } from '../../services/SurePaServices';
 import { CommonActions } from '@react-navigation/native';
+import { auth, fbLogin } from '../../services/DbCon';
 
 const Login = ({ navigation }) => {
   const [email, setEmail] = useState('');
+  const [currentUser, setCurrentUser] = useState('');
   const [pass, setPass] = useState('');
   const [directMain, setDirectMain] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
@@ -25,7 +25,6 @@ const Login = ({ navigation }) => {
     const user = auth.currentUser;
     if (user) {
       console.log("GİRİLİ");
-      // navigation.navigate('HomePage');
       resetAction();
     } else {
       console.log("GİRİLİ DEGİL");
@@ -35,8 +34,6 @@ const Login = ({ navigation }) => {
   const loginClicked = () => {
     fbLogin(email, pass)
       .then((userCredential) => {
-        const user = userCredential.user;
-        console.log(user);
         setDirectMain(true);
       })
       .catch((error) => {

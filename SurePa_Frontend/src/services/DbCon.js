@@ -10,9 +10,22 @@ const firebaseConfig = {
     appId: "1:986641847385:web:3df3a7e120148c70f0cd48"
 };
 
+let firebaseApp;
 if(firebase.apps.length === 0) {
-    firebase.initializeApp(firebaseConfig);
+    firebaseApp = firebase.initializeApp(firebaseConfig);
     firebase.firestore().settings({ experimentalForceLongPolling: true });
 }
 
+export const auth = firebase.auth();
+
+export const fbRegister = (email, pass) => {
+    return auth.createUserWithEmailAndPassword(email, pass);
+};
+
+export const fbLogin = (email, pass) => {
+    return auth.signInWithEmailAndPassword(email, pass);
+};
+
+
+export default firebaseApp;
 export const db = firebase.firestore();
