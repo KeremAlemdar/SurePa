@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, Button, TextInput, StyleSheet } from 'react-native';
 import { auth, db } from '../../services/DbCon';
 import DropDown from '../dropDown/DropDown';
+import { addMedicine } from '../../services/PatientController';
 const AddMedicinePage = () => {
     const [medicinesArr, setMedicineArr] = useState([]);
     const [doseArr, setDoseArr] = useState([]);
@@ -59,19 +60,14 @@ const AddMedicinePage = () => {
         }
     }, [selectedMedicine]);
 
-    const addMedicine = () => {
+    const addMedicineLocal = () => {
         const{uid} = auth.currentUser;
-        // db.collection("medicines").doc(selectedMedicine.id).collection("medicines").
-        db.collection("users").doc(uid).collection("medicines").doc(selectedMedicine.name).set({
-            name: selectedMedicine.name,
-            numberOfDose: number,
-            ...selectedDose.doseData
-        })
+        addMedicine(uid,selectedMedicine.name,number,selectedDose.doseData);
     };
 
     return (
         <View>
-            <Text> AddMedicinePag </Text>
+            <Text> AddMedicinePage </Text>
             <View>
                 <DropDown
                     serverData={medicinesArr}
@@ -93,7 +89,7 @@ const AddMedicinePage = () => {
                 keyboardType="numeric"
                 ></TextInput>
                 {(selectedDose && 1) && 
-                <Button title="Ekle" onPress={addMedicine}></Button>
+                <Button title="Ekle" onPress={addMedicineLocal}></Button>
                 }
             </View>
         </View>

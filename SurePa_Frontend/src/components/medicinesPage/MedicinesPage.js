@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, Button, StyleSheet } from 'react-native';
 import { auth, db } from '../../services/DbCon';
+import { returnPatient } from '../../services/PatientController';
+import { deleteMedicine } from '../../services/PatientController';
+
 const MedicinesPage = ({ navigation }) => {
     const [medicines, setMedicines] = useState([]);
     const [ready, setReady] = useState(false);
@@ -19,6 +22,9 @@ const MedicinesPage = ({ navigation }) => {
         const { uid } = auth.currentUser;
         let currentData;
         let count = 0;
+        console.log(uid);
+
+        returnPatient(uid);
         db.collection("users").doc(uid).collection("medicines").get().then((querySnapshot) => {
             querySnapshot.forEach((doc) => {
                 currentData = doc.data();
@@ -32,14 +38,20 @@ const MedicinesPage = ({ navigation }) => {
         return (<Text>deneme</Text>);
     };
 
+    const deleteMedicineLocal = () => {
+        const{uid} = auth.currentUser;
+        deleteMedicine(uid,selectedMedicine.name);
+    };
+
     return (
         <View>
             <View style={styles.medicineList}>
-                {medicines.map(row => {
+                {medicines.map((row,id) => {
                     return (
-                        <View style={styles.singleMedicineRow}>
+                        <View key={id} style={styles.singleMedicineRow}>
                             <Text style={styles.text}>{row.currentData.name}</Text>
                             <Text style={styles.text}>{row.currentData.numberOfDose}</Text>
+                            <Button title="Sil" onPress={deleteMedicineLocal}></Button>
                         </View>
                     )
                 }
