@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, Button, TextInput } from 'react-native';
-import { fbRegister } from '../../services/SurePaServices';
+import { fbRegister } from '../../services/DbCon';
 
 const SignUp = ({ navigation }) => {
     const [email, setEmail] = useState('');
