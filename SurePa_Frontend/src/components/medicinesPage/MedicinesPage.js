@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, Button, StyleSheet } from 'react-native';
 import { auth, db } from '../../services/DbCon';
-import { returnPatient } from '../../services/PatientController';
+import { addCaregiver, deleteCaregiver, returnPatient } from '../../services/PatientController';
 import { deleteMedicine } from '../../services/PatientController';
 
 const MedicinesPage = ({ navigation }) => {

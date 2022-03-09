@@ -32,11 +32,40 @@ export const deleteMedicine = (patientId, medicineId) => {
         return("Error removing document: ", error);
     });
 };
-export const acceptNotification = (notificationId) => {
+export const acceptNotification = (patientId, notificationId) => {
+    db.collection("users").doc(patientId).collection("notifications").doc(notificationId).update({
+        status: "accepted"
+    })
 };
-export const cancelNotification = (notificationId) => {
+export const cancelNotification = (patientId, notificationId) => {
+    db.collection("users").doc(patientId).collection("notifications").doc(notificationId).update({
+        status: "cancelled"
+    })
 };
-export const addCaregiver = (caregiverId) => {
+//yeni fonksiyon
+export const deleteNotification = (patientId, notificationId) => {
+    db.collection("users").doc(patientId).collection("notifications").doc(notificationId).delete().then(() => {
+        return("Document successfully deleted!");
+    }).catch((error) => {
+        return("Error removing document: ", error);
+    });
 };
-export const deleteCaregiver = (caregiverId) => {
+//yeni fonksiyon
+export const createNotification = (patientId) => {
+    db.collection("users").doc(patientId).collection("notifications").doc().set({
+        status: "waiting",
+        description: "yeni notification"
+    })
+};
+export const addCaregiver = (patientId, caregiverId) => { //caregiverId == email
+    db.collection("users").doc(patientId).collection("caregivers").doc(caregiverId).set({
+        email: caregiverId
+    })
+};
+export const deleteCaregiver = (patientId, caregiverId) => {
+    db.collection("users").doc(patientId).collection("caregivers").doc(caregiverId).delete().then(() => {
+        return("Document successfully deleted!");
+    }).catch((error) => {
+        return("Error removing document: ", error);
+    });
 };

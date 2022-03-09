@@ -52,6 +52,10 @@ const HomePage = ({ navigation }) => {
                     <View><Image style={styles.image} source={require('../../../img/medicine.jpg')} /></View>
                     <View><Text style={styles.header}>Add Medicine</Text></View>
                 </View>
+                <View onTouchEnd={() => setDirectPage('NotificationsPage')} style={styles.menuItem}>
+                    <View><Image style={styles.image} source={require('../../../img/medicine.jpg')} /></View>
+                    <View><Text style={styles.header}>Notifications</Text></View>
+                </View>
             </View>
         </View>
     )
@@ -71,7 +75,7 @@ const styles = StyleSheet.create({
         flexWrap: 'wrap',
     },
     menuItem: {
-        width: '45%',
+        width: '30%',
         height: '45%',
         display: 'flex',
         flexDirection: 'column',

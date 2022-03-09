@@ -7,6 +7,7 @@ import Signup from './components/signUpPage';
 import ProfilePage from './components/profilePage';
 import AddMedicinePage from './components/addMedicinePage';
 import AddCareGiverPage from './components/addCareGiverPage';
+import NotificationsPage from './components/notificationsPage';
 import MedicinesPage from './components/medicinesPage/MedicinesPage';
 const Stack = createNativeStackNavigator();
 
@@ -18,6 +19,7 @@ const App = () => {
         { name: 'AddMedicinePage', component: AddMedicinePage, options: {title: 'Add Medicine'}},        
         { name: 'AddCareGiverPage', component: AddCareGiverPage, options: {title: 'Add Care Giver'}},
         { name: 'MedicinesPage', component: MedicinesPage, options: {title: 'Medicines'}},
+        { name: 'NotificationsPage', component: NotificationsPage, options: {title: 'NotificationsPage'}},
         { name: 'Signup', component: Signup, options: {title: 'Signup'}}
     ]
     return (
