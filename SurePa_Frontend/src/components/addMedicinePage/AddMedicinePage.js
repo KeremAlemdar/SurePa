@@ -6,7 +6,7 @@ import { addMedicine } from '../../services/PatientController';
 const AddMedicinePage = () => {
     const [medicinesArr, setMedicineArr] = useState([]);
     const [doseArr, setDoseArr] = useState([]);
-    const [number, onChangeNumber] = React.useState(null);
+    const [number, onChangeNumber] = useState(null);
     const [selectedMedicine, setSelectedMedicine] = useState(undefined);
     const [selectedDose, setSelectedDose] = useState(undefined);
 

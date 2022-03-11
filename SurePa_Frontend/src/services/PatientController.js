@@ -1,4 +1,4 @@
-import { db } from "./DbCon";
+import { auth, db } from "./DbCon";
 
 export const returnPatient = (patientId) => {
     console.log(patientId);
@@ -18,7 +18,7 @@ export const returnPatientMedicines = (patientId) => {
 };
 // export const addMedicine = (patientId, medicineId, dailyAmount, numberOfPills, date) => {
 export const addMedicine = (patientId, name, numberOfDose, doseData) => {
-        // db.collection("medicines").doc(selectedMedicine.id).collection("medicines").
+    // db.collection("medicines").doc(selectedMedicine.id).collection("medicines").
     db.collection("users").doc(patientId).collection("medicines").doc(name).set({
         name: name,
         numberOfDose: numberOfDose,
@@ -27,9 +27,9 @@ export const addMedicine = (patientId, name, numberOfDose, doseData) => {
 };
 export const deleteMedicine = (patientId, medicineId) => {
     db.collection("users").doc(patientId).collection("medicines").doc(medicineId).delete().then(() => {
-        return("Document successfully deleted!");
+        return ("Document successfully deleted!");
     }).catch((error) => {
-        return("Error removing document: ", error);
+        return ("Error removing document: ", error);
     });
 };
 export const acceptNotification = (patientId, notificationId) => {
@@ -57,15 +57,31 @@ export const createNotification = (patientId) => {
         description: "yeni notification"
     })
 };
-export const addCaregiver = (patientId, caregiverId) => { //caregiverId == email
-    db.collection("users").doc(patientId).collection("caregivers").doc(caregiverId).set({
-        email: caregiverId
-    })
-};
-export const deleteCaregiver = (patientId, caregiverId) => {
-    db.collection("users").doc(patientId).collection("caregivers").doc(caregiverId).delete().then(() => {
-        return("Document successfully deleted!");
-    }).catch((error) => {
-        return("Error removing document: ", error);
+export const addCaregiver = (careGiverMail) => {
+    db.collection("users").where("email", "==", careGiverMail).get().then((querySnapshot) => {
+        if(querySnapshot.docs[0]){
+            const{uid} = auth.currentUser;
+            db.collection("users").doc(uid).collection("caregivers").doc(querySnapshot.docs[0].id).set({
+                ...querySnapshot.docs[0].data()
+            }).catch((error) => {
+                console.log("Error adding document: ", error);
+            });
+        } else {
+            console.log('failed');
+        }
     });
+};
+
+export const getCaregivers = () => {
+    const{uid} = auth.currentUser;
+    return new Promise((resolve, reject) => {
+        db.collection("users").doc(uid).collection("caregivers").get().then((querySnapshot) => {
+            resolve(querySnapshot.docs.map(doc => doc.data()));
+        }).catch((error) => {
+            reject(error);
+        });
+    });
+};
+
+export const deleteCaregiver = (caregiverId) => {
 };
