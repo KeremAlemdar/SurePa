@@ -24,7 +24,6 @@ const MedicinesPage = ({ navigation }) => {
         const { uid } = auth.currentUser;
         let currentData;
         let count = 0;
-        console.log(uid);
 
         returnPatient(uid);
         db.collection("users").doc(uid).collection("medicines").get().then((querySnapshot) => {

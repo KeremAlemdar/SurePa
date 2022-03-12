@@ -22,7 +22,7 @@ export const auth = firebase.auth();
 export const fbRegister = (email, pass, name) => {
     return new Promise((resolve, reject) => {
         auth.createUserWithEmailAndPassword(email, pass).then(userCredential => {
-            addPatient(email).then(() => {
+            addPatient({ email: email, name: name }).then(() => {
                 resolve(userCredential);
             }).catch(error => {
                 reject(error);

@@ -14,7 +14,6 @@ const InvivtationsPage = ({ navigation }) => {
     useEffect(() => {
         if (reloadPage) {
             getInviations().then(res => {
-                console.log(res);
                 setInvitations(res);
                 setReloadPage(false);
             });

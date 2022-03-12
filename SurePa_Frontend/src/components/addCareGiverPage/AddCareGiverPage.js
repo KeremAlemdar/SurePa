@@ -10,7 +10,6 @@ const AddCareGiverPage = ({ navigation }) => {
     const [email, setEmail] = useState('');
 
     const onSubmit = () => {
-        console.log('asd');
         sendInvitation(email).then(res => {
             if (res === 'success') {
                 Toast.show({

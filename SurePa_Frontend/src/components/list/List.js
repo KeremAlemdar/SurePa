@@ -11,8 +11,8 @@ const List = ({
         return (
             <View key={id} style={styles.singleMedicineRow}>
                 <Text style={styles.text}>{row.name}</Text>
-                <Button title="Onayla" onPress={() => accept(row.uid)}></Button>
-                <Button title="Sil" onPress={() => deny(row.uid)}></Button>
+                {accept && <Button title="Accept" onPress={() => accept(row.uid)}></Button>}
+                {deny && <Button title="Delete" onPress={() => deny(row.uid)}></Button>}
             </View>
         )
     };

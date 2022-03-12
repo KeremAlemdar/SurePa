@@ -148,13 +148,28 @@ export const getCaregivers = () => {
 };
 
 export const deleteCaregiver = (caregiverId) => {
+    const { uid } = auth.currentUser;
+    return new Promise((resolve, reject) => {
+        db.collection("users").doc(uid).collection("caregivers").doc(caregiverId).delete().then(() => {
+            db.collection("users").doc(caregiverId).collection("invitations").doc(uid).update({
+                status: "cancelled"
+            }).then(() => {
+                resolve("success");
+            }).catch((error) => {
+                reject(error);
+            });
+        }).catch((error) => {
+            reject(error);
+        });
+    });
 };
 
 export const addPatient = (props) => {
     const { uid } = auth.currentUser;
     return new Promise((resolve, reject) => {
         db.collection("users").doc(uid).set({
-            ...props
+            ...props,
+            uid:uid
         }).then(() => {
             resolve("success");
         }).catch((error) => {
