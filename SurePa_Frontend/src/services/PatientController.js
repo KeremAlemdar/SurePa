@@ -165,6 +165,7 @@ export const deleteCaregiver = (caregiverId) => {
 };
 
 export const addPatient = (props) => {
+    console.log(props);
     const { uid } = auth.currentUser;
     return new Promise((resolve, reject) => {
         db.collection("users").doc(uid).set({

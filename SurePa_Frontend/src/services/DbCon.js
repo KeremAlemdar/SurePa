@@ -19,10 +19,10 @@ if (firebase.apps.length === 0) {
 
 export const auth = firebase.auth();
 
-export const fbRegister = (email, pass, name) => {
+export const fbRegister = (email, pass, name, status) => {
     return new Promise((resolve, reject) => {
         auth.createUserWithEmailAndPassword(email, pass).then(userCredential => {
-            addPatient({ email: email, name: name }).then(() => {
+            addPatient({ email: email, name: name, status: status }).then(() => {
                 resolve(userCredential);
             }).catch(error => {
                 reject(error);

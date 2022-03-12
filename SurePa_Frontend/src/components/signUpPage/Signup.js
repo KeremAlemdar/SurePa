@@ -9,10 +9,11 @@ const SignUp = ({ navigation }) => {
     const [email, setEmail] = useState('');
     const [pass, setPass] = useState('');
     const [name, setName] = useState('');
-    const [status, setStatus] = useState('');
+    const [status, setStatus] = useState('patient');
     const [errorMessage, setErrorMessage] = useState('');
 
     const registerClicked = () => {
+        console.log(status);
         fbRegister(email, pass, name, status)
             .then((userCredential) => {
                 navigation.navigate('Login')
