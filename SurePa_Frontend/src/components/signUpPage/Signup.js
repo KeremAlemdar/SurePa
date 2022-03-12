@@ -63,7 +63,6 @@ const SignUp = ({ navigation }) => {
                     placeholder='Email'
                     placeholderTextColor="gray"
                     focusColor="blue"
-                    secureTextEntry={true}
                     onChangeText={changes => setEmail(changes)}
                 />
             </View>
