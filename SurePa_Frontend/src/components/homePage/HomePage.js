@@ -46,13 +46,9 @@ const HomePage = ({ navigation }) => {
                         <View><Image style={styles.image} source={require('../../../img/profile.png')} /></View>
                         <View><Text style={styles.header}>Profile</Text></View>
                     </View>
-                    <View onTouchEnd={() => setDirectPage('AddCareGiverPage')} style={styles.menuItem}>
+                    <View onTouchEnd={() => setDirectPage('AddThings')} style={styles.menuItem}>
                         <View><Image style={styles.image} source={require('../../../img/profile.png')} /></View>
-                        <View><Text style={styles.header}>Add Caregiver</Text></View>
-                    </View>
-                    <View onTouchEnd={() => setDirectPage('AddMedicinePage')} style={styles.menuItem}>
-                        <View><Image style={styles.image} source={require('../../../img/medicine.jpg')} /></View>
-                        <View><Text style={styles.header}>Add Medicine</Text></View>
+                        <View><Text style={styles.header}>Isim</Text></View>
                     </View>
                     <View onTouchEnd={() => setDirectPage('NotificationsPage')} style={styles.menuItem}>
                         <View><Image style={styles.image} source={require('../../../img/medicine.jpg')} /></View>

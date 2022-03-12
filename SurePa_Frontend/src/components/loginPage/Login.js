@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { View, TextInput, Button, Text, StyleSheet } from 'react-native';
+import { View, Button, Text } from 'react-native';
 import { CommonActions } from '@react-navigation/native';
 import { auth, fbLogin } from '../../services/DbCon';
 import commonStyle from '../../commonStyle';
+import { TextInput } from 'react-native-element-textinput';
 
 const Login = ({ navigation }) => {
   const [email, setEmail] = useState('');
@@ -16,7 +17,7 @@ const Login = ({ navigation }) => {
       CommonActions.reset({
         index: 0,
         routes: [
-          { name: 'HomePage'}
+          { name: 'HomePage' }
         ],
       })
     );
@@ -53,8 +54,39 @@ const Login = ({ navigation }) => {
 
   return (
     <View style={commonStyle.mainDiv}>
-      <TextInput placeholder='Email' value={email} onChangeText={changes => setEmail(changes)} />
-      <TextInput placeholder='Password' value={pass} secureTextEntry={true} onChangeText={changes => setPass(changes)} />
+      <View style={commonStyle.container}>
+        <TextInput
+          value={email}
+          style={commonStyle.input}
+          inputStyle={commonStyle.inputStyle}
+          labelStyle={commonStyle.labelStyle}
+          placeholderStyle={commonStyle.placeholderStyle}
+          textErrorStyle={commonStyle.textErrorStyle}
+          label="Email"
+          placeholder='Email'
+          placeholderTextColor="gray"
+          focusColor="blue"
+          onChangeText={text => {
+            setEmail(text);
+          }}
+        />
+      </View>
+      <View style={commonStyle.container}>
+        <TextInput
+          value={pass}
+          style={commonStyle.input}
+          inputStyle={commonStyle.inputStyle}
+          labelStyle={commonStyle.labelStyle}
+          placeholderStyle={commonStyle.placeholderStyle}
+          textErrorStyle={commonStyle.textErrorStyle}
+          label="TextInput"
+          placeholder='Password'
+          placeholderTextColor="gray"
+          focusColor="blue"
+          secureTextEntry={true} 
+          onChangeText={changes => setPass(changes)}
+        />
+      </View>
       <Button title='Login' onPress={() => loginClicked()} />
       {errorMessage !== '' &&
         <Text>{errorMessage}</Text>}

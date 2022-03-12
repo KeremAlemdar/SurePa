@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, StyleSheet, Button, Text } from 'react-native';
+import { View, Button, Text } from 'react-native';
 import { addCaregiver } from '../../services/PatientController';
 import { TextInput } from 'react-native-element-textinput';
 import commonStyle from '../../commonStyle';
@@ -63,16 +63,16 @@ const AddCareGiverPage = ({ navigation }) => {
 
     return (
         <View style={commonStyle.mainDiv}>
-            <View style={styles.container}>
+            <View style={commonStyle.container}>
                 <TextInput
                     value={email}
-                    style={styles.input}
-                    inputStyle={styles.inputStyle}
-                    labelStyle={styles.labelStyle}
-                    placeholderStyle={styles.placeholderStyle}
-                    textErrorStyle={styles.textErrorStyle}
-                    label="TextInput"
-                    placeholder="Placeholder"
+                    style={commonStyle.input}
+                    inputStyle={commonStyle.inputStyle}
+                    labelStyle={commonStyle.labelStyle}
+                    placeholderStyle={commonStyle.placeholderStyle}
+                    textErrorStyle={commonStyle.textErrorStyle}
+                    label="Email"
+                    placeholder="Email"
                     placeholderTextColor="gray"
                     focusColor="blue"
                     onChangeText={text => {
@@ -80,35 +80,11 @@ const AddCareGiverPage = ({ navigation }) => {
                     }}
                 />
             </View>
-            <Button style={styles.submitButton} title="Ekle" onPress={() => onSubmit()}></Button>
+            <Button title="Ekle" onPress={() => onSubmit()}></Button>
             <Toast config={toastConfig} />
         </View>
     );
 
 };
-
-const styles = StyleSheet.create({
-    container: {
-        padding: 16,
-    },
-    input: {
-        height: 55,
-        paddingHorizontal: 12,
-        borderRadius: 8,
-        borderWidth: 0.5,
-        borderColor: '#DDDDDD',
-    },
-    inputStyle: { fontSize: 16 },
-    labelStyle: {
-        fontSize: 14,
-        position: 'absolute',
-        top: -10,
-        backgroundColor: 'white',
-        paddingHorizontal: 4,
-        marginLeft: -4,
-    },
-    placeholderStyle: { fontSize: 16 },
-    textErrorStyle: { fontSize: 16 },
-});
 
 export default AddCareGiverPage;

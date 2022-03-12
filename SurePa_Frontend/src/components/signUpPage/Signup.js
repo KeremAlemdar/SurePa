@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
-import { View, Text, Button, TextInput } from 'react-native';
+import { View, Text, Button } from 'react-native';
 import { fbRegister } from '../../services/DbCon';
+import commonStyle from '../../commonStyle';
+import { TextInput } from 'react-native-element-textinput';
 
 const SignUp = ({ navigation }) => {
     const [email, setEmail] = useState('');
@@ -30,10 +32,54 @@ const SignUp = ({ navigation }) => {
     }
 
     return (
-        <View>
-            <TextInput placeholder='Full Name' value={name} onChangeText={changes => setName(changes)} />
-            <TextInput placeholder='Email' value={email} onChangeText={changes => setEmail(changes)} />
-            <TextInput placeholder='Password' value={pass} secureTextEntry={true} onChangeText={changes => setPass(changes)} />
+        <View style={commonStyle.mainDiv}>
+            <View style={commonStyle.container}>
+                <TextInput
+                    value={name}
+                    style={commonStyle.input}
+                    inputStyle={commonStyle.inputStyle}
+                    labelStyle={commonStyle.labelStyle}
+                    placeholderStyle={commonStyle.placeholderStyle}
+                    textErrorStyle={commonStyle.textErrorStyle}
+                    label="TextInput"
+                    placeholder='Full Name'
+                    placeholderTextColor="gray"
+                    focusColor="blue"
+                    onChangeText={changes => setName(changes)}
+                />
+            </View>
+            <View style={commonStyle.container}>
+                <TextInput
+                    value={email}
+                    style={commonStyle.input}
+                    inputStyle={commonStyle.inputStyle}
+                    labelStyle={commonStyle.labelStyle}
+                    placeholderStyle={commonStyle.placeholderStyle}
+                    textErrorStyle={commonStyle.textErrorStyle}
+                    label="TextInput"
+                    placeholder='Email'
+                    placeholderTextColor="gray"
+                    focusColor="blue"
+                    secureTextEntry={true}
+                    onChangeText={changes => setEmail(changes)}
+                />
+            </View>
+            <View style={commonStyle.container}>
+                <TextInput
+                    value={pass}
+                    style={commonStyle.input}
+                    inputStyle={commonStyle.inputStyle}
+                    labelStyle={commonStyle.labelStyle}
+                    placeholderStyle={commonStyle.placeholderStyle}
+                    textErrorStyle={commonStyle.textErrorStyle}
+                    label="TextInput"
+                    placeholder='Password'
+                    placeholderTextColor="gray"
+                    focusColor="blue"
+                    secureTextEntry={true}
+                    onChangeText={changes => setPass(changes)}
+                />
+            </View>
             {errorMessage !== '' &&
                 <Text>{errorMessage}</Text>}
             <Button title='Signup' onPress={() => registerClicked()} />
