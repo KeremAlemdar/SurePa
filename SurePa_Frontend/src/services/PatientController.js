@@ -1,15 +1,16 @@
 import { auth, db } from "./DbCon";
 
-export const returnPatient = (patientId) => {
-    console.log(patientId);
-    var docRef = db.collection("users").doc(patientId);
-    docRef.get().then((doc) => {
-        if (doc.exists) {
-            return doc.data();
-        } else {
-            return "No such document!";
-        }
-    })
+export const returnPatient = async (patientId) => {
+    return new Promise((resolve, reject) => {
+        var docRef = db.collection("users").doc(patientId);
+        docRef.get().then((doc) => {
+            if (doc.exists) {
+                resolve(doc.data());
+            } else {
+                reject("No such document!");
+            }
+        });
+    });
 };
 export const returnPatientMedicines = (patientId) => {
     const patientRef = db.collection("users").doc(patientId).collection("medicines").get().then((querySnapshot) => {
@@ -57,24 +58,78 @@ export const createNotification = (patientId) => {
         description: "yeni notification"
     })
 };
-export const addCaregiver = (careGiverMail) => {
+export const sendInvitation = async (careGiverMail) => {
     return new Promise((resolve, reject) => {
         db.collection("users").where("email", "==", careGiverMail).get().then((querySnapshot) => {
             if (querySnapshot.docs[0]) {
                 const targetId = querySnapshot.docs[0].id;
-                const {uid} = auth.currentUser;
-                db.collection("users").doc(targetId).collection("invitations").doc(uid).set({
-                    email:auth.currentUser.email,
-                    status:"waiting",
-                    uid:uid
+                const { uid } = auth.currentUser;
+                returnPatient(uid).then(async (patient) => {
+                    db.collection("users").doc(targetId).collection("invitations").doc(uid).set({
+                        ...patient,
+                        status: "waiting",
+                    }).then(() => {
+                        resolve("success");
+                    }).catch((error) => {
+                        reject(error);
+                    });
+                });
+            } else {
+                reject('User not found!!');
+            }
+        }).catch((error) => {
+            reject(error);
+        });
+    });
+};
+
+export const getInviations = () => {
+    return new Promise((resolve, reject) => {
+        const { uid } = auth.currentUser;
+        const returnArr = [];
+        db.collection("users").doc(uid).collection("invitations").get().then((querySnapshot) => {
+            querySnapshot.forEach((doc) => {
+                if (doc.data().status === "waiting") {
+                    returnArr.push(doc.data());
+                }
+            });
+            resolve(returnArr);
+        }).catch((error) => {
+            reject(error);
+        });
+    });
+};
+
+export const acceptInvitation = (patientId) => {
+    const { uid } = auth.currentUser;
+    return new Promise((resolve, reject) => {
+        db.collection("users").doc(uid).collection("invitations").doc(patientId).update({
+            status: "accepted"
+        }).then(() => {
+            returnPatient(uid).then(async (caregiver) => {
+                db.collection("users").doc(patientId).collection("caregivers").doc(uid).set({
+                    ...caregiver
                 }).then(() => {
                     resolve("success");
                 }).catch((error) => {
                     reject(error);
                 });
-            } else {
-                reject('User not found!!');
-            }
+            }).catch((error) => {
+                reject(error);
+            });
+        }).catch((error) => {
+            return ("Error updating document: ", error);
+        });
+    });
+};
+
+export const denyInvitation = (patientId) => {
+    const { uid } = auth.currentUser;
+    return new Promise((resolve, reject) => {
+        db.collection("users").doc(uid).collection("invitations").doc(patientId).update({
+            status: "denied"
+        }).then(() => {
+            resolve("success");
         }).catch((error) => {
             reject(error);
         });

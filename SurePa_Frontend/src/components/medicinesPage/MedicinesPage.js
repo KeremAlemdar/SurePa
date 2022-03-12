@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, Button, StyleSheet } from 'react-native';
 import { auth, db } from '../../services/DbCon';
-import { addCaregiver, deleteCaregiver, returnPatient } from '../../services/PatientController';
+import { returnPatient } from '../../services/PatientController';
 import { deleteMedicine } from '../../services/PatientController';
+import commonStyle from '../../commonStyle';
+
 
 const MedicinesPage = ({ navigation }) => {
     const [medicines, setMedicines] = useState([]);
@@ -44,7 +46,7 @@ const MedicinesPage = ({ navigation }) => {
     };
 
     return (
-        <View>
+        <View style={commonStyle.mainDiv}>
             <View style={styles.medicineList}>
                 {medicines.map((row,id) => {
                     return (

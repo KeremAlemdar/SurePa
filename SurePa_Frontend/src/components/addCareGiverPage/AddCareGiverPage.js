@@ -1,50 +1,17 @@
 import React, { useState } from 'react';
 import { View, Button, Text } from 'react-native';
-import { addCaregiver } from '../../services/PatientController';
+import { sendInvitation } from '../../services/PatientController';
 import { TextInput } from 'react-native-element-textinput';
 import commonStyle from '../../commonStyle';
-import Toast, { BaseToast, ErrorToast } from 'react-native-toast-message';
+import Toast from 'react-native-toast-message';
+import { toastConfig } from '../toast';
 
 const AddCareGiverPage = ({ navigation }) => {
     const [email, setEmail] = useState('');
 
-    const toastConfig = {
-        success: ({props}) => (
-            <BaseToast
-                text1={props.text1}
-                style={{ borderLeftColor: 'green', marginTop: -20 }}
-                contentContainerStyle={{ paddingHorizontal: 15 }}
-                text1Style={{
-                    fontSize: 15,
-                    fontWeight: '400'
-                }}
-            >
-            </BaseToast>
-        ),
-        error: (props) => (
-            <ErrorToast
-                text1={props.text1}
-                style={{ borderLeftColor: 'red', marginTop: -20 }}
-                contentContainerStyle={{ paddingHorizontal: 15 }}
-                text1Style={{
-                    fontSize: 17
-                }}
-                text2Style={{
-                    fontSize: 15
-                }}
-            />
-        ),
-        tomatoToast: ({ text1, props }) => (
-            <View style={{ height: 60, width: '100%', backgroundColor: 'tomato' }}>
-                <Text>{text1}</Text>
-                <Text>{props.uuid}</Text>
-            </View>
-        )
-    };
-
     const onSubmit = () => {
         console.log('asd');
-        addCaregiver(email).then(res => {
+        sendInvitation(email).then(res => {
             if (res === 'success') {
                 Toast.show({
                     type: 'success',

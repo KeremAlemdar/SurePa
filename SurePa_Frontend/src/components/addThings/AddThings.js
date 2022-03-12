@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { View, Button } from 'react-native';
 import commonStyle from '../../commonStyle';
 
-const AddCareGiverPage = ({ navigation }) => {
+const AddThings = ({ navigation }) => {
     const [directPage, setDirectPage] = useState('');
 
     useEffect(() => {
@@ -30,4 +30,4 @@ const AddCareGiverPage = ({ navigation }) => {
 
 };
 
-export default AddCareGiverPage;
+export default AddThings;
