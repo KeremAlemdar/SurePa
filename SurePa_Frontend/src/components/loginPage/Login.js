@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { View, TextInput, Button, Text } from 'react-native';
+import { View, TextInput, Button, Text, StyleSheet } from 'react-native';
 import { CommonActions } from '@react-navigation/native';
 import { auth, fbLogin } from '../../services/DbCon';
+import commonStyle from '../../commonStyle';
 
 const Login = ({ navigation }) => {
   const [email, setEmail] = useState('');
@@ -51,7 +52,7 @@ const Login = ({ navigation }) => {
   }
 
   return (
-    <View>
+    <View style={commonStyle.mainDiv}>
       <TextInput placeholder='Email' value={email} onChangeText={changes => setEmail(changes)} />
       <TextInput placeholder='Password' value={pass} secureTextEntry={true} onChangeText={changes => setPass(changes)} />
       <Button title='Login' onPress={() => loginClicked()} />

@@ -13,30 +13,29 @@ const Stack = createNativeStackNavigator();
 
 const App = () => {
     const routes = [
-        { name: 'Login', component: Login, options: {title: 'Login'}},
-        { name: 'HomePage', component: HomePage, options: {title: 'Home'}},
-        { name: 'ProfilePage', component: ProfilePage, options: {title: 'Profile'}},
-        { name: 'AddMedicinePage', component: AddMedicinePage, options: {title: 'Add Medicine'}},        
-        { name: 'AddCareGiverPage', component: AddCareGiverPage, options: {title: 'Add Care Giver'}},
-        { name: 'MedicinesPage', component: MedicinesPage, options: {title: 'Medicines'}},
-        { name: 'NotificationsPage', component: NotificationsPage, options: {title: 'NotificationsPage'}},
-        { name: 'Signup', component: Signup, options: {title: 'Signup'}}
+        { name: 'Login', component: Login, options: { title: 'Login' } },
+        { name: 'HomePage', component: HomePage, options: { title: 'Home' } },
+        { name: 'ProfilePage', component: ProfilePage, options: { title: 'Profile' } },
+        { name: 'AddMedicinePage', component: AddMedicinePage, options: { title: 'Add Medicine' } },
+        { name: 'AddCareGiverPage', component: AddCareGiverPage, options: { title: 'Add Care Giver' } },
+        { name: 'MedicinesPage', component: MedicinesPage, options: { title: 'Medicines' } },
+        { name: 'NotificationsPage', component: NotificationsPage, options: { title: 'NotificationsPage' } },
+        { name: 'Signup', component: Signup, options: { title: 'Signup' } }
     ]
     return (
         <NavigationContainer>
             <Stack.Navigator>
                 {routes.map(route => {
-                        const { name, component, options } = route;
-                        return (
-                            <Stack.Screen
-                                key={name}
-                                name={name}
-                                component={component}
-                                options={options}
-                            />
-                        );
-                    })}
-
+                    const { name, component, options } = route;
+                    return (
+                        <Stack.Screen
+                            key={name}
+                            name={name}
+                            component={component}
+                            options={options}
+                        />
+                    );
+                })}
             </Stack.Navigator>
         </NavigationContainer>
     );

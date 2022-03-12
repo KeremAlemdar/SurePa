@@ -5,10 +5,11 @@ import { fbRegister } from '../../services/DbCon';
 const SignUp = ({ navigation }) => {
     const [email, setEmail] = useState('');
     const [pass, setPass] = useState('');
+    const [name, setName] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
 
     const registerClicked = () => {
-        fbRegister(email, pass)
+        fbRegister(email, pass, name)
             .then((userCredential) => {
                 navigation.navigate('Login')
             })
@@ -30,6 +31,7 @@ const SignUp = ({ navigation }) => {
 
     return (
         <View>
+            <TextInput placeholder='Full Name' value={name} onChangeText={changes => setName(changes)} />
             <TextInput placeholder='Email' value={email} onChangeText={changes => setEmail(changes)} />
             <TextInput placeholder='Password' value={pass} secureTextEntry={true} onChangeText={changes => setPass(changes)} />
             {errorMessage !== '' &&

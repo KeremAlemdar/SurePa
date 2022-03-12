@@ -1,4 +1,5 @@
 import firebase from 'firebase';
+import { addPatient } from './PatientController';
 
 const firebaseConfig = {
     apiKey: "AIzaSyBFG7wJpKM6pOmOj9ooUKqYz5W7m9dp50U",
@@ -11,15 +12,25 @@ const firebaseConfig = {
 };
 
 let firebaseApp;
-if(firebase.apps.length === 0) {
+if (firebase.apps.length === 0) {
     firebaseApp = firebase.initializeApp(firebaseConfig);
     firebase.firestore().settings({ experimentalForceLongPolling: true });
 }
 
 export const auth = firebase.auth();
 
-export const fbRegister = (email, pass) => {
-    return auth.createUserWithEmailAndPassword(email, pass);
+export const fbRegister = (email, pass, name) => {
+    return new Promise((resolve, reject) => {
+        auth.createUserWithEmailAndPassword(email, pass).then(userCredential => {
+            addPatient(email).then(() => {
+                resolve(userCredential);
+            }).catch(error => {
+                reject(error);
+            });
+        }).catch(error => {
+            reject(error);
+        });
+    });
 };
 
 export const fbLogin = (email, pass) => {

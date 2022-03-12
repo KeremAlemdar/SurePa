@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, Image, StyleSheet } from 'react-native';
+import commonStyle from '../../commonStyle';
 const HomePage = ({ navigation }) => {
     const [directPage, setDirectPage] = useState('');
 
@@ -34,27 +35,29 @@ const HomePage = ({ navigation }) => {
     }, [directPage]);
 
     return (
-        <View style={styles.all}>
-            <View style={styles.menu}>
-                <View onTouchEnd={() => setDirectPage('MedicinesPage')} style={styles.menuItem}>
-                    <View><Image style={styles.image} source={require('../../../img/medicine.jpg')} /></View>
-                    <View><Text style={styles.header}>Medicines</Text></View>
-                </View>
-                <View onTouchEnd={() => setDirectPage('ProfilePage')} style={styles.menuItem}>
-                    <View><Image style={styles.image} source={require('../../../img/profile.png')} /></View>
-                    <View><Text style={styles.header}>Profile</Text></View>
-                </View>
-                <View onTouchEnd={() => setDirectPage('AddCareGiverPage')} style={styles.menuItem}>
-                    <View><Image style={styles.image} source={require('../../../img/profile.png')} /></View>
-                    <View><Text style={styles.header}>Add Caregiver</Text></View>
-                </View>
-                <View onTouchEnd={() => setDirectPage('AddMedicinePage')} style={styles.menuItem}>
-                    <View><Image style={styles.image} source={require('../../../img/medicine.jpg')} /></View>
-                    <View><Text style={styles.header}>Add Medicine</Text></View>
-                </View>
-                <View onTouchEnd={() => setDirectPage('NotificationsPage')} style={styles.menuItem}>
-                    <View><Image style={styles.image} source={require('../../../img/medicine.jpg')} /></View>
-                    <View><Text style={styles.header}>Notifications</Text></View>
+        <View style={commonStyle.mainDiv}>
+            <View style={styles.all}>
+                <View style={styles.menu}>
+                    <View onTouchEnd={() => setDirectPage('MedicinesPage')} style={styles.menuItem}>
+                        <View><Image style={styles.image} source={require('../../../img/medicine.jpg')} /></View>
+                        <View><Text style={styles.header}>Medicines</Text></View>
+                    </View>
+                    <View onTouchEnd={() => setDirectPage('ProfilePage')} style={styles.menuItem}>
+                        <View><Image style={styles.image} source={require('../../../img/profile.png')} /></View>
+                        <View><Text style={styles.header}>Profile</Text></View>
+                    </View>
+                    <View onTouchEnd={() => setDirectPage('AddCareGiverPage')} style={styles.menuItem}>
+                        <View><Image style={styles.image} source={require('../../../img/profile.png')} /></View>
+                        <View><Text style={styles.header}>Add Caregiver</Text></View>
+                    </View>
+                    <View onTouchEnd={() => setDirectPage('AddMedicinePage')} style={styles.menuItem}>
+                        <View><Image style={styles.image} source={require('../../../img/medicine.jpg')} /></View>
+                        <View><Text style={styles.header}>Add Medicine</Text></View>
+                    </View>
+                    <View onTouchEnd={() => setDirectPage('NotificationsPage')} style={styles.menuItem}>
+                        <View><Image style={styles.image} source={require('../../../img/medicine.jpg')} /></View>
+                        <View><Text style={styles.header}>Notifications</Text></View>
+                    </View>
                 </View>
             </View>
         </View>
