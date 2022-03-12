@@ -3,15 +3,17 @@ import { View, Text, Button } from 'react-native';
 import { fbRegister } from '../../services/DbCon';
 import commonStyle from '../../commonStyle';
 import { TextInput } from 'react-native-element-textinput';
+import { Picker } from '@react-native-picker/picker';
 
 const SignUp = ({ navigation }) => {
     const [email, setEmail] = useState('');
     const [pass, setPass] = useState('');
     const [name, setName] = useState('');
+    const [status, setStatus] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
 
     const registerClicked = () => {
-        fbRegister(email, pass, name)
+        fbRegister(email, pass, name, status)
             .then((userCredential) => {
                 navigation.navigate('Login')
             })
@@ -79,6 +81,16 @@ const SignUp = ({ navigation }) => {
                     secureTextEntry={true}
                     onChangeText={changes => setPass(changes)}
                 />
+            </View>
+            <View>
+                <Picker
+                    selectedValue={status}
+                    onValueChange={(itemValue, itemIndex) =>
+                        setStatus(itemValue)
+                    }>
+                    <Picker.Item label="Patient" value="patient" />
+                    <Picker.Item label="Caregiver" value="caregiver" />
+                </Picker>
             </View>
             {errorMessage !== '' &&
                 <Text>{errorMessage}</Text>}
