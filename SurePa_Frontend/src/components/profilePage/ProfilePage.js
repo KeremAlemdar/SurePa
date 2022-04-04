@@ -11,6 +11,12 @@ import List from '../list/List';
 const ProfilePage = ({ navigation }) => {
     const [directPage, setDirectPage] = useState('');
     const [caregivers, setCaregivers] = useState([]);
+    const [patientInfo, setPatientInfo] = useState({
+        uid: '',
+        name: '',
+        email: '',
+        status: ''
+    });
     const [ready, setReady] = useState(false);
 
     useEffect(() => {
@@ -37,10 +43,10 @@ const ProfilePage = ({ navigation }) => {
 
     const getProfileInfo = () => {
         const { uid } = auth.currentUser;
-        let currentData;
         returnPatient(uid).then((res) => {
-            console.log(res);
+            setPatientInfo(res);
         });
+        console.log(patientInfo);
     };
     return (
 
@@ -50,10 +56,13 @@ const ProfilePage = ({ navigation }) => {
                 <Image style={styles.avatar} source={{ uri: 'https://bootdey.com/img/Content/avatar/avatar6.png' }} />
                 <View style={styles.body}>
                     <View style={styles.bodyContent}>
-                        <Text style={styles.name}>John Doe</Text>
-                        <Text style={styles.info}>UX Designer / Mobile developer</Text>
-                        <Text style={styles.description}>Lorem ipsum dolor sit amet, saepe sapientem eu nam. Qui ne assum electram expetendis, omittam deseruisse consequuntur ius an,</Text>
-
+                        <Text style={styles.name}>{patientInfo.name}</Text>
+                        <Text style={styles.info}>{patientInfo.status}</Text>
+                        <View style={styles.descriptionContainer}>
+                            <Text style={styles.description}>Mix the colors in the palette,</Text>
+                            <Text style={styles.description}>pick your filter.</Text>
+                            <Text style={styles.description}>Which me do you want?</Text>
+                        </View>
                         <TouchableOpacity style={styles.buttonContainer}>
                             <Text onPress={() => setDirectPage('InvitationsPage')}>See Invitations</Text>
                         </TouchableOpacity>
@@ -92,7 +101,6 @@ const styles = StyleSheet.create({
         marginTop: 40,
     },
     bodyContent: {
-        flex: 1,
         alignItems: 'center',
         padding: 30,
     },
@@ -102,6 +110,7 @@ const styles = StyleSheet.create({
         fontWeight: "600"
     },
     info: {
+        textTransform: 'capitalize',
         fontSize: 16,
         color: "#00BFFF",
         marginTop: 10
@@ -109,8 +118,10 @@ const styles = StyleSheet.create({
     description: {
         fontSize: 16,
         color: "#696969",
-        marginTop: 10,
         textAlign: 'center'
+    },
+    descriptionContainer: {
+        marginTop: 10,
     },
     buttonContainer: {
         marginTop: 10,

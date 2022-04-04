@@ -3,13 +3,16 @@ import { auth, db } from "./DbCon";
 export const returnPatient = async (patientId) => {
     return new Promise((resolve, reject) => {
         var docRef = db.collection("users").doc(patientId);
-        docRef.get().then((doc) => {
-            if (doc.exists) {
-                resolve(doc.data());
-            } else {
-                reject("No such document!");
-            }
+        docRef.onSnapshot(documentSnapshot => {
+            resolve(documentSnapshot.data());
         });
+        // docRef.get().then((doc) => {
+        //     if (doc.exists) {
+        //         resolve(doc.data());
+        //     } else {
+        //         reject("No such document!");
+        //     }
+        // });
     });
 };
 export const returnPatientMedicines = (patientId) => {

@@ -7,6 +7,7 @@ import commonStyle from '../../commonStyle';
 
 
 const MedicinesPage = ({ navigation }) => {
+    const [directPage, setDirectPage] = useState('');
     const [medicines, setMedicines] = useState([]);
     const [ready, setReady] = useState(false);
 
@@ -18,6 +19,12 @@ const MedicinesPage = ({ navigation }) => {
             console.log(medicines[0].currentData);
         }
     }, []);
+
+    useEffect(() => {
+        if (directPage !== '') {
+            navigation.navigate(directPage);
+        }
+    }, [directPage]);
 
     const getMedicines = () => {
         const arr = [];
@@ -43,6 +50,7 @@ const MedicinesPage = ({ navigation }) => {
         deleteMedicine(uid, selectedMedicine.name);
     };
     const addMedicine = () => {
+        setDirectPage('AddMedicinePage');
     };
 
     return (
@@ -58,7 +66,9 @@ const MedicinesPage = ({ navigation }) => {
                         <View key={id} style={styles.singleMedicineRow}>
                             <Text style={styles.text}>{row.currentData.name}</Text>
                             <Text style={styles.text}>{row.currentData.numberOfDose}</Text>
-                            <Button title="Sil" onPress={deleteMedicineLocal}></Button>
+                            <Pressable style={styles.medicine_button} onPress={deleteMedicineLocal}>
+                                <Text style={styles.medicine_button_text}>Sil</Text>
+                            </Pressable>
                         </View>
                     )
                 }
@@ -76,14 +86,14 @@ const styles = StyleSheet.create({
         paddingVertical: 12,
         borderRadius: 10,
         backgroundColor: '#d4e9ee',
-      },
-      button_text: {
+    },
+    button_text: {
         fontSize: 16,
         lineHeight: 21,
         fontWeight: 'bold',
         letterSpacing: 0.25,
         color: '#2f8295',
-      },
+    },
     medicineList: {
         display: 'flex',
         flexDirection: 'column',
@@ -94,6 +104,7 @@ const styles = StyleSheet.create({
         display: 'flex',
         flexDirection: 'row',
         justifyContent: 'space-between',
+        alignItems: 'center',
         borderColor: 'black',
         marginRight: '5%',
         marginLeft: '5%',
@@ -105,6 +116,22 @@ const styles = StyleSheet.create({
     },
     text: {
         fontSize: 18
+    },
+    medicine_button: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        paddingVertical: 10,
+        paddingHorizontal: 15,
+        margin: 1,
+        borderRadius: 10,
+        backgroundColor: '#24263a',
+    },
+    medicine_button_text: {
+        fontSize: 16,
+        lineHeight: 21,
+        fontWeight: 'bold',
+        letterSpacing: 0.25,
+        color: 'white',
     }
 });
 
