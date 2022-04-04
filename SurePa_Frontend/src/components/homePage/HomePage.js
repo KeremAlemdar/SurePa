@@ -38,17 +38,9 @@ const HomePage = ({ navigation }) => {
         <View style={commonStyle.mainDiv}>
             <View style={styles.all}>
                 <View style={styles.menu}>
-                    <View onTouchEnd={() => setDirectPage('MedicinesPage')} style={styles.menuItem}>
-                        <View><Image style={styles.image} source={require('../../../img/medicine.jpg')} /></View>
-                        <View><Text style={styles.header}>Medicines</Text></View>
-                    </View>
-                    <View onTouchEnd={() => setDirectPage('ProfilePage')} style={styles.menuItem}>
-                        <View><Image style={styles.image} source={require('../../../img/profile.png')} /></View>
-                        <View><Text style={styles.header}>Profile</Text></View>
-                    </View>
                     <View onTouchEnd={() => setDirectPage('AddThings')} style={styles.menuItem}>
                         <View><Image style={styles.image} source={require('../../../img/profile.png')} /></View>
-                        <View><Text style={styles.header}>Isim</Text></View>
+                        <View><Text style={styles.header}>Genel Ekleme Yeri</Text></View>
                     </View>
                     <View onTouchEnd={() => setDirectPage('NotificationsPage')} style={styles.menuItem}>
                         <View><Image style={styles.image} source={require('../../../img/medicine.jpg')} /></View>
@@ -70,12 +62,12 @@ const styles = StyleSheet.create({
         width: '80%',
         display: 'flex',
         flexDirection: 'row',
-        justifyContent: 'space-evenly',
+        justifyContent: 'space-between',
         flexWrap: 'wrap',
     },
     menuItem: {
-        width: '30%',
-        height: '45%',
+        width: '40%',
+        height: '80%',
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'center',

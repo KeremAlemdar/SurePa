@@ -79,7 +79,7 @@ const Login = ({ navigation }) => {
           labelStyle={commonStyle.labelStyle}
           placeholderStyle={commonStyle.placeholderStyle}
           textErrorStyle={commonStyle.textErrorStyle}
-          label="TextInput"
+          label="Password"
           placeholder='Password'
           placeholderTextColor="gray"
           focusColor="blue"

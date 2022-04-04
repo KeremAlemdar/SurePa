@@ -8,6 +8,8 @@ const AddMedicinePage = () => {
     const [doseArr, setDoseArr] = useState([]);
     const [number, onChangeNumber] = useState(null);
     const [selectedMedicine, setSelectedMedicine] = useState(undefined);
+    const [selectedMedicineName, setSelectedMedicineName] = useState("İlaç ismi seç");
+    const [selectedDoseName, setSelectedDoseName] = useState("Doz Seç");
     const [selectedDose, setSelectedDose] = useState(undefined);
 
     useEffect(() => {
@@ -24,6 +26,7 @@ const AddMedicinePage = () => {
 
     useEffect(() => {
         if (selectedMedicine) {
+            setSelectedMedicineName(selectedMedicine.name);
             const { medId, dozeCount } = selectedMedicine;
             const arr = [];
 
@@ -53,16 +56,22 @@ const AddMedicinePage = () => {
 
                         doseData = doc.data();
                     });
-                    arr.push({ id: i, name: doseName, doseData});
+                    arr.push({ id: i, name: doseName, doseData });
                 });
             }
             setDoseArr(arr);
         }
     }, [selectedMedicine]);
 
+    useEffect(() => {
+        if (selectedDose) {
+            setSelectedDoseName(selectedDose.name);
+        }
+    }, [selectedDose]);
+
     const addMedicineLocal = () => {
-        const{uid} = auth.currentUser;
-        addMedicine(uid,selectedMedicine.name,number,selectedDose.doseData);
+        const { uid } = auth.currentUser;
+        addMedicine(uid, selectedMedicine.name, number, selectedDose.doseData);
     };
 
     return (
@@ -73,23 +82,25 @@ const AddMedicinePage = () => {
                     serverData={medicinesArr}
                     setSelectedItem={setSelectedMedicine}
                     selectedItem={selectedMedicine}
+                    name={selectedMedicineName}
                 />
                 {(selectedMedicine && 1) &&
                     <DropDown
-                        serverData={doseArr}    
+                        serverData={doseArr}
                         setSelectedItem={setSelectedDose}
                         selectedItem={selectedDose}
+                        name={selectedDoseName}
                     />
                 }
                 <TextInput
-                style={styles.input}
-                onChangeText={onChangeNumber}
-                value={number}
-                placeholder="Enter the number of dose per day"
-                keyboardType="numeric"
+                    style={styles.input}
+                    onChangeText={onChangeNumber}
+                    value={number}
+                    placeholder="Enter the number of dose per day"
+                    keyboardType="numeric"
                 ></TextInput>
-                {(selectedDose && 1) && 
-                <Button title="Ekle" onPress={addMedicineLocal}></Button>
+                {(selectedDose && 1) &&
+                    <Button title="Ekle" onPress={addMedicineLocal}></Button>
                 }
             </View>
         </View>
@@ -97,10 +108,10 @@ const AddMedicinePage = () => {
 };
 const styles = StyleSheet.create({
     input: {
-      height: 40,
-      margin: 12,
-      borderWidth: 1,
-      padding: 10,
+        height: 40,
+        margin: 12,
+        borderWidth: 1,
+        padding: 10,
     },
-  });
+});
 export default AddMedicinePage;

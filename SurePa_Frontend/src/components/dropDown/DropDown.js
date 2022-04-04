@@ -4,10 +4,20 @@ import SearchableDropdown from 'react-native-searchable-dropdown';
 const DropDown = ({
     setSelectedItem,
     serverData,
-    selectedItem
+    selectedItem,
+    name,
 }) => {
     return (
         <SearchableDropdown
+            //mapping of item array
+            defaultIndex={0}
+            //default selected item index
+            placeholder={name}
+            //place holder for the search input
+            // resetValue={false}
+            //reset textInput Value with true and false state
+            underlineColorAndroid="transparent"
+            //To remove the underline from the android input
             onTextChange={(item) => null}
             //On text change listner on the searchable input
             onItemSelect={(item) => setSelectedItem(item)}
@@ -16,17 +26,18 @@ const DropDown = ({
             //suggestion container style
             textInputStyle={{
                 //inserted text style
+                backgroundColor: 'white',
+                fontSize: 20,
+                color: 'red',
                 padding: 12,
                 borderWidth: 1,
-                borderColor: '#ccc',
-                backgroundColor: '#FAF7F6',
+
             }}
             itemStyle={{
                 //single dropdown item style
                 padding: 10,
                 marginTop: 2,
-                backgroundColor: '#FAF9F8',
-                borderColor: '#bbb',
+                backgroundColor: 'white',
                 borderWidth: 1,
             }}
             itemTextStyle={{
@@ -39,15 +50,7 @@ const DropDown = ({
                 maxHeight: '80%',
             }}
             items={serverData}
-            //mapping of item array
-            defaultIndex={0}
-            //default selected item index
-            placeholder="placeholder"
-            //place holder for the search input
-            resetValue={false}
-            //reset textInput Value with true and false state
-            underlineColorAndroid="transparent"
-        //To remove the underline from the android input
+
         />
     )
 };

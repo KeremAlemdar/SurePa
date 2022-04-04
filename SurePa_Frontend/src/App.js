@@ -39,8 +39,54 @@ function MedicinesPageStackScreen() {
     );
 }
 
-const Tab = createBottomTabNavigator();
+const ProfilePageStack = createNativeStackNavigator();
+function ProfilePageStackScreen() {
+    const ProfilePageRoutes = [
+        { name: 'ProfilePage', component: ProfilePage, options: { headerShown: false } },
+        { name: 'InvitationsPage', component: InvivtationsPage, options: { title: 'See Invivtations' } },
+    ]
+    return (
+        <ProfilePageStack.Navigator>
+            {ProfilePageRoutes.map(route => {
+                const { name, component, options } = route;
+                return (
+                    <ProfilePageStack.Screen
+                        key={name}
+                        name={name}
+                        component={component}
+                        options={options}
+                    />
+                );
+            })}
+        </ProfilePageStack.Navigator>
+    );
+}
+const HomePageStack = createNativeStackNavigator();
 function HomeStackScreen() {
+    const routes = [
+        { name: 'HomePage', component: HomePage, options: { headerShown: false } },
+        { name: 'NotificationsPage', component: NotificationsPage, options: { title: 'NotificationsPage' } },
+        { name: 'AddThings', component: AddThings, options: { title: 'Add Things' } },
+    ]
+    return (
+        <HomePageStack.Navigator>
+            {routes.map(route => {
+                const { name, component, options } = route;
+                return (
+                    <HomePageStack.Screen
+                        key={name}
+                        name={name}
+                        component={component}
+                        options={options}
+                    />
+                );
+            })}
+        </HomePageStack.Navigator>
+    );
+}
+
+const Tab = createBottomTabNavigator();
+function HomeTabScreen() {
     const unused = [
         { name: 'Login', component: Login, options: { title: 'Login' } },
         { name: 'Signup', component: Signup, options: { title: 'Signup' } },
@@ -48,12 +94,11 @@ function HomeStackScreen() {
         { name: 'AddThings', component: AddThings, options: { title: 'Add Things' } },
         { name: 'AddCareGiverPage', component: AddCareGiverPage, options: { title: 'Add Care Giver' } },
         { name: 'InvitationsPage', component: InvivtationsPage, options: { title: 'See Invivtations' } },
-        { name: 'NotificationsPage', component: NotificationsPage, options: { title: 'NotificationsPage' } },
     ]
     const routes = [
-        { name: 'HomePage', component: HomePage, options: { title: 'Home' } },
+        { name: 'HomePage', component: HomeStackScreen, options: { title: 'Home' } },
         { name: 'MedicinesPage', component: MedicinesPageStackScreen, options: { title: 'Medicines' } },
-        { name: 'ProfilePage', component: ProfilePage, options: { title: 'Profile' } }
+        { name: 'ProfilePage', component: ProfilePageStackScreen, options: { title: 'Profile' } },
     ]
     return (
         <Tab.Navigator>
@@ -75,7 +120,7 @@ function HomeStackScreen() {
 const App = () => {
     let routes = [
         { name: 'Login', component: Login, options: { headerShown: false } },
-        { name: 'HomeStack', component: HomeStackScreen, options: { headerShown: false} },
+        { name: 'HomeStack', component: HomeTabScreen, options: { headerShown: false} },
         { name: 'Signup', component: Signup, options: { headerShown: false } }
     ]
     return (
