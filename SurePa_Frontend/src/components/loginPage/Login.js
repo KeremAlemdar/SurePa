@@ -17,7 +17,7 @@ const Login = ({ navigation }) => {
       CommonActions.reset({
         index: 0,
         routes: [
-          { name: 'HomePage' }
+          { name: 'HomeStack' }
         ],
       })
     );
@@ -83,7 +83,7 @@ const Login = ({ navigation }) => {
           placeholder='Password'
           placeholderTextColor="gray"
           focusColor="blue"
-          secureTextEntry={true} 
+          secureTextEntry={true}
           onChangeText={changes => setPass(changes)}
         />
       </View>

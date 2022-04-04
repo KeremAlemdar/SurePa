@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, Button, StyleSheet } from 'react-native';
+import { View, Text, Button, StyleSheet, Pressable } from 'react-native';
 import { auth, db } from '../../services/DbCon';
 import { returnPatient } from '../../services/PatientController';
 import { deleteMedicine } from '../../services/PatientController';
@@ -39,14 +39,21 @@ const MedicinesPage = ({ navigation }) => {
     };
 
     const deleteMedicineLocal = () => {
-        const{uid} = auth.currentUser;
-        deleteMedicine(uid,selectedMedicine.name);
+        const { uid } = auth.currentUser;
+        deleteMedicine(uid, selectedMedicine.name);
+    };
+    const addMedicine = () => {
     };
 
     return (
         <View style={commonStyle.mainDiv}>
+            <View>
+                <Pressable style={styles.button} onPress={addMedicine}>
+                    <Text style={styles.button_text}>Ekle</Text>
+                </Pressable>
+            </View>
             <View style={styles.medicineList}>
-                {medicines.map((row,id) => {
+                {medicines.map((row, id) => {
                     return (
                         <View key={id} style={styles.singleMedicineRow}>
                             <Text style={styles.text}>{row.currentData.name}</Text>
@@ -63,6 +70,20 @@ const MedicinesPage = ({ navigation }) => {
     )
 };
 const styles = StyleSheet.create({
+    button: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        paddingVertical: 12,
+        borderRadius: 10,
+        backgroundColor: '#d4e9ee',
+      },
+      button_text: {
+        fontSize: 16,
+        lineHeight: 21,
+        fontWeight: 'bold',
+        letterSpacing: 0.25,
+        color: '#2f8295',
+      },
     medicineList: {
         display: 'flex',
         flexDirection: 'column',
