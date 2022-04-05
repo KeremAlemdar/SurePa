@@ -7,6 +7,7 @@ import HomePage from './components/homePage';
 import Signup from './components/signUpPage';
 import ProfilePage from './components/profilePage';
 import AddMedicinePage from './components/addMedicinePage';
+import AddMedicinePageScreen from './components/addMedicinePageScreen';
 import AddCareGiverPage from './components/addCareGiverPage';
 import NotificationsPage from './components/notificationsPage';
 import MedicinesPage from './components/medicinesPage/MedicinesPage';
@@ -20,6 +21,7 @@ function MedicinesPageStackScreen() {
     const MedicinesPageRoutes = [
         { name: 'MedicinesPage', component: MedicinesPage, options: { headerShown: false } },
         { name: 'AddMedicinePage', component: AddMedicinePage, options: { title: 'Add Medicines' } },
+        { name: 'AddMedicinePageScreen', component: AddMedicinePageScreen, options: { title: 'İlaç Ekle' } },
         { name: 'AddThings', component: AddThings, options: { title: 'Add Things' } }
     ]
     return (

@@ -50,7 +50,7 @@ const MedicinesPage = ({ navigation }) => {
         deleteMedicine(uid, selectedMedicine.name);
     };
     const addMedicine = () => {
-        setDirectPage('AddMedicinePage');
+        setDirectPage('AddMedicinePageScreen');
     };
 
     return (
