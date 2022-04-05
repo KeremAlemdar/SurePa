@@ -10,7 +10,9 @@ const Name = ({ navigation }) => {
 
     useEffect(() => {
         if (directPage !== '') {
-            navigation.navigate(directPage);
+            navigation.navigate(directPage, {
+                medicineName: medicineName,
+            });
         }
     }, [directPage]);
 
