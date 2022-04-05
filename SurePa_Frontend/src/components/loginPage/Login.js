@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { View, Button, Text } from 'react-native';
+import { View, Button, Text, Pressable, StyleSheet } from 'react-native';
 import { CommonActions } from '@react-navigation/native';
 import { auth, fbLogin } from '../../services/DbCon';
 import commonStyle from '../../commonStyle';
 import { TextInput } from 'react-native-element-textinput';
+import CommonButton from '../button';
 
 const Login = ({ navigation }) => {
   const [email, setEmail] = useState('');
@@ -87,7 +88,13 @@ const Login = ({ navigation }) => {
           onChangeText={changes => setPass(changes)}
         />
       </View>
-      <Button title='Login' onPress={() => loginClicked()} />
+      <CommonButton text="Login" onClick={() => loginClicked()}
+        customStyle={{
+          backgroundColor: '#00BFFF',
+          borderRadius: 15,
+          marginBottom: 10,
+          marginTop: 10
+        }} />
       {errorMessage !== '' &&
         <Text>{errorMessage}</Text>}
       <View style={{ flexDirection: 'row', alignItems: 'center' }}>
@@ -97,7 +104,12 @@ const Login = ({ navigation }) => {
         </View>
         <View style={{ flex: 1, height: 1, backgroundColor: 'black' }} />
       </View>
-      <Button title='Register' onPress={() => registerClicked()} />
+      <CommonButton text="Register" onClick={() => registerClicked()}
+        customStyle={{
+          backgroundColor: '#00BFFF',
+          borderRadius: 15,
+          marginTop: 10
+        }} />
     </View>
   )
 };
