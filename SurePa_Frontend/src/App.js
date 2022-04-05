@@ -20,12 +20,10 @@ const MedicinesPageStack = createNativeStackNavigator();
 function MedicinesPageStackScreen() {
     const MedicinesPageRoutes = [
         { name: 'MedicinesPage', component: MedicinesPage, options: { headerShown: false } },
-        { name: 'AddMedicinePage', component: AddMedicinePage, options: { title: 'Add Medicines' } },
-        { name: 'AddMedicinePageScreen', component: AddMedicinePageScreen, options: { title: 'İlaç Ekle' } },
-        { name: 'AddThings', component: AddThings, options: { title: 'Add Things' } }
+        { name: 'AddMedicinePageScreen', component: AddMedicinePageScreen, options: { headerShown: false, title: 'Medicine Name' } },
     ]
     return (
-        <MedicinesPageStack.Navigator>
+        <MedicinesPageStack.Navigator >
             {MedicinesPageRoutes.map(route => {
                 const { name, component, options } = route;
                 return (
@@ -68,7 +66,6 @@ function HomeStackScreen() {
     const routes = [
         { name: 'HomePage', component: HomePage, options: { headerShown: false } },
         { name: 'NotificationsPage', component: NotificationsPage, options: { title: 'NotificationsPage' } },
-        { name: 'AddThings', component: AddThings, options: { title: 'Add Things' } },
     ]
     return (
         <HomePageStack.Navigator>
@@ -93,12 +90,12 @@ function HomeTabScreen() {
         { name: 'Login', component: Login, options: { title: 'Login' } },
         { name: 'Signup', component: Signup, options: { title: 'Signup' } },
         { name: 'AddMedicinePage', component: AddMedicinePage, options: { title: 'Add Medicine' } },
-        { name: 'AddThings', component: AddThings, options: { title: 'Add Things' } },
         { name: 'AddCareGiverPage', component: AddCareGiverPage, options: { title: 'Add Care Giver' } },
         { name: 'InvitationsPage', component: InvivtationsPage, options: { title: 'See Invivtations' } },
     ]
     const routes = [
         { name: 'HomePage', component: HomeStackScreen, options: { title: 'Home' } },
+        { name: 'AddThings', component: AddThings, options: { title: 'Add Things' } },
         { name: 'MedicinesPage', component: MedicinesPageStackScreen, options: { title: 'Medicines' } },
         { name: 'ProfilePage', component: ProfilePageStackScreen, options: { title: 'Profile' } },
     ]

@@ -78,22 +78,21 @@ const Login = ({ navigation }) => {
           style={commonStyle.input}
           inputStyle={commonStyle.inputStyle}
           labelStyle={commonStyle.labelStyle}
-          placeholderStyle={commonStyle.placeholderStyle}
-          textErrorStyle={commonStyle.textErrorStyle}
           label="Password"
           placeholder='Password'
           placeholderTextColor="gray"
           focusColor="blue"
           secureTextEntry={true}
           onChangeText={changes => setPass(changes)}
+          errorMessage={'asd'}
         />
       </View>
-      <CommonButton text="Login" onClick={() => loginClicked()}
+      <CommonButton text="Login" onPress={() => loginClicked()}
         customStyle={{
-          backgroundColor: '#00BFFF',
-          borderRadius: 15,
-          marginBottom: 10,
-          marginTop: 10
+          button: {
+            marginBottom: 10,
+            marginTop: 10
+          }
         }} />
       {errorMessage !== '' &&
         <Text>{errorMessage}</Text>}
@@ -104,11 +103,11 @@ const Login = ({ navigation }) => {
         </View>
         <View style={{ flex: 1, height: 1, backgroundColor: 'black' }} />
       </View>
-      <CommonButton text="Register" onClick={() => registerClicked()}
+      <CommonButton text="Register" onPress={() => registerClicked()}
         customStyle={{
-          backgroundColor: '#00BFFF',
-          borderRadius: 15,
-          marginTop: 10
+          button: {
+            marginTop: 10
+          }
         }} />
     </View>
   )

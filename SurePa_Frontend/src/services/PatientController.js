@@ -117,6 +117,13 @@ export const acceptInvitation = (patientId) => {
                 }).catch((error) => {
                     reject(error);
                 });
+                db.collection("users").doc(uid).collection("patients").doc(patientId).set({
+                    ...patientId
+                }).then(() => {
+                    resolve("success");
+                }).catch((error) => {
+                    reject(error);
+                });
             }).catch((error) => {
                 reject(error);
             });

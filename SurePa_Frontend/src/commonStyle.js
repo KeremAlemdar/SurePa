@@ -14,18 +14,14 @@ export default StyleSheet.create({
         height: 55,
         paddingHorizontal: 12,
         borderRadius: 8,
-        borderWidth: 0.5,
-        borderColor: '#DDDDDD',
+        borderWidth: 1,
     },
-    inputStyle: { fontSize: 16 },
+    inputStyle: { fontSize: 16, color: 'black' },
     labelStyle: {
         fontSize: 14,
         position: 'absolute',
         top: -10,
         backgroundColor: 'white',
         paddingHorizontal: 4,
-        marginLeft: -4,
-    },
-    placeholderStyle: { fontSize: 16 },
-    textErrorStyle: { fontSize: 16 },
+    }
 });

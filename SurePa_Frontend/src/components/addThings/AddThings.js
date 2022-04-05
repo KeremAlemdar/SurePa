@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { View, Button } from 'react-native';
 import commonStyle from '../../commonStyle';
+import CommonButton from '../button';
 
 const AddThings = ({ navigation }) => {
     const [directPage, setDirectPage] = useState('');
@@ -13,18 +14,9 @@ const AddThings = ({ navigation }) => {
 
     return (
         <View style={commonStyle.mainDiv}>
-            <View style={commonStyle.container}>
-                <Button title="Add medicine" onPress={() => setDirectPage('AddMedicinePage')}></Button>
-            </View>
-            <View style={commonStyle.container}>
-                <Button title="Add Caregiver" onPress={() => setDirectPage('AddCareGiverPage')}></Button>
-            </View>
-            <View style={commonStyle.container}>
-                <Button title="Add randevu" onPress={() => onSubmit()}></Button>
-            </View>
-            <View style={commonStyle.container}>
-                <Button title="Add contact" onPress={() => onSubmit()}></Button>
-            </View>
+            <CommonButton text="Add Caregiver" onPress={() => setDirectPage('AddCareGiverPage')} />
+            <CommonButton text="Add randevu" onPress={() => onSubmit()} />
+            <CommonButton text="Add contact" onPress={() => onSubmit()} />
         </View>
     );
 

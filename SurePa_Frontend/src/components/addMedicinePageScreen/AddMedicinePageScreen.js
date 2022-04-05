@@ -1,37 +1,70 @@
-import React, { useEffect, useState } from 'react';
-import { View, Text, Button, TextInput, StyleSheet } from 'react-native';
-import { auth, db } from '../../services/DbCon';
-import DropDown from '../dropDown/DropDown';
-import { addMedicine } from '../../services/PatientController';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import Type from './Type';
-import Finalize from './Finalize';
-import NumberOfTimes from './NumberOfTimes';
+import { View } from 'react-native';
+import React, { useState } from 'react';
+import commonStyle from '../../commonStyle';
+import CommonButton from '../button';
 import Name from './Name';
-
-const AddMedicinePageStack = createNativeStackNavigator();
+import Type from './Type';
+import NumberOfTimes from './NumberOfTimes';
+import Finalize from './Finalize';
 
 const AddMedicinePageScreen = () => {
-    const routes = [
-        { name: 'Name', component: Name, options: { headerShown: false } },
-        { name: 'Type', component: Type, options: { headerShown: false } },
-        { name: 'NumberOfTimes', component: NumberOfTimes, options: { headerShown: false } },
-        { name: 'Finalize', component: Finalize, options: { headerShown: false } },
-    ]
+    const [medicineName, setMedicineName] = useState('');
+    const [birim, setBirim] = useState('Please Chose');
+    const [selectedOption, setSelectedOption] = useState(0);
+
+    const [pageContent, setPageContent] = useState(<Name medicineName={medicineName} setMedicineName={setMedicineName} />);
+    const [pageName, setPageName] = useState('Name');
+
+    const nextPage = () => {
+        if (pageName === 'Name' && medicineName !== '') {
+            setPageContent(<Type birim={birim} setBirim={setBirim} medicineName={medicineName} />);
+            setPageName('Type');
+        } else if (pageName === 'Type' && birim !== 'Please Chose') {
+            setPageContent(<NumberOfTimes
+                medicineName={medicineName}
+                birim={birim}
+                selectedOption={selectedOption}
+                setSelectedOption={setSelectedOption} />);
+            setPageName('NumberOfTimes');
+        } else if (pageName === 'NumberOfTimes') {
+            setPageContent(<Finalize medicineName={medicineName} birim={birim} selectedOption={selectedOption} />);
+            setPageName('Finalize');
+        }
+    };
+
+    const goBack = () => {
+        if (pageName === 'Type') {
+            setPageContent(<Name medicineName={medicineName} setMedicineName={setMedicineName} />);
+            setPageName('Name');
+        } else if (pageName === 'NumberOfTimes') {
+            setPageContent(<Type birim={birim} setBirim={setBirim} medicineName={medicineName} />);
+            setPageName('Type');
+        } else if (pageName === 'Finalize') {
+            setPageContent(<NumberOfTimes
+                medicineName={medicineName}
+                birim={birim}
+                selectedOption={selectedOption}
+                setSelectedOption={setSelectedOption} />);
+            setPageName('NumberOfTimes');
+        }
+    };
+
+    const finalize = () => {
+        console.log(medicineName, birim, selectedOption);
+    };
+
     return (
-        <AddMedicinePageStack.Navigator>
-            {routes.map(route => {
-                const { name, component, options } = route;
-                return (
-                    <AddMedicinePageStack.Screen
-                        key={name}
-                        name={name}
-                        component={component}
-                        options={options}
-                    />
-                );
-            })}
-        </AddMedicinePageStack.Navigator>
+        <View style={commonStyle.mainDiv}>
+            {pageContent}
+            {pageName === 'Finalize' ?
+                (<CommonButton text="Add" onPress={finalize} />)
+                : (<CommonButton text="Next" onPress={nextPage} />)
+            }
+            {pageName !== 'Name' &&
+                <CommonButton text="Back" onPress={() => goBack()} />
+            }
+        </View>
     );
 }
+
 export default AddMedicinePageScreen;

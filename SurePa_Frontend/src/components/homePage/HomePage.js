@@ -38,10 +38,6 @@ const HomePage = ({ navigation }) => {
         <View style={commonStyle.mainDiv}>
             <View style={styles.all}>
                 <View style={styles.menu}>
-                    <View onTouchEnd={() => setDirectPage('AddThings')} style={styles.menuItem}>
-                        <View><Image style={styles.image} source={require('../../../img/profile.png')} /></View>
-                        <View><Text style={styles.header}>Genel Ekleme Yeri</Text></View>
-                    </View>
                     <View onTouchEnd={() => setDirectPage('NotificationsPage')} style={styles.menuItem}>
                         <View><Image style={styles.image} source={require('../../../img/medicine.jpg')} /></View>
                         <View><Text style={styles.header}>Notifications</Text></View>

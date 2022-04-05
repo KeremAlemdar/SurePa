@@ -44,7 +44,7 @@ const SignUp = ({ navigation }) => {
                     labelStyle={commonStyle.labelStyle}
                     placeholderStyle={commonStyle.placeholderStyle}
                     textErrorStyle={commonStyle.textErrorStyle}
-                    label="TextInput"
+                    label="Full Name"
                     placeholder='Full Name'
                     placeholderTextColor="gray"
                     focusColor="blue"
@@ -59,7 +59,7 @@ const SignUp = ({ navigation }) => {
                     labelStyle={commonStyle.labelStyle}
                     placeholderStyle={commonStyle.placeholderStyle}
                     textErrorStyle={commonStyle.textErrorStyle}
-                    label="TextInput"
+                    label="E-mail"
                     placeholder='Email'
                     placeholderTextColor="gray"
                     focusColor="blue"
@@ -74,7 +74,7 @@ const SignUp = ({ navigation }) => {
                     labelStyle={commonStyle.labelStyle}
                     placeholderStyle={commonStyle.placeholderStyle}
                     textErrorStyle={commonStyle.textErrorStyle}
-                    label="TextInput"
+                    label="Password"
                     placeholder='Password'
                     placeholderTextColor="gray"
                     focusColor="blue"

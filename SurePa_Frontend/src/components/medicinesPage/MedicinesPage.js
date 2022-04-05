@@ -4,6 +4,7 @@ import { auth, db } from '../../services/DbCon';
 import { returnPatient } from '../../services/PatientController';
 import { deleteMedicine } from '../../services/PatientController';
 import commonStyle from '../../commonStyle';
+import CommonButton from '../button';
 
 
 const MedicinesPage = ({ navigation }) => {
@@ -49,16 +50,16 @@ const MedicinesPage = ({ navigation }) => {
         const { uid } = auth.currentUser;
         deleteMedicine(uid, selectedMedicine.name);
     };
-    const addMedicine = () => {
-        setDirectPage('AddMedicinePageScreen');
+    const addMedicine = (where) => {
+        setDirectPage(where);
     };
 
     return (
         <View style={commonStyle.mainDiv}>
             <View>
-                <Pressable style={styles.button} onPress={addMedicine}>
-                    <Text style={styles.button_text}>Ekle</Text>
-                </Pressable>
+                <CommonButton text='Add Medicine' onPress={() => addMedicine('AddMedicinePageScreen')} />
+                <CommonButton text='Add Activity' onPress={() => addMedicine('AddMedicinePageScreen')} />
+                <CommonButton text='Add Ölçüm' onPress={() => addMedicine('AddMedicinePageScreen')} />
             </View>
             <View style={styles.medicineList}>
                 {medicines.map((row, id) => {
@@ -66,9 +67,7 @@ const MedicinesPage = ({ navigation }) => {
                         <View key={id} style={styles.singleMedicineRow}>
                             <Text style={styles.text}>{row.currentData.name}</Text>
                             <Text style={styles.text}>{row.currentData.numberOfDose}</Text>
-                            <Pressable style={styles.medicine_button} onPress={deleteMedicineLocal}>
-                                <Text style={styles.medicine_button_text}>Sil</Text>
-                            </Pressable>
+                            <CommonButton text='Sil' onPress={deleteMedicineLocal} />
                         </View>
                     )
                 }
@@ -80,20 +79,6 @@ const MedicinesPage = ({ navigation }) => {
     )
 };
 const styles = StyleSheet.create({
-    button: {
-        alignItems: 'center',
-        justifyContent: 'center',
-        paddingVertical: 12,
-        borderRadius: 10,
-        backgroundColor: '#d4e9ee',
-    },
-    button_text: {
-        fontSize: 16,
-        lineHeight: 21,
-        fontWeight: 'bold',
-        letterSpacing: 0.25,
-        color: '#2f8295',
-    },
     medicineList: {
         display: 'flex',
         flexDirection: 'column',

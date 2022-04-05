@@ -1,31 +1,31 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Text, Pressable, StyleSheet } from 'react-native';
 
-const CommonButton = ({ onClick, customStyle, text }) => {
+const CommonButton = ({ onPress, customStyle, text }) => {
 
     const styles = StyleSheet.create({
-        button: {           
+        button: {
             alignItems: 'center',
             justifyContent: 'center',
             paddingVertical: 12,
-            paddingHorizontal: 32,
-            borderRadius: 4,
-            backgroundColor: '#00BFFF',
-            elevation: 3,
-            ...customStyle,
+            borderRadius: 10,
+            backgroundColor: '#d4e9ee',
+            marginTop: 10,
+            ...customStyle?.button
         },
-        text: {
+        button_text: {
             fontSize: 16,
             lineHeight: 21,
             fontWeight: 'bold',
             letterSpacing: 0.25,
-            color: 'white',
+            color: '#2f8295',
+            ...customStyle?.text
         },
     });
 
     return (
-        <Pressable style={styles.button} onPress={() => onClick()}>
-            <Text style={styles.text}>{text}</Text>
+        <Pressable style={styles.button} onPress={() => onPress()}>
+            <Text style={styles.button_text}>{text}</Text>
         </Pressable>
     );
 };
