@@ -118,7 +118,7 @@ export const acceptInvitation = (patientId) => {
                     reject(error);
                 });
                 db.collection("users").doc(uid).collection("patients").doc(patientId).set({
-                    ...patientId
+                    uid: patientId
                 }).then(() => {
                     resolve("success");
                 }).catch((error) => {
@@ -180,11 +180,48 @@ export const addPatient = (props) => {
     return new Promise((resolve, reject) => {
         db.collection("users").doc(uid).set({
             ...props,
-            uid:uid
+            uid: uid
         }).then(() => {
             resolve("success");
         }).catch((error) => {
             reject(error);
         });
     });
-}
+};
+
+export const getMeetings = () => {
+    const { uid } = auth.currentUser;
+    return new Promise((resolve, reject) => {
+        db.collection("users").doc(uid).collection("meetings").get().then((querySnapshot) => {
+            resolve(querySnapshot.docs.map(doc => doc.data()));
+        }).catch((error) => {
+            reject(error);
+        });
+    });
+};
+
+export const addMeeting = (props) => {
+    const { uid } = auth.currentUser;
+    return new Promise((resolve, reject) => {
+        db.collection("users").doc(uid).collection("meetings").doc().set({
+            ...props,
+            uid: uid
+        }).then(() => {
+            resolve("success");
+        }).catch((error) => {
+            reject(error);
+        });
+    });
+};
+
+export const getContacts = () => {
+    const { uid } = auth.currentUser;
+    return new Promise((resolve, reject) => {
+        db.collection("users").doc(uid).collection("contacts").get().then((querySnapshot) => {
+            resolve(querySnapshot.docs.map(doc => doc.data()));
+        }).catch((error) => {
+            reject(error);
+        });
+    });
+};
+

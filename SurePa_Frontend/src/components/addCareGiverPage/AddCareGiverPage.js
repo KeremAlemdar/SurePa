@@ -5,6 +5,7 @@ import { TextInput } from 'react-native-element-textinput';
 import commonStyle from '../../commonStyle';
 import Toast from 'react-native-toast-message';
 import { toastConfig } from '../toast';
+import CommonButton from '../button';
 
 const AddCareGiverPage = ({ navigation }) => {
     const [email, setEmail] = useState('');
@@ -46,7 +47,7 @@ const AddCareGiverPage = ({ navigation }) => {
                     }}
                 />
             </View>
-            <Button title="Ekle" onPress={() => onSubmit()}></Button>
+            <CommonButton text="Send Invitation" onPress={() => onSubmit()} />
             <Toast config={toastConfig} />
         </View>
     );
