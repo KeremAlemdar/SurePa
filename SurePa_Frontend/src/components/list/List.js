@@ -1,5 +1,6 @@
 import React from 'react';
 import { StyleSheet, Text, View, Button } from 'react-native';
+import CardView from '../cardView';
 
 const List = ({
     data,
@@ -9,14 +10,13 @@ const List = ({
 
     const renderChild = (row, id) => {
         return (
-            <View key={id} style={styles.singleMedicineRow}>
-                <Text style={styles.text}>{row.name}</Text>
+            <CardView title={row.name}>
                 {accept && <Button title="Accept" onPress={() => accept(row.uid)}></Button>}
                 {deny && <Button title="Delete" onPress={() => deny(row.uid)}></Button>}
-            </View>
+            </CardView>
         )
     };
-    
+
     return (
         <View style={styles.medicineList}>
             {data.map((row, id) => {
