@@ -15,6 +15,8 @@ export default StyleSheet.create({
         paddingHorizontal: 12,
         borderRadius: 8,
         borderWidth: 1,
+        marginTop: 8,
+        marginBottom: 14,
     },
     inputStyle: { fontSize: 16, color: 'black' },
     labelStyle: {

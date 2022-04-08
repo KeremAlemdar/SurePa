@@ -1,12 +1,13 @@
-import React from 'react';
+import React, { Children } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 
 const CardView = ({
     title,
-    text
+    text,
+    children
 }) => {
     return (
-        <View style={[styles.card, styles.elevation]}>
+        <View style={[styles.card, styles.elevation, {zIndex: -10}]}>
             <View>
                 <Text style={styles.heading}>
                     {title}
@@ -22,6 +23,7 @@ const CardView = ({
             <Text>
                 {text}
             </Text>
+            {children}
         </View>
     );
 };

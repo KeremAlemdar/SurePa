@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Button, Text } from 'react-native';
+import { View } from 'react-native';
 import { sendInvitation } from '../../services/PatientController';
 import { TextInput } from 'react-native-element-textinput';
 import commonStyle from '../../commonStyle';
@@ -7,7 +7,7 @@ import Toast from 'react-native-toast-message';
 import { toastConfig } from '../toast';
 import CommonButton from '../button';
 
-const AddCareGiverPage = ({ navigation }) => {
+const AddCareGiverPage = () => {
     const [email, setEmail] = useState('');
 
     const onSubmit = () => {

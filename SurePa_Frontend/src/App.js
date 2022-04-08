@@ -12,7 +12,7 @@ import NotificationsPage from './components/notificationsPage';
 import MedicinesPage from './components/medicinesPage/MedicinesPage';
 import AddThings from './components/addThings';
 import InvivtationsPage from './components/invitationsPage/InvivtationsPage';
-import { auth } from './services/DbCon';
+import AddMeeting from './components/addMeeting';
 import AddActivityPageScreen from './components/addActivityPageScreen';
 const Stack = createNativeStackNavigator();
 
@@ -45,6 +45,7 @@ function ThingsPageStackScreen() {
     const ThingsPageRoutes = [
         { name: 'AddThings', component: AddThings, options: { headerShown: false } },
         { name: 'AddCareGiverPage', component: AddCareGiverPage, options: { headerShown: false } },
+        { name: 'AddMeetingPage', component: AddMeeting, options: { headerShown: false } },
     ]
     return (
         <ThingsPageStack.Navigator >

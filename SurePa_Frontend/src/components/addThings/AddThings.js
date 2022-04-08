@@ -12,33 +12,33 @@ const AddThings = ({ navigation }) => {
     const [meetings, setMeetings] = useState([]);
 
     const buttons = (
-        <View style={commonStyle.mainDiv}>
+        <View>
             <CommonButton text="Add Caregiver" onPress={() => setDirectPage('AddCareGiverPage')} />
-            <CommonButton text="Add randevu" onPress={() => onSubmit()} />
+            <CommonButton text="Add randevu" onPress={() => setDirectPage('AddMeetingPage')} />
             <CommonButton text="Add contact" onPress={() => onSubmit()} />
         </View>
     );
 
     const actions = [
         {
-          text: "Add randevu",
-          icon: require("../../../img/empty.png"),
-          name: "bt_accessibility",
-          position: 2
+            text: "Add Meeting",
+            icon: require("../../../img/empty.png"),
+            name: "AddMeetingPage",
+            position: 2,
         },
         {
-          text: "Add Caregiver",
-          icon: require("../../../img/empty.png"),
-          name: "bt_language",
-          position: 1
+            text: "Add Caregiver",
+            icon: require("../../../img/empty.png"),
+            name: "AddCareGiverPage",
+            position: 1
         },
         {
-          text: "Add contact",
-          icon: require("../../../img/empty.png"),
-          name: "bt_room",
-          position: 3
+            text: "Add contact",
+            icon: require("../../../img/empty.png"),
+            name: "bt_room",
+            position: 3
         }
-      ];
+    ];
 
     useEffect(() => {
         if (directPage !== '') {
@@ -60,10 +60,10 @@ const AddThings = ({ navigation }) => {
             {(meetings.length > 0 || caregivers.length > 0) ? (
                 <View>
                     {
-                        caregivers.map((caregiver) => {
+                        caregivers.map((caregiver, id) => {
                             return (
                                 <CardView
-                                    key={caregiver.id}
+                                    key={id}
                                     title={caregiver.name}
                                     text={caregiver.name}
                                 />
@@ -71,12 +71,12 @@ const AddThings = ({ navigation }) => {
                         })
                     }
                     {
-                        meetings.map((meeting) => {
+                        meetings.map((meeting, id) => {
                             return (
                                 <CardView
-                                    key={meeting.id}
-                                    title={meeting.name}
-                                    text={meeting.time}
+                                    key={id}
+                                    title={meeting.title}
+                                    text={`${meeting.details} \n ${meeting.date} \n ${meeting.time}`}
                                 />
                             );
                         })
@@ -85,8 +85,9 @@ const AddThings = ({ navigation }) => {
             ) : (buttons)}
             <FloatingAction
                 actions={actions}
+                style={{zIndex: 5}}
                 onPressItem={name => {
-                    console.log(`selected button: ${name}`);
+                    setDirectPage(name);
                 }}
             />
         </View>

@@ -1,5 +1,6 @@
 import React from 'react';
 import { StyleSheet, Text, View, Button } from 'react-native';
+import CommonButton from '../button';
 import CardView from '../cardView';
 
 const List = ({
@@ -10,9 +11,9 @@ const List = ({
 
     const renderChild = (row, id) => {
         return (
-            <CardView title={row.name}>
-                {accept && <Button title="Accept" onPress={() => accept(row.uid)}></Button>}
-                {deny && <Button title="Delete" onPress={() => deny(row.uid)}></Button>}
+            <CardView title={row.name} text={'Waiting invitation'} key={id}>
+                {accept && <CommonButton text="Accept" customStyle={{ button: { backgroundColor: '#dbeed4' } }} onPress={() => accept(row.uid)}></CommonButton>}
+                {deny && <CommonButton text="Delete" customStyle={{ button: { backgroundColor: '#eed4d4' } }} onPress={() => deny(row.uid)}></CommonButton>}
             </CardView>
         )
     };
