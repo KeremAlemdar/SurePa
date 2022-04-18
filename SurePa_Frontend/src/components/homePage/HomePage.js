@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, Image, StyleSheet } from 'react-native';
+import { View, Text, Image, StyleSheet, Button } from 'react-native';
 import commonStyle from '../../commonStyle';
+import SendSMS from 'react-native-sms'
+
 const HomePage = ({ navigation }) => {
     const [directPage, setDirectPage] = useState('');
-
     // isSignedIn ? (
     //     <>
     //       <Stack.Screen name="Home" component={HomeScreen} />
@@ -34,6 +35,19 @@ const HomePage = ({ navigation }) => {
         }
     }, [directPage]);
 
+    const sendSMS = () => {
+        SendSMS.send({
+            body: 'The default body of the SMS!',
+            recipients: ['0123456789', '9876543210'],
+            successTypes: ['sent', 'queued'],
+            allowAndroidSendWithoutReadPermission: true
+        }, (completed, cancelled, error) => {
+     
+            console.log('SMS Callback: completed: ' + completed + ' cancelled: ' + cancelled + 'error: ' + error);
+     
+        });
+    };
+
     return (
         <View style={commonStyle.mainDiv}>
             <View style={styles.all}>
@@ -42,11 +56,16 @@ const HomePage = ({ navigation }) => {
                         <View><Image style={styles.image} source={require('../../../img/medicine.jpg')} /></View>
                         <View><Text style={styles.header}>Notifications</Text></View>
                     </View>
+                    <Button
+                            onPress={() => sendSMS()}
+                            title="Emergency Button"
+                        />
                 </View>
             </View>
         </View>
     )
 };
+
 
 const styles = StyleSheet.create({
     all: {
@@ -81,6 +100,13 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         marginTop: "-20%",
     }
+    /*
+    container: {
+        flex: 1,
+        justifyContent: 'center',
+        paddingTop: Constants.statusBarHeight,
+        backgroundColor: '#ecf0f1',
+    }*/
 });
 
 export default HomePage;

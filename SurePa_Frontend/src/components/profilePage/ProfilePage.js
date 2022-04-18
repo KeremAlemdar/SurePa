@@ -4,7 +4,6 @@ import commonStyle from '../../commonStyle';
 import { auth, db } from '../../services/DbCon';
 import { returnPatient } from '../../services/PatientController';
 
-
 import { getCaregivers, deleteCaregiver } from '../../services/PatientController';
 import List from '../list/List';
 
