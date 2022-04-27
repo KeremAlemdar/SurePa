@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, Image, StyleSheet, Button } from 'react-native';
+import { View, Text, Image, StyleSheet, Button, TouchableOpacity } from 'react-native';
 import commonStyle from '../../commonStyle';
 import SendSMS from 'react-native-sms'
 
@@ -42,9 +42,9 @@ const HomePage = ({ navigation }) => {
             successTypes: ['sent', 'queued'],
             allowAndroidSendWithoutReadPermission: true
         }, (completed, cancelled, error) => {
-     
+
             console.log('SMS Callback: completed: ' + completed + ' cancelled: ' + cancelled + 'error: ' + error);
-     
+
         });
     };
 
@@ -56,10 +56,22 @@ const HomePage = ({ navigation }) => {
                         <View><Image style={styles.image} source={require('../../../img/medicine.jpg')} /></View>
                         <View><Text style={styles.header}>Notifications</Text></View>
                     </View>
-                    <Button
-                            onPress={() => sendSMS()}
-                            title="Emergency Button"
-                        />
+                    <View style={styles.menuItem}>
+                        <TouchableOpacity
+                            style={styles.emergencyButton}
+                            onPress={() => sendSMS()}>
+                            <View style={styles.emergencyButtonContentWrapper}>
+                                <View><Image style={styles.emergencyButtonIcon} source={require('../../../img/emergency-call.png')} /></View>
+                                <Text style={styles.emergencyButtonText}>
+                                    Emergency
+                                </Text>
+                                <Text style={styles.emergencyButtonText}>
+                                    Button
+                                </Text>
+                            </View>
+                        </TouchableOpacity>
+                    </View>
+
                 </View>
             </View>
         </View>
@@ -99,7 +111,34 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         textAlign: 'center',
         marginTop: "-20%",
+    },
+    emergencyButton: {
+        backgroundColor: '#eeaaaf',
+        display: 'flex',
+        justifyContent: 'center',
+        alignContent: 'center',
+        padding: 15,
+        width: '100%',
+        height: '80%',
+        borderRadius: 17
+    },
+    emergencyButtonText: {
+        fontSize: 15,
+        fontWeight: '800',
+        color: '#fff',
+        textAlign: 'center',
+    },
+    emergencyButtonIcon: {
+        width: 75,
+        height: 75,
+        marginBottom: 50
+    },
+    emergencyButtonContentWrapper:{
+        display:'flex',
+        justifyContent: 'center',
+        alignContent:'space-around'
     }
+
     /*
     container: {
         flex: 1,
