@@ -15,11 +15,15 @@ export const returnPatient = async (patientId) => {
         // });
     });
 };
+
 export const returnPatientMedicines = (patientId) => {
-    const patientRef = db.collection("users").doc(patientId).collection("medicines").get().then((querySnapshot) => {
-        return (querySnapshot.docs.map(doc => doc.data()));
-    })
+    return new Promise((resolve, reject) => {
+        db.collection("users").doc(patientId).collection("medicines").get().then((querySnapshot) => {
+            resolve(querySnapshot.docs.map(doc => doc.data()));
+        })
+    });
 };
+
 export const addMedicine = async (patientId, medicineName, type, doseCount, perDay, times) => {
     const collection = db.collection("users").doc(patientId).collection("medicines");
     await collection.doc(medicineName).set({
@@ -29,12 +33,13 @@ export const addMedicine = async (patientId, medicineName, type, doseCount, perD
         perDay: perDay,
     });
     await times.forEach((time, id) => {
-        collection.doc(medicineName).collection("times").doc(`time${id+1}`).set({
+        collection.doc(medicineName).collection("times").doc(`time${id + 1}`).set({
             time: time,
         });
     });
     return true;
 };
+
 export const addActivity = (patientId, name, duration) => {
     // db.collection("medicines").doc(selectedMedicine.id).collection("medicines").
     db.collection("users").doc(patientId).collection("activities").doc(name).set({
@@ -42,6 +47,7 @@ export const addActivity = (patientId, name, duration) => {
         duration: duration,
     })
 };
+
 export const deleteMedicine = (patientId, medicineId) => {
     db.collection("users").doc(patientId).collection("medicines").doc(medicineId).delete().then(() => {
         return ("Document successfully deleted!");
@@ -49,16 +55,19 @@ export const deleteMedicine = (patientId, medicineId) => {
         return ("Error removing document: ", error);
     });
 };
+
 export const acceptNotification = (patientId, notificationId) => {
     db.collection("users").doc(patientId).collection("notifications").doc(notificationId).update({
         status: "accepted"
     })
 };
+
 export const cancelNotification = (patientId, notificationId) => {
     db.collection("users").doc(patientId).collection("notifications").doc(notificationId).update({
         status: "cancelled"
     })
 };
+
 //yeni fonksiyon
 export const deleteNotification = (patientId, notificationId) => {
     db.collection("users").doc(patientId).collection("notifications").doc(notificationId).delete().then(() => {
@@ -67,6 +76,7 @@ export const deleteNotification = (patientId, notificationId) => {
         return ("Error removing document: ", error);
     });
 };
+
 //yeni fonksiyon
 export const createNotification = (patientId) => {
     db.collection("users").doc(patientId).collection("notifications").doc().set({
@@ -75,27 +85,31 @@ export const createNotification = (patientId) => {
     })
 };
 
-const getTimes = (medicine) => {
-    return new Promise((resolve, reject) => {
-        medicine.ref.collection("times").get().then((times) => {
-            resolve(times.docs.map(time => ({
-                medicine: medicine.data().name,
-                time: time.data(),
-            })))
-        })
-    })
-};
-export const getNotifications = async () => {
+export const getNotifications = () => {
     const { uid } = auth.currentUser;
+    const data = [];
+    let index = 0;
     return new Promise((resolve, reject) => {
-        const data = [];
-        db.collection("users").doc(uid).collection("medicines").get().then((medicines) => {
-            resolve(medicines.docs.map(medicine => {
-                getTimes(medicine)
-            }))
-        })
-    })
+        returnPatientMedicines(uid).then((medicines) => {
+            medicines.forEach(async (medicine) => {
+                await db.collection("users").doc(uid).collection('medicines').
+                    doc(medicine.name).collection('times').
+                    get().then((querySnapshot) => {
+                        querySnapshot.docs.forEach(doc => {
+                            data.push({
+                                name: medicine.name,
+                                ...doc.data()
+                            });
+                        });
+                        index++;
+                    });
+                if (index == medicines.length)
+                    resolve(data);
+            });
+        });
+    });
 };
+
 export const sendInvitation = async (careGiverMail) => {
     return new Promise((resolve, reject) => {
         db.collection("users").where("email", "==", careGiverMail).get().then((querySnapshot) => {

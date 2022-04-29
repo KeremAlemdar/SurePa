@@ -6,46 +6,41 @@ import { acceptNotification, cancelNotification, createNotification, deleteNotif
 const NotificationsPage = ({ navigation }) => {
     const [notifications, setNotifications] = useState([]);
     const [ready, setReady] = useState(false);
+    const now = new Date();
 
 
     useEffect(() => {
-        getNotifications().then(data => {
-            console.log('gg')
-            console.log(data);
+        getNotifications().then((notifications) => {
+            setNotifications(notifications);
             setReady(true);
-        })
-        // setReady(true);
-        // if (notifications.length != 0) {
-        //     console.log(notifications[0].currentData);
-        // }
+        });
     }, []);
-
-    
-    // const createNotificationLocal = () => {
-    //     const { uid } = auth.currentUser;
-    //     createNotification(uid);
-    // };
-    // const cancelNotificationLocal = (id) => {
-    //     const { uid } = auth.currentUser;
-    //     cancelNotification(uid, id);
-    // };
-    // const acceptNotificationLocal = (id) => {
-    //     const { uid } = auth.currentUser;
-    //     acceptNotification(uid, id);
-    // };
-    // const deleteNotificationLocal = (id) => {
-    //     const { uid } = auth.currentUser;
-    //     deleteNotification(uid,id);
-    // };
+    console.log(notifications);
+    const createNotificationLocal = () => {
+        const { uid } = auth.currentUser;
+        createNotification(uid);
+    };
+    const cancelNotificationLocal = (id) => {
+        const { uid } = auth.currentUser;
+        cancelNotification(uid, id);
+    };
+    const acceptNotificationLocal = (id) => {
+        const { uid } = auth.currentUser;
+        acceptNotification(uid, id);
+    };
+    const deleteNotificationLocal = (id) => {
+        const { uid } = auth.currentUser;
+        deleteNotification(uid,id);
+    };
     return (
         <View>
             <Text> NotificationsPage </Text>
-            {/* <View style={styles.notificationList}>
+            <View style={styles.notificationList}>
                 {notifications.map((row) => {
                     return (
                         <View key={row.id} style={styles.singleMedicineRow}>
-                            <Text style={styles.text}>{row.currentData.description}</Text>
-                            <Text style={styles.text}>{row.currentData.status}</Text>
+                            <Text style={styles.text}>{row.name}</Text>
+                            <Text style={styles.text}>{row.time}</Text>
                             <Button title="Sil" onPress={() => deleteNotificationLocal(row.id)}></Button>
                             <Button title="İptal" onPress={() => cancelNotificationLocal(row.id)}></Button>
                             <Button title="Kabul" onPress={() => acceptNotificationLocal(row.id)}></Button>
@@ -54,9 +49,7 @@ const NotificationsPage = ({ navigation }) => {
                 }
                 )}
             </View>
-            <Button title="Yeni Yarat" onPress={createNotificationLocal}></Button> */}
-        </View>
-    )
+        </View>)
 };
 const styles = StyleSheet.create({
     notificationList: {
