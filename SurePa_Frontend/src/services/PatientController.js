@@ -29,6 +29,13 @@ export const addMedicine = (patientId, name, numberOfDose, type) => {
         type: type
     })
 };
+export const addActivity = (patientId, name, duration) => {
+    // db.collection("medicines").doc(selectedMedicine.id).collection("medicines").
+    db.collection("users").doc(patientId).collection("activities").doc(name).set({
+        name: name,
+        duration: duration,
+    })
+};
 export const deleteMedicine = (patientId, medicineId) => {
     db.collection("users").doc(patientId).collection("medicines").doc(medicineId).delete().then(() => {
         return ("Document successfully deleted!");

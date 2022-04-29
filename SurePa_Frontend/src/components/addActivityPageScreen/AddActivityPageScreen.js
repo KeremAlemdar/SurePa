@@ -2,11 +2,18 @@ import React, { useState } from 'react';
 import { View } from 'react-native';
 import { TextInput } from 'react-native-element-textinput';
 import commonStyle from '../../commonStyle';
+import { addActivity } from '../../services/PatientController';
+import { auth } from '../../services/DbCon';
+import CommonButton from '../button';
 
 const AddActivityPageScreen = () => {
     const [activityType, setActivityType] = useState('');
     const [activityDuration, setActivityDuration] = useState('');
 
+    const finalize = () => {
+        addActivity(auth.currentUser.uid, activityType, activityDuration);
+    };
+    
     return (
         <View style={commonStyle.mainDiv}>
             <TextInput
@@ -33,6 +40,7 @@ const AddActivityPageScreen = () => {
                 onChangeText={changes => setActivityDuration(changes)}
                 errorMessage={'asd'}
             />
+            <CommonButton text='Add' onPress={finalize}></CommonButton>
         </View>
     );
 };
