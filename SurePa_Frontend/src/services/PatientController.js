@@ -21,12 +21,12 @@ export const returnPatientMedicines = (patientId) => {
     })
 };
 // export const addMedicine = (patientId, medicineId, dailyAmount, numberOfPills, date) => {
-export const addMedicine = (patientId, name, numberOfDose, doseData) => {
+export const addMedicine = (patientId, name, numberOfDose, type) => {
     // db.collection("medicines").doc(selectedMedicine.id).collection("medicines").
     db.collection("users").doc(patientId).collection("medicines").doc(name).set({
         name: name,
         numberOfDose: numberOfDose,
-        ...doseData
+        type: type
     })
 };
 export const deleteMedicine = (patientId, medicineId) => {

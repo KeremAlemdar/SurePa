@@ -6,11 +6,13 @@ import Name from './Name';
 import Type from './Type';
 import NumberOfTimes from './NumberOfTimes';
 import Finalize from './Finalize';
+import { addMedicine } from '../../services/PatientController';
+import { auth } from '../../services/DbCon';
 
 const AddMedicinePageScreen = () => {
     const [medicineName, setMedicineName] = useState('');
     const [birim, setBirim] = useState('Please Chose');
-    const [selectedOption, setSelectedOption] = useState(0);
+    const [doseCount, setDoseCount] = useState(0);
 
     const [pageContent, setPageContent] = useState(<Name medicineName={medicineName} setMedicineName={setMedicineName} />);
     const [pageName, setPageName] = useState('Name');
@@ -19,15 +21,17 @@ const AddMedicinePageScreen = () => {
         if (pageName === 'Name' && medicineName !== '') {
             setPageContent(<Type birim={birim} setBirim={setBirim} medicineName={medicineName} />);
             setPageName('Type');
-        } else if (pageName === 'Type' && birim !== 'Please Chose') {
+        } 
+        else if (pageName === 'Type' && birim !== 'Please Chose') {
             setPageContent(<NumberOfTimes
                 medicineName={medicineName}
                 birim={birim}
-                selectedOption={selectedOption}
-                setSelectedOption={setSelectedOption} />);
+                doseCount={doseCount}
+                setDoseCount={setDoseCount} />);
             setPageName('NumberOfTimes');
-        } else if (pageName === 'NumberOfTimes') {
-            setPageContent(<Finalize medicineName={medicineName} birim={birim} selectedOption={selectedOption} />);
+        } 
+        else if (pageName === 'NumberOfTimes') {
+            setPageContent(<Finalize medicineName={medicineName} birim={birim} doseCount={doseCount} />);
             setPageName('Finalize');
         }
     };
@@ -50,7 +54,7 @@ const AddMedicinePageScreen = () => {
     };
 
     const finalize = () => {
-        console.log(medicineName, birim, selectedOption);
+        addMedicine(auth.currentUser.uid, medicineName, doseCount, birim);
     };
 
     return (
