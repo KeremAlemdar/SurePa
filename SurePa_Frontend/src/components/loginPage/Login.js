@@ -41,8 +41,9 @@ const Login = ({ navigation }) => {
       })
       .catch((error) => {
         const errorMessage = error.message;
-        if (errorMessage.includes('wrong-password')) {
-          setErrorMessage('Password is Wrong');
+        var errorCode = error.code;
+        if (errorCode.includes('auth/wrong-password')) {
+          setErrorMessage('Invalid password');
         } else {
           setErrorMessage('Email Not Found');
         }
