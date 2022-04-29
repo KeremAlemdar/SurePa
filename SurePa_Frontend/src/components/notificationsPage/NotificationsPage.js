@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, Button, StyleSheet } from 'react-native';
 import { auth, db } from '../../services/DbCon';
-import { acceptNotification, cancelNotification, createNotification, deleteNotification } from '../../services/PatientController';
+import { acceptNotification, cancelNotification, createNotification, deleteNotification, getNotifications } from '../../services/PatientController';
 
 const NotificationsPage = ({ navigation }) => {
     const [notifications, setNotifications] = useState([]);
@@ -9,47 +9,38 @@ const NotificationsPage = ({ navigation }) => {
 
 
     useEffect(() => {
-        getNotifications();
-        setReady(true);
-        if (notifications.length != 0) {
-            console.log(notifications[0].currentData);
-        }
+        getNotifications().then(data => {
+            console.log('gg')
+            console.log(data);
+            setReady(true);
+        })
+        // setReady(true);
+        // if (notifications.length != 0) {
+        //     console.log(notifications[0].currentData);
+        // }
     }, []);
 
-    const getNotifications = () => {
-        const arr = [];
-        const { uid } = auth.currentUser;
-        let currentData;
-        let count = 0;
-        db.collection("users").doc(uid).collection("notifications").get().then((querySnapshot) => {
-            querySnapshot.forEach((doc) => {
-                console.log(doc);
-                currentData = doc.data();
-                arr.push({ id: doc.id, currentData });
-            });
-            setNotifications(arr);
-        })
-    };
-    const createNotificationLocal = () => {
-        const { uid } = auth.currentUser;
-        createNotification(uid);
-    };
-    const cancelNotificationLocal = (id) => {
-        const { uid } = auth.currentUser;
-        cancelNotification(uid, id);
-    };
-    const acceptNotificationLocal = (id) => {
-        const { uid } = auth.currentUser;
-        acceptNotification(uid, id);
-    };
-    const deleteNotificationLocal = (id) => {
-        const { uid } = auth.currentUser;
-        deleteNotification(uid,id);
-    };
+    
+    // const createNotificationLocal = () => {
+    //     const { uid } = auth.currentUser;
+    //     createNotification(uid);
+    // };
+    // const cancelNotificationLocal = (id) => {
+    //     const { uid } = auth.currentUser;
+    //     cancelNotification(uid, id);
+    // };
+    // const acceptNotificationLocal = (id) => {
+    //     const { uid } = auth.currentUser;
+    //     acceptNotification(uid, id);
+    // };
+    // const deleteNotificationLocal = (id) => {
+    //     const { uid } = auth.currentUser;
+    //     deleteNotification(uid,id);
+    // };
     return (
         <View>
             <Text> NotificationsPage </Text>
-            <View style={styles.notificationList}>
+            {/* <View style={styles.notificationList}>
                 {notifications.map((row) => {
                     return (
                         <View key={row.id} style={styles.singleMedicineRow}>
@@ -63,7 +54,7 @@ const NotificationsPage = ({ navigation }) => {
                 }
                 )}
             </View>
-            <Button title="Yeni Yarat" onPress={createNotificationLocal}></Button>
+            <Button title="Yeni Yarat" onPress={createNotificationLocal}></Button> */}
         </View>
     )
 };

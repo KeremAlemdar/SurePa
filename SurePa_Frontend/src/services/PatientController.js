@@ -20,14 +20,20 @@ export const returnPatientMedicines = (patientId) => {
         return (querySnapshot.docs.map(doc => doc.data()));
     })
 };
-// export const addMedicine = (patientId, medicineId, dailyAmount, numberOfPills, date) => {
-export const addMedicine = (patientId, name, numberOfDose, type) => {
-    // db.collection("medicines").doc(selectedMedicine.id).collection("medicines").
-    db.collection("users").doc(patientId).collection("medicines").doc(name).set({
-        name: name,
-        numberOfDose: numberOfDose,
-        type: type
-    })
+export const addMedicine = async (patientId, medicineName, type, doseCount, perDay, times) => {
+    const collection = db.collection("users").doc(patientId).collection("medicines");
+    await collection.doc(medicineName).set({
+        name: medicineName,
+        numberOfDose: doseCount,
+        type: type,
+        perDay: perDay,
+    });
+    await times.forEach((time, id) => {
+        collection.doc(medicineName).collection("times").doc(`time${id+1}`).set({
+            time: time,
+        });
+    });
+    return true;
 };
 export const addActivity = (patientId, name, duration) => {
     // db.collection("medicines").doc(selectedMedicine.id).collection("medicines").
@@ -66,6 +72,28 @@ export const createNotification = (patientId) => {
     db.collection("users").doc(patientId).collection("notifications").doc().set({
         status: "waiting",
         description: "yeni notification"
+    })
+};
+
+const getTimes = (medicine) => {
+    return new Promise((resolve, reject) => {
+        medicine.ref.collection("times").get().then((times) => {
+            resolve(times.docs.map(time => ({
+                medicine: medicine.data().name,
+                time: time.data(),
+            })))
+        })
+    })
+};
+export const getNotifications = async () => {
+    const { uid } = auth.currentUser;
+    return new Promise((resolve, reject) => {
+        const data = [];
+        db.collection("users").doc(uid).collection("medicines").get().then((medicines) => {
+            resolve(medicines.docs.map(medicine => {
+                getTimes(medicine)
+            }))
+        })
     })
 };
 export const sendInvitation = async (careGiverMail) => {

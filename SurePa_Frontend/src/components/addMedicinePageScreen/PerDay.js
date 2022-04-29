@@ -2,13 +2,14 @@ import { View, Text, StyleSheet, Pressable, Switch } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { Picker } from '@react-native-picker/picker';
 
-const PerDay = ({ birim, perDay, setPerDay, medicineName, doseCount}) => {
+const PerDay = ({ type, perDay, setPerDay, medicineName, doseCount}) => {
     const [localPerDay, setLocalPerDay] = useState(perDay);
+
     return (
         <View>
             <View style={styles.header}>
                 <Text style={styles.headerText}>{medicineName}</Text>
-                <Text>{birim}</Text>
+                <Text>{type}</Text>
                 <Text>{doseCount}</Text>
             </View>
             <View style={styles.divider}>

@@ -1,36 +1,55 @@
-import { View, Text, StyleSheet, Pressable } from 'react-native';
 import React, { useEffect, useState } from 'react';
+import { View, Text, StyleSheet, Pressable } from 'react-native';
 import commonStyle from '../../commonStyle';
 import { TextInput } from 'react-native-element-textinput';
 
-const Times = ({ birim, perDay, setTimes, times, medicineName, doseCount }) => {
+const Times = ({ type, perDay, medicineName, doseCount, setTimes, times }) => {
+    const [inputs, setInputs] = useState([]);
+    const [localTimes, setLocalTimes] = useState([]);
 
-    const createFields = numberOfField => {
-        let content = [];
-        for (let i = 0; i < numberOfField; i++) {
-            const item = animals[i];
-            content.push(<li key={i}><TextInput
-                value={times[0]}
-                style={commonStyle.input}
-                inputStyle={commonStyle.inputStyle}
-                labelStyle={commonStyle.labelStyle}
-                placeholderStyle={commonStyle.placeholderStyle}
-                textErrorStyle={commonStyle.textErrorStyle}
-                label={`Saat gir, örnek 15:00`}
-                placeholder={`Saat gir, örnek 15:00`}
-                placeholderTextColor="gray"
-                focusColor="blue"
-                onChangeText={text => {
-                    setDoseCount(text);
-                }}
-            /></li>);
+    useEffect(() => {
+        setTimes(localTimes);
+    }, [localTimes]);
+
+    useEffect(() => {
+        const asd = [];
+        for (let i = 0; i < 3; i++) {
+            asd.push(
+                <TextInput
+                    value={localTimes[i]}
+                    style={commonStyle.input}
+                    inputStyle={commonStyle.inputStyle}
+                    labelStyle={commonStyle.labelStyle}
+                    placeholderStyle={commonStyle.placeholderStyle}
+                    textErrorStyle={commonStyle.textErrorStyle}
+                    label={`Saat gir, örnek 15:00`}
+                    placeholder={`Saat gir, örnek 15:00`}
+                    placeholderTextColor="gray"
+                    focusColor="blue"
+                    onChangeText={text => {
+                        setLocalTimes(prev => {
+                            const newArray = [...prev];
+                            newArray[i] = text;
+                            return newArray;
+                        });
+                    }}
+                />
+            );
         }
-        return content;
-    };
+        setInputs(asd);
+    }, []);
 
     return (
         <View>
-            {createFields}
+            {
+                inputs.map((input, index) => {
+                    return (
+                        <View key={index}>
+                            {input}
+                        </View>
+                    );
+                })
+            }
         </View>
     );
 

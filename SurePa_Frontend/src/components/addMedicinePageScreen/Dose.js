@@ -3,12 +3,12 @@ import React, { useEffect, useState } from 'react';
 import commonStyle from '../../commonStyle';
 import { TextInput } from 'react-native-element-textinput';
 
-const NumberOfTimes = ({ medicineName, birim, doseCount, setDoseCount }) => {
+const Dose = ({ medicineName, type, doseCount, setDoseCount }) => {
 
     return (
         <View>
             <Text>{medicineName}</Text>
-            <Text>{birim}</Text>
+            <Text>{type}</Text>
             <TextInput
                 value={doseCount}
                 style={commonStyle.input}
@@ -16,8 +16,8 @@ const NumberOfTimes = ({ medicineName, birim, doseCount, setDoseCount }) => {
                 labelStyle={commonStyle.labelStyle}
                 placeholderStyle={commonStyle.placeholderStyle}
                 textErrorStyle={commonStyle.textErrorStyle}
-                label={`Kutuda kaç ${birim} var`}
-                placeholder={`Kutuda kaç ${birim} var`}
+                label={`Kutuda kaç ${type} var`}
+                placeholder={`Kutuda kaç ${type} var`}
                 placeholderTextColor="gray"
                 focusColor="blue"
                 onChangeText={text => {
@@ -28,4 +28,4 @@ const NumberOfTimes = ({ medicineName, birim, doseCount, setDoseCount }) => {
     );
 };
 
-export default NumberOfTimes;
+export default Dose;

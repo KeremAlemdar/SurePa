@@ -6,14 +6,14 @@ import Name from './Name';
 import Type from './Type';
 import PerDay from './PerDay';
 import Times from './Times';
-import NumberOfTimes from './NumberOfTimes';
+import Dose from './Dose';
 import Finalize from './Finalize';
 import { addMedicine } from '../../services/PatientController';
 import { auth } from '../../services/DbCon';
 
 const AddMedicinePageScreen = () => {
     const [medicineName, setMedicineName] = useState('');
-    const [birim, setBirim] = useState('Please Chose');
+    const [type, setType] = useState('Please Chose');
     const [perDay, setPerDay] = useState('Please Chose');
     const [times, setTimes] = useState([]);
     const [doseCount, setDoseCount] = useState(0);
@@ -23,68 +23,83 @@ const AddMedicinePageScreen = () => {
 
     const nextPage = () => {
         if (pageName === 'Name' && medicineName !== '') {
-            setPageContent(<Type birim={birim} setBirim={setBirim} medicineName={medicineName} />);
+            setPageContent(<Type
+                type={type}
+                setType={setType}
+                medicineName={medicineName} />);
             setPageName('Type');
-        } 
-        else if (pageName === 'Type' && birim !== 'Please Chose') {
-            setPageContent(<NumberOfTimes
+        }
+        else if (pageName === 'Type' && type !== 'Please Chose') {
+            setPageContent(<Dose
                 medicineName={medicineName}
-                birim={birim}
+                type={type}
                 doseCount={doseCount}
                 setDoseCount={setDoseCount} />);
             setPageName('NumberOfTimes');
-        } 
+        }
         else if (pageName === 'NumberOfTimes') {
-            setPageContent(<PerDay birim={birim} doseCount={doseCount} medicineName={medicineName} perDay={perDay} setPerDay={setPerDay} />);
+            setPageContent(<PerDay
+                type={type}
+                perDay={perDay}
+                setPerDay={setPerDay}
+                medicineName={medicineName}
+                doseCount={doseCount} />);
             setPageName('PerDay');
         }
         else if (pageName === 'PerDay') {
-            setPageContent(<Times perDay={perDay} setTimes={setTimes} times={times} medicineName={medicineName} birim={birim} doseCount={doseCount} />);
+            setPageContent(<Times
+                type={type}
+                perDay={perDay}
+                setPerDay={setPerDay}
+                medicineName={medicineName}
+                doseCount={doseCount}
+                setTimes={setTimes}
+                times={times} />);
             setPageName('Times');
         }
         else if (pageName === 'Times') {
-            setPageContent(<Finalize medicineName={medicineName} birim={birim} doseCount={doseCount} />);
+            setPageContent(<Finalize
+                medicineName={medicineName}
+                type={type}
+                doseCount={doseCount}
+                perDay={perDay}
+                times={times} />);
             setPageName('Finalize');
         }
     };
-
+    
     const goBack = () => {
         if (pageName === 'Type') {
             setPageContent(<Name medicineName={medicineName} setMedicineName={setMedicineName} />);
             setPageName('Name');
         } else if (pageName === 'NumberOfTimes') {
-            setPageContent(<Type birim={birim} setBirim={setBirim} medicineName={medicineName} />);
+            setPageContent(<Type type={type} setType={setType} medicineName={medicineName} />);
             setPageName('Type');
         } else if (pageName === 'PerDay') {
-            setPageContent(<NumberOfTimes
+            setPageContent(<Dose
                 medicineName={medicineName}
-                birim={birim}
+                type={type}
                 doseCount={doseCount}
                 setDoseCount={setDoseCount} />);
             setPageName('NumberOfTimes');
 
         } else if (pageName === 'Times') {
-            setPageContent(<PerDay
-                medicineName={medicineName}
-                setPerDay={setPerDay}
-                perDay={perDay}
-                birim={birim} />);
+            setPageContent(<PerDay type={type} perDay={perDay} setPerDay={setPerDay} medicineName={medicineName} doseCount={doseCount} />);
             setPageName('PerDay');
 
         } else if (pageName === 'Finalize') {
-            setPageContent(<Times
-                medicineName={medicineName}
-                setTimes={setTimes}
-                times={Times}
-                perDay={perDay}
-                birim={birim} />);
+            setPageContent(<Times type={type} perDay={perDay} setPerDay={setPerDay} medicineName={medicineName} doseCount={doseCount} setTimes={setTimes} times={times} />);
             setPageName('Times');
         }
-        
+
     };
 
     const finalize = () => {
-        addMedicine(auth.currentUser.uid, medicineName, doseCount, birim);
+        const check = addMedicine(auth.currentUser.uid, medicineName, type, doseCount, perDay, times);
+        if (check) {
+            setPageContent(<Name medicineName={medicineName} setMedicineName={setMedicineName} />);
+            setPageName('Name');
+        }
     };
 
     return (
