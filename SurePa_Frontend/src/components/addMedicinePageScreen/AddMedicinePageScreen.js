@@ -47,8 +47,8 @@ const AddMedicinePageScreen = () => {
             setPageContent(<NumberOfTimes
                 medicineName={medicineName}
                 birim={birim}
-                selectedOption={selectedOption}
-                setSelectedOption={setSelectedOption} />);
+                doseCount={doseCount}
+                setDoseCount={setDoseCount} />);
             setPageName('NumberOfTimes');
         }
     };
