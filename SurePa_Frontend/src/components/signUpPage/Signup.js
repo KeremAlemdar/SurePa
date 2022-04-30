@@ -1,9 +1,19 @@
 import React, { useState } from 'react';
-import { View, Text, Button, Image } from 'react-native';
+import { View, Text, Button, Image, StyleSheet } from 'react-native';
 import { fbRegister } from '../../services/DbCon';
 import commonStyle from '../../commonStyle';
 import { TextInput } from 'react-native-element-textinput';
 import { Picker } from '@react-native-picker/picker';
+import CommonButton from '../button';
+
+
+const styles = StyleSheet.create({
+    appIcon: {
+        width: 100,
+        height: 100
+    },
+
+});
 
 const SignUp = ({ navigation }) => {
     const [email, setEmail] = useState('');
@@ -38,7 +48,7 @@ const SignUp = ({ navigation }) => {
         <View style={commonStyle.mainDiv}>
             <View style={commonStyle.centeredContainer}>
                 <Image
-                    style={commonStyle.applogo}
+                    style={styles.appIcon}
                     source={require('../../../img/appIcon.png')}
                 />
             </View>
@@ -100,7 +110,12 @@ const SignUp = ({ navigation }) => {
             </View>
             {errorMessage !== '' &&
                 <Text>{errorMessage}</Text>}
-            <Button title='Signup' onPress={() => registerClicked()} />
+            <CommonButton text="Sign Up" onPress={() => registerClicked()}
+                customStyle={{
+                    button: {
+                        marginTop: 2
+                    }
+                }} />
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                 <View style={{ flex: 1, height: 1, backgroundColor: 'black' }} />
                 <View>
@@ -108,7 +123,12 @@ const SignUp = ({ navigation }) => {
                 </View>
                 <View style={{ flex: 1, height: 1, backgroundColor: 'black' }} />
             </View>
-            <Button title='SignIn' onPress={() => signInClicked()} />
+            <CommonButton text="Sign In" onPress={() => signInClicked()}
+                customStyle={{
+                    button: {
+                        marginTop: 2
+                    }
+                }} />
         </View>
     )
 };
