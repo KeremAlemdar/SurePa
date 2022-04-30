@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, Image, StyleSheet, Button, TouchableOpacity } from 'react-native';
+import { View, Text, Image, StyleSheet, Button, TouchableOpacity, CommonButton } from 'react-native';
 import commonStyle from '../../commonStyle';
-import SendSMS from 'react-native-sms'
-
+import SendSMS from 'react-native-sms';
+navigator.geolocation = require('@react-native-community/geolocation');
 const HomePage = ({ navigation }) => {
     const [directPage, setDirectPage] = useState('');
+    const [latitude, setLatitude] = useState(0);
+    const [longitude, setLongitude] = useState(0);
     // isSignedIn ? (
     //     <>
     //       <Stack.Screen name="Home" component={HomeScreen} />
@@ -35,9 +37,22 @@ const HomePage = ({ navigation }) => {
         }
     }, [directPage]);
 
+   
+    const getLocation = () => {
+        navigator.geolocation.getCurrentPosition((position) => {
+            const { latitude, longitude } = position.coords;
+            setLatitude(latitude);
+            setLongitude(longitude);
+        })
+    };
+
+
+    let locationLink = "https://maps.google.com/?q="
     const sendSMS = () => {
+        getLocation();
+        locationLink = locationLink + latitude + "," + longitude;
         SendSMS.send({
-            body: 'The default body of the SMS!',
+            body: locationLink,
             recipients: ['0123456789', '9876543210'],
             successTypes: ['sent', 'queued'],
             allowAndroidSendWithoutReadPermission: true
@@ -71,7 +86,9 @@ const HomePage = ({ navigation }) => {
                             </View>
                         </TouchableOpacity>
                     </View>
-
+                    <View>
+                        <Button title="Calendar" onPress={() => setDirectPage('AppCalendar')} />
+                    </View>
                 </View>
             </View>
         </View>
@@ -133,10 +150,10 @@ const styles = StyleSheet.create({
         height: 75,
         marginBottom: 50
     },
-    emergencyButtonContentWrapper:{
-        display:'flex',
+    emergencyButtonContentWrapper: {
+        display: 'flex',
         justifyContent: 'center',
-        alignContent:'space-around'
+        alignContent: 'space-around'
     }
 
     /*

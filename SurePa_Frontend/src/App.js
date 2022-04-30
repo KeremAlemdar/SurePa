@@ -3,6 +3,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Login from './components/loginPage';
+import AppCalendar from './components/calendar';
 import HomePage from './components/homePage';
 import Signup from './components/signUpPage';
 import ProfilePage from './components/profilePage';
@@ -68,7 +69,7 @@ const ProfilePageStack = createNativeStackNavigator();
 function ProfilePageStackScreen() {
     const ProfilePageRoutes = [
         { name: 'ProfilePage', component: ProfilePage, options: { headerShown: false } },
-        { name: 'InvitationsPage', component: InvivtationsPage, options: { title: 'See Invivtations' } },
+        { name: 'InvitationsPage', component: InvivtationsPage, options: { title: 'See Invitations' } },
     ]
     return (
         <ProfilePageStack.Navigator>
@@ -91,6 +92,7 @@ function HomeStackScreen() {
     const routes = [
         { name: 'HomePage', component: HomePage, options: { headerShown: false } },
         { name: 'NotificationsPage', component: NotificationsPage, options: { title: 'NotificationsPage' } },
+        { name: 'AppCalendar', component: AppCalendar, options: { title: 'AppCalendar' } },
     ]
     return (
         <HomePageStack.Navigator>
