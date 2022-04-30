@@ -23,6 +23,8 @@ const AddMedicinePageScreen = () => {
 
     const nextPage = () => {
         if (pageName === 'Name' && medicineName !== '') {
+            console.log("aldkfmhlkadf");
+            resetForm();
             setPageContent(<Type
                 type={type}
                 setType={setType}
@@ -67,7 +69,7 @@ const AddMedicinePageScreen = () => {
             setPageName('Finalize');
         }
     };
-    
+
     const goBack = () => {
         if (pageName === 'Type') {
             setPageContent(<Name medicineName={medicineName} setMedicineName={setMedicineName} />);
@@ -101,6 +103,14 @@ const AddMedicinePageScreen = () => {
             setPageName('Name');
         }
     };
+
+    const resetForm = () => {
+        setMedicineName('');
+        setType('Please Select');
+        setPerDay('Please Select');
+        setTimes([]);
+        setDoseCount(0);
+    }
 
     return (
         <View style={commonStyle.mainDiv}>
