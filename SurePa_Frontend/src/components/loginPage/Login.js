@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Button, Text, Pressable, StyleSheet } from 'react-native';
+import { View, Button, Text, Pressable, StyleSheet, Image } from 'react-native';
 import { CommonActions } from '@react-navigation/native';
 import { auth, fbLogin } from '../../services/DbCon';
 import commonStyle from '../../commonStyle';
@@ -56,6 +56,12 @@ const Login = ({ navigation }) => {
 
   return (
     <View style={commonStyle.mainDiv}>
+      <View style={commonStyle.centeredContainer}>
+        <Image
+          style={commonStyle.applogo}
+          source={require('../../../img/appIcon.png')}
+        />
+      </View>
       <View style={commonStyle.container}>
         <TextInput
           value={email}

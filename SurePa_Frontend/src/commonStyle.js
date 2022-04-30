@@ -25,5 +25,15 @@ export default StyleSheet.create({
         top: -10,
         backgroundColor: 'white',
         paddingHorizontal: 4,
+    },
+    applogo: {
+        width: 150,
+        height: 150
+    },
+    centeredContainer: {
+        padding: 16,
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center'
     }
 });

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, Button } from 'react-native';
+import { View, Text, Button, Image } from 'react-native';
 import { fbRegister } from '../../services/DbCon';
 import commonStyle from '../../commonStyle';
 import { TextInput } from 'react-native-element-textinput';
@@ -36,6 +36,12 @@ const SignUp = ({ navigation }) => {
 
     return (
         <View style={commonStyle.mainDiv}>
+            <View style={commonStyle.centeredContainer}>
+                <Image
+                    style={commonStyle.applogo}
+                    source={require('../../../img/appIcon.png')}
+                />
+            </View>
             <View style={commonStyle.container}>
                 <TextInput
                     value={name}
