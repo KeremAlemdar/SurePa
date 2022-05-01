@@ -15,7 +15,8 @@ const NotificationsPage = ({ navigation }) => {
             setReady(true);
         });
     }, []);
-    console.log(notifications);
+
+
     const createNotificationLocal = () => {
         const { uid } = auth.currentUser;
         createNotification(uid);
@@ -30,7 +31,7 @@ const NotificationsPage = ({ navigation }) => {
     };
     const deleteNotificationLocal = (id) => {
         const { uid } = auth.currentUser;
-        deleteNotification(uid,id);
+        deleteNotification(uid, id);
     };
     return (
         <View>
@@ -40,14 +41,13 @@ const NotificationsPage = ({ navigation }) => {
                     return (
                         <View key={row.id} style={styles.singleMedicineRow}>
                             <Text style={styles.text}>{row.name}</Text>
-                            <Text style={styles.text}>{row.time}</Text>
+                            <Text style={styles.text}>{row.status}</Text>
                             <Button title="Sil" onPress={() => deleteNotificationLocal(row.id)}></Button>
                             <Button title="İptal" onPress={() => cancelNotificationLocal(row.id)}></Button>
                             <Button title="Kabul" onPress={() => acceptNotificationLocal(row.id)}></Button>
                         </View>
                     )
-                }
-                )}
+                })}
             </View>
         </View>)
 };

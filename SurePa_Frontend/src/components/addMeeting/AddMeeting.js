@@ -7,6 +7,7 @@ import CommonButton from '../button';
 import Toast from 'react-native-toast-message';
 import { addMeeting } from '../../services/PatientController';
 import { toastConfig } from '../toast';
+import * as AddCalendarEvent from 'react-native-add-calendar-event';
 
 const AddMeeting = () => {
     const [date, setDate] = useState(new Date());
@@ -24,6 +25,18 @@ const AddMeeting = () => {
             details: details
         }).then(res => {
             if (res === 'success') {
+                
+                const newDate = date.getUTCFullYear() + "-" + date.getUTCMonth() + "-" + 
+                date.getUTCDate() + "T" + time.getUTCHours() + ":" + 
+                time.getUTCMinutes() + ":" + 
+                time.getUTCSeconds() + "." +
+                time.getUTCMilliseconds() + "Z";
+                const eventConfig = {
+                    title,
+                    startDate: newDate,
+                    notes: details,
+                };
+                AddCalendarEvent.presentEventCreatingDialog(eventConfig);
                 Toast.show({
                     type: 'success',
                     // And I can pass any custom props I want

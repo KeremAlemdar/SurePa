@@ -37,19 +37,22 @@ const HomePage = ({ navigation }) => {
         }
     }, [directPage]);
 
-   
+
     const getLocation = () => {
-        navigator.geolocation.getCurrentPosition((position) => {
-            const { latitude, longitude } = position.coords;
-            setLatitude(latitude);
-            setLongitude(longitude);
+        return new Promise((resolve, reject) => {
+            navigator.geolocation.getCurrentPosition((position) => {
+                const { latitude, longitude } = position.coords;
+                setLatitude(latitude);
+                setLongitude(longitude);
+                resolve();
+            })
         })
     };
 
 
     let locationLink = "https://maps.google.com/?q="
-    const sendSMS = () => {
-        getLocation();
+    const sendSMS = async () => {
+        await getLocation();
         locationLink = locationLink + latitude + "," + longitude;
         SendSMS.send({
             body: locationLink,

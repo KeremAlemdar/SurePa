@@ -89,6 +89,7 @@ export const getNotifications = () => {
     const { uid } = auth.currentUser;
     const data = [];
     let index = 0;
+    const now = new Date();
     return new Promise((resolve, reject) => {
         returnPatientMedicines(uid).then((medicines) => {
             medicines.forEach(async (medicine) => {
@@ -96,9 +97,15 @@ export const getNotifications = () => {
                     doc(medicine.name).collection('times').
                     get().then((querySnapshot) => {
                         querySnapshot.docs.forEach(doc => {
+                        const pillTime = new Date();
+                            const hour = doc.data().time.split(":")[0];
+                            const minute = doc.data().time.split(":")[1];
+                            pillTime.setHours(hour, minute, 0, 0);
+                            const pillStat = now.getTime() < pillTime.getTime() ? "waiting" : "expired";
                             data.push({
                                 name: medicine.name,
-                                ...doc.data()
+                                ...doc.data(),
+                                status: pillStat 
                             });
                         });
                         index++;
