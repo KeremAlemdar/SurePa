@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Button, Text, Pressable, StyleSheet, Image } from 'react-native';
+import { View, Text, Image } from 'react-native';
 import { CommonActions } from '@react-navigation/native';
 import { auth, fbLogin } from '../../services/DbCon';
 import commonStyle from '../../commonStyle';
@@ -8,7 +8,6 @@ import CommonButton from '../button';
 
 const Login = ({ navigation }) => {
   const [email, setEmail] = useState('');
-  const [currentUser, setCurrentUser] = useState('');
   const [pass, setPass] = useState('');
   const [directMain, setDirectMain] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
@@ -86,7 +85,7 @@ const Login = ({ navigation }) => {
           inputStyle={commonStyle.inputStyle}
           labelStyle={commonStyle.labelStyle}
           label="Password"
-          placeholder='Password'
+          placeholder='Passwor'
           placeholderTextColor="gray"
           focusColor="blue"
           secureTextEntry={true}

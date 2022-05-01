@@ -1,9 +1,14 @@
-import { View, Text, StyleSheet, Pressable, Switch } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { Picker } from '@react-native-picker/picker';
+import DatePicker from 'react-native-date-picker';
 
-const PerDay = ({ type, perDay, setPerDay, medicineName, doseCount}) => {
+const PerDay = ({ type, perDay, setPerDay, medicineName, doseCount, setStartDate, setEndDate }) => {
     const [localPerDay, setLocalPerDay] = useState(perDay);
+    const [openDate, setOpenDate] = useState(false);
+    const [openDateEnd, setOpenDateEnd] = useState(false);
+    const [date, setDate] = useState(new Date());
+    const [dateEnd, setDateEnd] = useState(new Date());
 
     return (
         <View>
@@ -28,10 +33,58 @@ const PerDay = ({ type, perDay, setPerDay, medicineName, doseCount}) => {
                     <Picker.Item label="Günde üc kez" value="3" />
                 </Picker>
             </View>
+            <View style={styles.asd}>
+                <Text style={styles.text}>Start Time: </Text>
+                <Text style={styles.text1} onPress={() => setOpenDate(true)}>{date.toLocaleDateString()}</Text>
+                <DatePicker
+                    modal
+                    open={openDate}
+                    date={date}
+                    mode="date"
+                    onConfirm={(date) => {
+                        setOpenDate(false)
+                        setDate(date)
+                        setStartDate(date)
+                    }}
+                    onCancel={() => {
+                        setOpenDate(false)
+                    }}
+                />
+            </View>
+            <View style={styles.asd}>
+                <Text style={styles.text}>End Time: </Text>
+                <Text style={styles.text1} onPress={() => setOpenDateEnd(true)}>{dateEnd.toLocaleDateString()}</Text>
+                <DatePicker
+                    modal
+                    open={openDateEnd}
+                    date={dateEnd}
+                    mode="date"
+                    onConfirm={(date) => {
+                        setOpenDateEnd(false)
+                        setDateEnd(date)
+                        setEndDate(date)
+                    }}
+                    onCancel={() => {
+                        setOpenDateEnd(false)
+                    }}
+                />
+            </View>
         </View>
     );
 }
+
 const styles = StyleSheet.create({
+    text: {
+        fontSize: 22,
+        fontWeight: '600',
+        marginTop: 16,
+    },
+    text1: {
+        fontSize: 22,
+        fontWeight: '600',
+        marginTop: 16,
+        color: '#00BFFF',
+    },
     divider: {
         height: 1,
         width: '100%',
@@ -47,6 +100,10 @@ const styles = StyleSheet.create({
     headerText: {
         fontSize: 30,
         color: 'black',
+    },
+    asd: {
+        display: 'flex',
+        flexDirection: 'row',
     }
 });
 export default PerDay;

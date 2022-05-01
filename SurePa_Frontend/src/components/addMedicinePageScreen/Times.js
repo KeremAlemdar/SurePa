@@ -41,6 +41,7 @@ const Times = ({ type, perDay, medicineName, doseCount, setTimes, times }) => {
 
     return (
         <View>
+            <Text>{medicineName}</Text>
             {
                 inputs.map((input, index) => {
                     return (

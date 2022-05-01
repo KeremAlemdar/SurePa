@@ -1,4 +1,4 @@
-import { View } from 'react-native';
+import { Text, View } from 'react-native';
 import React, { useState } from 'react';
 import commonStyle from '../../commonStyle';
 import CommonButton from '../button';
@@ -17,14 +17,14 @@ const AddMedicinePageScreen = () => {
     const [perDay, setPerDay] = useState('Please Chose');
     const [times, setTimes] = useState([]);
     const [doseCount, setDoseCount] = useState(0);
+    const [startDate, setStartDate] = useState(new Date());
+    const [endDate, setEndDate] = useState(new Date());
 
     const [pageContent, setPageContent] = useState(<Name medicineName={medicineName} setMedicineName={setMedicineName} />);
     const [pageName, setPageName] = useState('Name');
 
     const nextPage = () => {
         if (pageName === 'Name' && medicineName !== '') {
-            console.log("aldkfmhlkadf");
-            resetForm();
             setPageContent(<Type
                 type={type}
                 setType={setType}
@@ -45,7 +45,9 @@ const AddMedicinePageScreen = () => {
                 perDay={perDay}
                 setPerDay={setPerDay}
                 medicineName={medicineName}
-                doseCount={doseCount} />);
+                doseCount={doseCount} 
+                setStartDate={setStartDate}
+                setEndDate={setEndDate}/>);
             setPageName('PerDay');
         }
         else if (pageName === 'PerDay') {
@@ -97,23 +99,19 @@ const AddMedicinePageScreen = () => {
     };
 
     const finalize = () => {
-        const check = addMedicine(auth.currentUser.uid, medicineName, type, doseCount, perDay, times);
-        if (check) {
-            setPageContent(<Name medicineName={medicineName} setMedicineName={setMedicineName} />);
-            setPageName('Name');
-        }
+        addMedicine(auth.currentUser.uid, medicineName, type, doseCount, perDay, times, startDate, endDate);
     };
-
-    const resetForm = () => {
-        setMedicineName('');
-        setType('Please Select');
-        setPerDay('Please Select');
-        setTimes([]);
-        setDoseCount(0);
-    }
-
+    
+    // const resetForm = () => {
+    //     setMedicineName('');
+    //     setType('Please Select');
+    //     setPerDay('Please Select');
+    //     setTimes([]);
+    //     setDoseCount(0);
+    // }
     return (
         <View style={commonStyle.mainDiv}>
+            <Text>sdfsdfsd</Text>
             {pageContent}
             {pageName === 'Finalize' ?
                 (<CommonButton text="Add" onPress={finalize} />)

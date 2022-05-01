@@ -24,13 +24,18 @@ export const returnPatientMedicines = (patientId) => {
     });
 };
 
-export const addMedicine = async (patientId, medicineName, type, doseCount, perDay, times) => {
+export const addMedicine = async (patientId, medicineName, type, doseCount, perDay, times, startDate, endDate) => {
     const collection = db.collection("users").doc(patientId).collection("medicines");
+    const timeDiff = endDate.getTime() - startDate.getTime();
+    const days = Math.round(timeDiff / (1000 * 60 * 60 * 24));
     await collection.doc(medicineName).set({
         name: medicineName,
         numberOfDose: doseCount,
         type: type,
         perDay: perDay,
+        startDate: startDate,
+        endDate: endDate,
+        numOfDays: days,
     });
     await times.forEach((time, id) => {
         collection.doc(medicineName).collection("times").doc(`time${id + 1}`).set({
