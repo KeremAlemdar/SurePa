@@ -274,10 +274,10 @@ export const getContacts = () => {
     });
 };
 
-export const getLastWeekData = () => {
+export const getWeekReport = () => {
     const mockData = {
         "username": "Kaan Bebiş",
-        "Age": 31,
+        "age": 31,
         "date": "01.05.2021",
         "weekNo": 6,
         "medicines": {

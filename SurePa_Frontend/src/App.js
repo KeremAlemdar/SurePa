@@ -94,6 +94,7 @@ function HomeStackScreen() {
         { name: 'HomePage', component: HomePage, options: { headerShown: false } },
         { name: 'NotificationsPage', component: NotificationsPage, options: { title: 'NotificationsPage' } },
         { name: 'AppCalendar', component: AppCalendar, options: { title: 'AppCalendar' } },
+        { name: 'ReportPage', component: ReportPage, options: { title: 'Weekly Report' } },
     ]
     return (
         <HomePageStack.Navigator>
