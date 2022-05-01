@@ -15,6 +15,7 @@ import AddThings from './components/addThings';
 import InvivtationsPage from './components/invitationsPage/InvivtationsPage';
 import AddMeeting from './components/addMeeting';
 import AddActivityPageScreen from './components/addActivityPageScreen';
+import ReportPage from './components/reportPage/report';
 const Stack = createNativeStackNavigator();
 
 const MedicinesPageStack = createNativeStackNavigator();
@@ -124,6 +125,7 @@ function HomeTabScreen() {
         { name: 'AddThings', component: ThingsPageStackScreen, options: { title: 'Add Things' } },
         { name: 'MedicinesPage', component: MedicinesPageStackScreen, options: { title: 'Medicines' } },
         { name: 'ProfilePage', component: ProfilePageStackScreen, options: { title: 'Profile' } },
+        { name: 'ReportPage', component: ReportPage, options: { title: 'Reports' } },
     ]
     return (
         <Tab.Navigator>
@@ -145,7 +147,7 @@ function HomeTabScreen() {
 const App = () => {
     let routes = [
         { name: 'Login', component: Login, options: { headerShown: false } },
-        { name: 'HomeStack', component: HomeTabScreen, options: { headerShown: false} },
+        { name: 'HomeStack', component: HomeTabScreen, options: { headerShown: false } },
         { name: 'Signup', component: Signup, options: { headerShown: false } }
     ]
     return (

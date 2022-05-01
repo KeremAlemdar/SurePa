@@ -274,3 +274,39 @@ export const getContacts = () => {
     });
 };
 
+export const getLastWeekData = () => {
+    const mockData = {
+        "username": "Kaan Bebiş",
+        "Age": 31,
+        "date": "01.05.2021",
+        "weekNo": 6,
+        "medicines": {
+            "Metoprolol": {
+                "remaining": 5,
+                "usage": {
+                    "01.05.2021": [true, false],
+                    "02.05.2021": [true, true],
+                    "03.05.2021": [true, false],
+                    "04.05.2021": [false, false],
+                    "05.05.2021": [true, true],
+                    "06.05.2021": [true, true],
+                    "07.05.2021": [true, true],
+                }
+            },
+            "Sulphamazetine": {
+                "remaining": 10,
+                "usage": {
+                    "01.05.2021": [true],
+                    "02.05.2021": [true],
+                    "03.05.2021": [false],
+                    "04.05.2021": [false],
+                    "05.05.2021": [true],
+                    "06.05.2021": [false],
+                    "07.05.2021": [true],
+                }
+            }
+        }
+    }
+    return mockData;
+}
+

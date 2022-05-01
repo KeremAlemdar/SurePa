@@ -12,6 +12,8 @@ target 'SurePa_Frontend' do
     :hermes_enabled => false
   )
 
+  pod 'react-native-geolocation', :path => '../node_modules/@react-native-community/geolocation'
+
   target 'SurePa_FrontendTests' do
     inherit! :complete
     # Pods for testing
