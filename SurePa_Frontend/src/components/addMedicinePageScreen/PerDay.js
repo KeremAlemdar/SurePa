@@ -3,12 +3,12 @@ import React, { useEffect, useState } from 'react';
 import { Picker } from '@react-native-picker/picker';
 import DatePicker from 'react-native-date-picker';
 
-const PerDay = ({ type, perDay, setPerDay, medicineName, doseCount, setStartDate, setEndDate }) => {
+const PerDay = ({ type, perDay, setPerDay, medicineName, doseCount, setStartDate, setEndDate, startDate, endDate }) => {
     const [localPerDay, setLocalPerDay] = useState(perDay);
-    const [openDate, setOpenDate] = useState(false);
-    const [openDateEnd, setOpenDateEnd] = useState(false);
-    const [date, setDate] = useState(new Date());
-    const [dateEnd, setDateEnd] = useState(new Date());
+    const [startDateOpen, setStartDateOpen] = useState(false);
+    const [endDateOpen, setEndDateOpen] = useState(false);
+    const [localStartDate, setLocalStartDate] = useState(startDate);
+    const [localEndDate, setLocalEndDate] = useState(endDate);
 
     return (
         <View>
@@ -35,37 +35,37 @@ const PerDay = ({ type, perDay, setPerDay, medicineName, doseCount, setStartDate
             </View>
             <View style={styles.asd}>
                 <Text style={styles.text}>Start Time: </Text>
-                <Text style={styles.text1} onPress={() => setOpenDate(true)}>{date.toLocaleDateString()}</Text>
+                <Text style={styles.text1} onPress={() => setStartDateOpen(true)}>{localStartDate.toLocaleDateString()}</Text>
                 <DatePicker
                     modal
-                    open={openDate}
-                    date={date}
+                    open={startDateOpen}
+                    date={localStartDate}
                     mode="date"
-                    onConfirm={(date) => {
-                        setOpenDate(false)
-                        setDate(date)
-                        setStartDate(date)
+                    onConfirm={(wer) => {
+                        setStartDateOpen(false);
+                        setStartDate(wer);
+                        setLocalStartDate(wer);
                     }}
                     onCancel={() => {
-                        setOpenDate(false)
+                        setStartDateOpen(false);
                     }}
                 />
             </View>
             <View style={styles.asd}>
                 <Text style={styles.text}>End Time: </Text>
-                <Text style={styles.text1} onPress={() => setOpenDateEnd(true)}>{dateEnd.toLocaleDateString()}</Text>
+                <Text style={styles.text1} onPress={() => setEndDateOpen(true)}>{localEndDate.toLocaleDateString()}</Text>
                 <DatePicker
                     modal
-                    open={openDateEnd}
-                    date={dateEnd}
+                    open={endDateOpen}
+                    date={localEndDate}
                     mode="date"
-                    onConfirm={(date) => {
-                        setOpenDateEnd(false)
-                        setDateEnd(date)
-                        setEndDate(date)
+                    onConfirm={(wer) => {
+                        setEndDateOpen(false);
+                        setEndDate(wer);
+                        setLocalEndDate(wer);
                     }}
                     onCancel={() => {
-                        setOpenDateEnd(false)
+                        setEndDateOpen(false);
                     }}
                 />
             </View>

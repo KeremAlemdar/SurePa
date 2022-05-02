@@ -13,7 +13,7 @@ const Times = ({ type, perDay, medicineName, doseCount, setTimes, times }) => {
 
     useEffect(() => {
         const asd = [];
-        for (let i = 0; i < 3; i++) {
+        for (let i = 0; i < perDay; i++) {
             asd.push(
                 <TextInput
                     value={localTimes[i]}

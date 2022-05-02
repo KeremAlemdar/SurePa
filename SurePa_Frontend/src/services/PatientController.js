@@ -40,8 +40,23 @@ export const addMedicine = async (patientId, medicineName, type, doseCount, perD
     await times.forEach((time, id) => {
         collection.doc(medicineName).collection("times").doc(`time${id + 1}`).set({
             time: time,
+            doseNo: id + 1
         });
     });
+    const usages = [];
+    for (let i = 0; i < perDay; i++) {
+        usages[i] = false;
+    }
+    console.log(usages);
+    for (let i = 0; i < days; i++) {
+        startDate.setDate(startDate.getDate() + i - 1);
+        const date = startDate.getDate();
+        collection.doc(medicineName).collection("usage").doc(`day${i + 1}`).set({
+            day: date,
+            perDay: perDay,
+            doses: usages, 
+        });
+    }
     return true;
 };
 
@@ -61,10 +76,18 @@ export const deleteMedicine = (patientId, medicineId) => {
     });
 };
 
-export const acceptNotification = (patientId, notificationId) => {
-    db.collection("users").doc(patientId).collection("notifications").doc(notificationId).update({
-        status: "accepted"
-    })
+export const acceptNotification = (patientId, row) => {
+    db.collection("users").doc(patientId).collection("medicines")
+    .doc(row.name).collection('usage').doc(`day${1}`)
+    .onSnapshot(documentSnapshot => {
+        const { doses } = documentSnapshot.data();
+        doses[row.doseNo - 1] = true;
+        db.collection("users").doc(patientId).collection("medicines")
+        .doc(row.name).collection('usage').doc(`day${1}`)
+        .update({
+            doses: doses,
+        });
+    });
 };
 
 export const cancelNotification = (patientId, notificationId) => {

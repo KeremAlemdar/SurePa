@@ -1,26 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, Button, StyleSheet } from 'react-native';
-import { auth, db } from '../../services/DbCon';
-import { acceptNotification, cancelNotification, createNotification, deleteNotification, getNotifications } from '../../services/PatientController';
+import { auth } from '../../services/DbCon';
+import { acceptNotification, cancelNotification, getNotifications } from '../../services/PatientController';
 
 const NotificationsPage = ({ navigation }) => {
     const [notifications, setNotifications] = useState([]);
-    const [ready, setReady] = useState(false);
-    const now = new Date();
-
 
     useEffect(() => {
         getNotifications().then((notifications) => {
             setNotifications(notifications);
-            setReady(true);
         });
     }, []);
 
-
-    const createNotificationLocal = () => {
-        const { uid } = auth.currentUser;
-        createNotification(uid);
-    };
     const cancelNotificationLocal = (id) => {
         const { uid } = auth.currentUser;
         cancelNotification(uid, id);
@@ -29,27 +20,26 @@ const NotificationsPage = ({ navigation }) => {
         const { uid } = auth.currentUser;
         acceptNotification(uid, id);
     };
-    const deleteNotificationLocal = (id) => {
-        const { uid } = auth.currentUser;
-        deleteNotification(uid, id);
-    };
+
     return (
         <View>
             <Text> NotificationsPage </Text>
             <View style={styles.notificationList}>
-                {notifications.map((row) => {
+                {notifications.map((row, index) => {
                     return (
                         <View key={row.id} style={styles.singleMedicineRow}>
                             <Text style={styles.text}>{row.name}</Text>
                             <Text style={styles.text}>{row.status}</Text>
-                            <Button title="Sil" onPress={() => deleteNotificationLocal(row.id)}></Button>
-                            <Button title="İptal" onPress={() => cancelNotificationLocal(row.id)}></Button>
-                            <Button title="Kabul" onPress={() => acceptNotificationLocal(row.id)}></Button>
+                            <Button title="İptal" onPress={() => cancelNotificationLocal(row)}></Button>
+                            <Button title="Kabul" onPress={() => {
+                                acceptNotificationLocal(row);
+                                setNotifications([...notifications, notifications[index].status = "accepted"]);
+                            }}></Button>
                         </View>
                     )
                 })}
             </View>
-        </View>)
+        </View >)
 };
 const styles = StyleSheet.create({
     notificationList: {

@@ -47,7 +47,9 @@ const AddMedicinePageScreen = () => {
                 medicineName={medicineName}
                 doseCount={doseCount} 
                 setStartDate={setStartDate}
-                setEndDate={setEndDate}/>);
+                setEndDate={setEndDate}
+                startDate={startDate}
+                endDate={endDate} />);
             setPageName('PerDay');
         }
         else if (pageName === 'PerDay') {
@@ -67,7 +69,9 @@ const AddMedicinePageScreen = () => {
                 type={type}
                 doseCount={doseCount}
                 perDay={perDay}
-                times={times} />);
+                times={times} 
+                startDate={startDate}
+                endDate={endDate} />);
             setPageName('Finalize');
         }
     };
