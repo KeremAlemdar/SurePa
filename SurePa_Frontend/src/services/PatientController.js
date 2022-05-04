@@ -89,13 +89,11 @@ export const acceptNotification = (patientId, row) => {
                     doses: doses,
                 });
         });
+    db.collection("users").doc(patientId).collection("medicines").doc(row.name).update({
+        numberOfDose: row.numberOfDose - 1,
+    });
 };
 
-export const cancelNotification = (patientId, notificationId) => {
-    db.collection("users").doc(patientId).collection("notifications").doc(notificationId).update({
-        status: "cancelled"
-    })
-};
 
 //yeni fonksiyon
 export const deleteNotification = (patientId, notificationId) => {
@@ -133,6 +131,7 @@ export const getNotifications = () => {
                                 times: doc.data().times,
                                 usage: doc.data().doses,
                                 dayValue: doc.data().dayValue,
+                                numberOfDose: medicine.numberOfDose,
                             });
                         });
                         count++;
@@ -303,6 +302,20 @@ export const getContacts = () => {
     return new Promise((resolve, reject) => {
         db.collection("users").doc(uid).collection("contacts").get().then((querySnapshot) => {
             resolve(querySnapshot.docs.map(doc => doc.data()));
+        }).catch((error) => {
+            reject(error);
+        });
+    });
+};
+
+export const addBloodSugar = (props) => {
+    const { uid } = auth.currentUser;
+    return new Promise((resolve, reject) => {
+        db.collection("users").doc(uid).collection("bloodSugar").doc().set({
+            ...props,
+            uid: uid
+        }).then(() => {
+            resolve("success");
         }).catch((error) => {
             reject(error);
         });

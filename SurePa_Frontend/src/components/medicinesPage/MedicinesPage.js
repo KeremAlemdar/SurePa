@@ -1,17 +1,21 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, RefreshControl } from 'react-native';
 import { auth, db } from '../../services/DbCon';
 import { deleteMedicine } from '../../services/PatientController';
 import commonStyle from '../../commonStyle';
 import CommonButton from '../button';
 import NotificationCard from '../notificationCard/notificationCard';
 
+const wait = (timeout) => {
+    return new Promise(resolve => setTimeout(resolve, timeout));
+}
 
 const MedicinesPage = ({ navigation }) => {
     const [directPage, setDirectPage] = useState('');
     const [medicines, setMedicines] = useState([]);
+    const [refreshing, setRefreshing] = React.useState(false);
 
-    useEffect(() => {
+    const getMedicines = () => {
         const arr = [];
         const { uid } = auth.currentUser;
 
@@ -21,6 +25,16 @@ const MedicinesPage = ({ navigation }) => {
             });
             setMedicines(arr);
         })
+    };
+
+    const onRefresh = React.useCallback(() => {
+        setRefreshing(true);
+        getMedicines();
+        wait(2000).then(() => setRefreshing(false));
+    }, []);
+
+    useEffect(() => {
+        getMedicines();
     }, []);
 
     useEffect(() => {
@@ -41,7 +55,13 @@ const MedicinesPage = ({ navigation }) => {
     };
 
     return (
-        <ScrollView style={commonStyle.mainDiv}>
+        <ScrollView style={commonStyle.mainDiv}
+            refreshControl={
+                <RefreshControl
+                    refreshing={refreshing}
+                    onRefresh={onRefresh}
+                />
+            }>
             <View>
                 <CommonButton text='Add Medicine' onPress={() => addMedicine('AddMedicinePageScreen')} />
                 <CommonButton text='Add Activity' onPress={() => addMedicine('AddActivityPageScreen')} />
@@ -50,7 +70,7 @@ const MedicinesPage = ({ navigation }) => {
             <View style={styles.medicineList}>
                 {medicines.map((row, id) => {
                     return (
-                        <NotificationCard key={id} status={'non'}>
+                        <NotificationCard key={id} status={row.currentData.numberOfDose > 5 ? 'non' : 'expired'}>
                             <Text style={styles.text}>{`Name: ${row.currentData.name}\nRemaining: ${row.currentData.numberOfDose}`}</Text>
                             <CommonButton type={'delete'} text='Sil' onPress={() => deleteMedicineLocal(row.currentData.name)} />
                         </NotificationCard>

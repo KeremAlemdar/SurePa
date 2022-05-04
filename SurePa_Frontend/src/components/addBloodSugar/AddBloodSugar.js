@@ -3,12 +3,11 @@ import { View, StyleSheet, Text, Switch } from 'react-native';
 import DatePicker from 'react-native-date-picker'
 import { TextInput } from 'react-native-element-textinput';
 import commonStyle from '../../commonStyle';
-import { addActivity } from '../../services/PatientController';
 import { auth } from '../../services/DbCon';
+import { addBloodSugar } from '../../services/PatientController';
 import CommonButton from '../button';
-import { SafeAreaView } from 'react-native-safe-area-context';
-  
-  
+
+
 const AddBloodSugar = () => {
     const [bloodSugar, setBloodSugar] = useState('');
     const [hungry, setHungry] = useState(false);
@@ -19,7 +18,7 @@ const AddBloodSugar = () => {
     const [openTime, setOpenTime] = useState(false);
 
     const finalize = () => {
-        addBloodSugar(auth.currentUser.uid, bloodSugar, hungry, date, time);
+        addBloodSugar({bloodSugar: bloodSugar, hungry: hungry, date: date, time: time});
     };
     const toggleSwitch = (value) => {
         setHungry(value);
@@ -38,18 +37,17 @@ const AddBloodSugar = () => {
                 onChangeText={changes => setBloodSugar(changes)}
                 errorMessage={'asd'}
             />
-            <SafeAreaView style={{flex:1}}>
-                <View style={styles.container}>
-                    <Text style={styles.text}>
-                        {hungry ? 'Hungry' : 'Satiated'}
-                    </Text>
-                    <Switch
-                        style= {{marginTop: 20}}
-                        onValueChange={toggleSwitch}
-                        value={hungry}
-                    />
-                </View>
-            </SafeAreaView>
+            <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center' }}>
+                <Switch
+                    style={{ marginTop: 20 }}
+                    onValueChange={toggleSwitch}
+                    value={hungry}
+                />
+                <Text style={styles.text}>
+                    {hungry ? 'Hungry' : 'Satiated'}
+                </Text>
+
+            </View>
             <TextInput
                 value={hungry2}
                 style={commonStyle.input}
@@ -63,39 +61,39 @@ const AddBloodSugar = () => {
                 errorMessage={'asd'}
             />
             <View style={styles.dateline}>
-                    <Text style={styles.text}>Date: </Text>
-                    <Text style={styles.text1} onPress={() => setOpenDate(true)}>{date.toLocaleDateString()}</Text>
-                    <DatePicker
-                        modal
-                        open={openDate}
-                        date={date}
-                        mode="date"
-                        onConfirm={(date) => {
-                            setOpenDate(false)
-                            setDate(date)
-                        }}
-                        onCancel={() => {
-                            setOpenDate(false)
-                        }}
-                    />
-                </View>
-                <View style={[styles.dateline, { marginBottom: 14 }]}>
-                    <Text style={styles.text}>Time: </Text>
-                    <Text style={styles.text1} onPress={() => setOpenTime(true)}>{time.toLocaleTimeString()}</Text>
-                    <DatePicker
-                        modal
-                        open={openTime}
-                        date={time}
-                        mode="time"
-                        onConfirm={(date) => {
-                            setOpenTime(false)
-                            setTime(date)
-                        }}
-                        onCancel={() => {
-                            setOpenTime(false)
-                        }}
-                    />
-                </View>
+                <Text style={styles.text}>Date: </Text>
+                <Text style={styles.text1} onPress={() => setOpenDate(true)}>{date.toLocaleDateString()}</Text>
+                <DatePicker
+                    modal
+                    open={openDate}
+                    date={date}
+                    mode="date"
+                    onConfirm={(date) => {
+                        setOpenDate(false)
+                        setDate(date)
+                    }}
+                    onCancel={() => {
+                        setOpenDate(false)
+                    }}
+                />
+            </View>
+            <View style={[styles.dateline, { marginBottom: 14 }]}>
+                <Text style={styles.text}>Time: </Text>
+                <Text style={styles.text1} onPress={() => setOpenTime(true)}>{time.toLocaleTimeString()}</Text>
+                <DatePicker
+                    modal
+                    open={openTime}
+                    date={time}
+                    mode="time"
+                    onConfirm={(date) => {
+                        setOpenTime(false)
+                        setTime(date)
+                    }}
+                    onCancel={() => {
+                        setOpenTime(false)
+                    }}
+                />
+            </View>
             <CommonButton text='Add' onPress={finalize}></CommonButton>
         </View>
     );
@@ -124,7 +122,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center'
     }
-    
+
 });
-      
+
 export default AddBloodSugar;

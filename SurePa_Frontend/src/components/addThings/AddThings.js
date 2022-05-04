@@ -1,14 +1,19 @@
 import React, { useEffect, useState } from 'react';
-import { ScrollView, View } from 'react-native';
+import { ScrollView, View, RefreshControl } from 'react-native';
 import commonStyle from '../../commonStyle';
 import { getCaregivers, getMeetings } from '../../services/PatientController';
 import CommonButton from '../button';
 import CardView from '../cardView';
 
+const wait = (timeout) => {
+    return new Promise(resolve => setTimeout(resolve, timeout));
+}
+
 const AddThings = ({ navigation }) => {
     const [directPage, setDirectPage] = useState('');
     const [caregivers, setCaregivers] = useState([]);
     const [meetings, setMeetings] = useState([]);
+    const [refreshing, setRefreshing] = useState(false);
 
     const buttons = (
         <View>
@@ -18,6 +23,21 @@ const AddThings = ({ navigation }) => {
         </View>
     );
 
+    const getThings = () => {
+        getCaregivers().then((tcaregivers) => {
+            setCaregivers(tcaregivers);
+        });
+        getMeetings().then((tmeetings) => {
+            setMeetings(tmeetings);
+        });
+    };
+
+    const onRefresh = React.useCallback(() => {
+        setRefreshing(true);
+        getThings();
+        wait(2000).then(() => setRefreshing(false));
+    }, []);
+
     useEffect(() => {
         if (directPage !== '') {
             navigation.navigate(directPage);
@@ -25,16 +45,17 @@ const AddThings = ({ navigation }) => {
     }, [directPage]);
 
     useEffect(() => {
-        getCaregivers().then((tcaregivers) => {
-            setCaregivers(tcaregivers);
-        });
-        getMeetings().then((tmeetings) => {
-            setMeetings(tmeetings);
-        });
+        getThings();
     }, []);
 
     return (
-        <ScrollView style={commonStyle.mainDiv}>
+        <ScrollView style={commonStyle.mainDiv}
+            refreshControl={
+                <RefreshControl
+                    refreshing={refreshing}
+                    onRefresh={onRefresh}
+                />
+            }>
             {buttons}
             <View style={{ marginTop: 20 }}>
                 {
