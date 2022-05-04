@@ -45,7 +45,7 @@ const MedicinesPage = ({ navigation }) => {
             <View>
                 <CommonButton text='Add Medicine' onPress={() => addMedicine('AddMedicinePageScreen')} />
                 <CommonButton text='Add Activity' onPress={() => addMedicine('AddActivityPageScreen')} />
-                <CommonButton text='Add Ölçüm' onPress={() => addMedicine('AddMedicinePageScreen')} />
+                <CommonButton text='Add Blood Sugar' onPress={() => addMedicine('AddBloodSugar')} />
             </View>
             <View style={styles.medicineList}>
                 {medicines.map((row, id) => {

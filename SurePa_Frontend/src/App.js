@@ -6,6 +6,7 @@ import Login from './components/loginPage';
 import AppCalendar from './components/calendar';
 import HomePage from './components/homePage';
 import Signup from './components/signUpPage';
+import AddBloodSugar from './components/addBloodSugar';
 import ProfilePage from './components/profilePage';
 import AddMedicinePageScreen from './components/addMedicinePageScreen';
 import AddCareGiverPage from './components/addCareGiverPage';
@@ -24,6 +25,7 @@ function MedicinesPageStackScreen() {
         { name: 'MedicinesPage', component: MedicinesPage, options: { headerShown: false } },
         { name: 'AddMedicinePageScreen', component: AddMedicinePageScreen, options: { headerShown: false } },
         { name: 'AddActivityPageScreen', component: AddActivityPageScreen, options: { headerShown: false } },
+        { name: 'AddBloodSugar', component: AddBloodSugar, options: { headerShown: false } },
     ]
     return (
         <MedicinesPageStack.Navigator >
