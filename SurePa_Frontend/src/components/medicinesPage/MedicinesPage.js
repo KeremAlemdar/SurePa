@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, Button, StyleSheet, Pressable } from 'react-native';
+import { View, Text, Button, StyleSheet, Pressable, ScrollView } from 'react-native';
 import { auth, db } from '../../services/DbCon';
 import { returnPatient } from '../../services/PatientController';
 import { deleteMedicine } from '../../services/PatientController';
 import commonStyle from '../../commonStyle';
 import CommonButton from '../button';
+import NotificationCard from '../notificationCard/notificationCard';
 
 
 const MedicinesPage = ({ navigation }) => {
@@ -55,7 +56,7 @@ const MedicinesPage = ({ navigation }) => {
     };
 
     return (
-        <View style={commonStyle.mainDiv}>
+        <ScrollView style={commonStyle.mainDiv}>
             <View>
                 <CommonButton text='Add Medicine' onPress={() => addMedicine('AddMedicinePageScreen')} />
                 <CommonButton text='Add Activity' onPress={() => addMedicine('AddActivityPageScreen')} />
@@ -64,18 +65,15 @@ const MedicinesPage = ({ navigation }) => {
             <View style={styles.medicineList}>
                 {medicines.map((row, id) => {
                     return (
-                        <View key={id} style={styles.singleMedicineRow}>
-                            <Text style={styles.text}>{row.currentData.name}</Text>
-                            <Text style={styles.text}>{row.currentData.numberOfDose}</Text>
+                        <NotificationCard status={'non'}>
+                            <Text style={styles.text}>{`Name: ${row.currentData.name}\nRemaining: ${row.currentData.numberOfDose}`}</Text>
                             <CommonButton text='Sil' onPress={deleteMedicineLocal} />
-                        </View>
+                        </NotificationCard>
                     )
                 }
                 )}
             </View>
-            {/* {printMedicines} */}
-            {/* <Button title="Printle" onPress={() => { console.log(medicines[0].currentData.MG) }}></Button> */}
-        </View>
+        </ScrollView>
     )
 };
 const styles = StyleSheet.create({

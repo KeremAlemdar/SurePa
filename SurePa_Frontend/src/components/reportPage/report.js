@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, Image, StyleSheet, Button, TouchableOpacity } from 'react-native';
+import { View, Text, Image, StyleSheet, Button, TouchableOpacity, ScrollView } from 'react-native';
 import PieChart from 'react-native-pie-chart';
+import commonStyle from '../../commonStyle';
 
 const ReportPage = ({ navigation }) => {
 
@@ -56,7 +57,7 @@ const ReportPage = ({ navigation }) => {
 
         const widthAndHeight = 100;
         const series = [usedCount, totalUse - usedCount];
-        const sliceColor = ["green", "red"];
+        const sliceColor = ["#00ff00", "gray"];
 
         const usage = () => {
             return <View style={styles.usageCircleWrapper}>
@@ -68,7 +69,7 @@ const ReportPage = ({ navigation }) => {
                                 key={indexInner}
                                 style={[styles.box,
                                 {
-                                    backgroundColor: dayList ? "green" : "red",
+                                    backgroundColor: dayList ? "#00ff00" : "gray",
                                 }
                                 ]}
                             />
@@ -111,7 +112,6 @@ const ReportPage = ({ navigation }) => {
     }
 
     const displayListMedicineList = () => {
-
         return <>
             <View>
                 {data.medicines.map(medicine => (
@@ -122,10 +122,10 @@ const ReportPage = ({ navigation }) => {
     }
 
     return (
-        <View style={styles.container}>
+        <ScrollView style={[commonStyle.mainDiv]}>
             {data
                 ? <>
-                    <View style={styles.contentWrapper}>
+                    <View style={commonStyle.container}>
                         <Text style={styles.header}>Weekly Report</Text>
                         <Text>
                             <Text style={styles.reportHeader}>Date: </Text>
@@ -149,21 +149,11 @@ const ReportPage = ({ navigation }) => {
                 </>
                 : <Text>Loading ...</Text>
             }
-        </View>
+        </ScrollView>
     );
 }
 
 const styles = StyleSheet.create({
-    container: {
-        padding: 20,
-        flex: 1,
-        flexDirection: 'column',
-        width: "100%"
-    },
-    contentWrapper: {
-
-        justifyContent: 'flex-start'
-    },
     header: {
         fontSize: 21,
         fontWeight: 'bold',
@@ -194,6 +184,7 @@ const styles = StyleSheet.create({
         display: "flex",
         justifyContent: 'center',
         flexDirection: 'row',
+        marginBottom: 20,
     },
     usageCircleWrapper: {
         display: "flex",

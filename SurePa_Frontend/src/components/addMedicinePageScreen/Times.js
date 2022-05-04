@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, Pressable } from 'react-native';
 import commonStyle from '../../commonStyle';
 import { TextInput } from 'react-native-element-textinput';
 
-const Times = ({ type, perDay, medicineName, doseCount, setTimes, times }) => {
+const Times = ({ perDay, setTimes }) => {
     const [inputs, setInputs] = useState([]);
     const [localTimes, setLocalTimes] = useState([]);
 
@@ -41,7 +41,6 @@ const Times = ({ type, perDay, medicineName, doseCount, setTimes, times }) => {
 
     return (
         <View>
-            <Text>{medicineName}</Text>
             {
                 inputs.map((input, index) => {
                     return (

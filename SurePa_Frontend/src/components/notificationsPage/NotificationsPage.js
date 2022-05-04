@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, Button, StyleSheet } from 'react-native';
+import { View, Text, Button, StyleSheet, ScrollView } from 'react-native';
 import { auth } from '../../services/DbCon';
+import commonStyle from '../../commonStyle';
 import { acceptNotification, cancelNotification, getNotifications } from '../../services/PatientController';
+import CommonButton from '../button/Button';
+import NotificationCard from '../notificationCard/notificationCard';
 
 const NotificationsPage = ({ navigation }) => {
     const [notifications, setNotifications] = useState([]);
@@ -40,49 +43,36 @@ const NotificationsPage = ({ navigation }) => {
         acceptNotification(uid, notif);
     };
     return (
-        <View>
-            <Text> NotificationsPage </Text>
+        <ScrollView style={commonStyle.mainDiv}>
             <View style={styles.notificationList}>
                 {notifications.map((row, index) => {
                     return (
-                        <View key={row.id} style={styles.singleMedicineRow}>
-                            <Text style={styles.text}>{row.name}</Text>
-                            <Text style={styles.text}>{row.status}</Text>
-                            <Button title="İptal" onPress={() => cancelNotificationLocal(row)}></Button>
-                            <Button title="Kabul" onPress={() => {
-                                acceptNotificationLocal(row);
-                                const copyNotifs = [...notifications];
-                                copyNotifs[index].status = "accepted";
-                                setNotifications(copyNotifs);
-                            }}></Button>
-                        </View>
+                        <NotificationCard status={row.status}>
+                            <Text>{`${row.name}    ${row.time}`}</Text>
+                            {
+                                row.status !== 'accepted' ? (
+                                    <>
+                                        <CommonButton text="İptal" onPress={() => cancelNotificationLocal(row)}></CommonButton>
+                                        <CommonButton text="Kabul" onPress={() => {
+                                            acceptNotificationLocal(row);
+                                            const copyNotifs = [...notifications];
+                                            copyNotifs[index].status = "accepted";
+                                            setNotifications(copyNotifs);
+                                        }}></CommonButton>
+                                    </>
+                                ) : null
+                            }
+                        </NotificationCard>
                     )
                 })}
             </View>
-        </View >)
+        </ScrollView >)
 };
 const styles = StyleSheet.create({
     notificationList: {
         display: 'flex',
         flexDirection: 'column',
-        marginBottom: 5,
-        marginTop: 25
-    },
-    singleMedicineRow: {
-        display: 'flex',
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        borderColor: 'black',
-        marginRight: '5%',
-        marginLeft: '5%',
-        borderStyle: 'solid',
-        borderWidth: 1,
-        marginBottom: 5,
-        paddingRight: 5,
-        paddingLeft: 5,
-    },
-    text: {
-        fontSize: 18
+        marginBottom: 15,
     }
 });
 

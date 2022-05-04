@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { Picker } from '@react-native-picker/picker';
 import DatePicker from 'react-native-date-picker';
 
-const PerDay = ({ type, perDay, setPerDay, medicineName, doseCount, setStartDate, setEndDate, startDate, endDate }) => {
+const PerDay = ({ perDay, setPerDay, setStartDate, setEndDate, startDate, endDate }) => {
     const [localPerDay, setLocalPerDay] = useState(perDay);
     const [startDateOpen, setStartDateOpen] = useState(false);
     const [endDateOpen, setEndDateOpen] = useState(false);
@@ -12,14 +12,6 @@ const PerDay = ({ type, perDay, setPerDay, medicineName, doseCount, setStartDate
 
     return (
         <View>
-            <View style={styles.header}>
-                <Text style={styles.headerText}>{medicineName}</Text>
-                <Text>{type}</Text>
-                <Text>{doseCount}</Text>
-            </View>
-            <View style={styles.divider}>
-
-            </View>
             <View>
                 <Picker
                     selectedValue={localPerDay}

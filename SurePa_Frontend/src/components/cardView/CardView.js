@@ -7,7 +7,7 @@ const CardView = ({
     children
 }) => {
     return (
-        <View style={[styles.card, styles.elevation, {zIndex: -10}]}>
+        <View style={[styles.card, styles.elevation, { zIndex: -10 }]}>
             <View>
                 <Text style={styles.heading}>
                     {title}
@@ -39,8 +39,9 @@ const styles = StyleSheet.create({
         borderRadius: 8,
         paddingVertical: 20,
         paddingHorizontal: 25,
-        width: '100%',
         marginVertical: 10,
+        marginRight: 10,
+        marginLeft: 10,
     },
     elevation: {
         elevation: 5,

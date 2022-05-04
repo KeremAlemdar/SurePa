@@ -35,5 +35,10 @@ export default StyleSheet.create({
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center'
+    },
+    headerText: {
+        fontSize: 15,
+        fontWeight: '600',
+        color: 'black',
     }
 });

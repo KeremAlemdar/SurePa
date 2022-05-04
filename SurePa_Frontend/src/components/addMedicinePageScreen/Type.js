@@ -2,16 +2,10 @@ import { View, Text, StyleSheet, Pressable, Switch } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { Picker } from '@react-native-picker/picker';
 
-const Type = ({ type, setType, medicineName }) => {
+const Type = ({ type, setType }) => {
     const [localBirim, setLocalBirim] = useState(type);
     return (
         <View>
-            <View style={styles.header}>
-                <Text style={styles.headerText}>{medicineName}</Text>
-            </View>
-            <View style={styles.divider}>
-
-            </View>
             <View>
                 <Picker
                     selectedValue={localBirim}

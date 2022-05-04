@@ -28,12 +28,11 @@ const AddMedicinePageScreen = () => {
             setPageContent(<Type
                 type={type}
                 setType={setType}
-                medicineName={medicineName} />);
+            />);
             setPageName('Type');
         }
         else if (pageName === 'Type' && type !== 'Please Chose') {
             setPageContent(<Dose
-                medicineName={medicineName}
                 type={type}
                 doseCount={doseCount}
                 setDoseCount={setDoseCount} />);
@@ -41,11 +40,8 @@ const AddMedicinePageScreen = () => {
         }
         else if (pageName === 'NumberOfTimes') {
             setPageContent(<PerDay
-                type={type}
                 perDay={perDay}
                 setPerDay={setPerDay}
-                medicineName={medicineName}
-                doseCount={doseCount} 
                 setStartDate={setStartDate}
                 setEndDate={setEndDate}
                 startDate={startDate}
@@ -54,13 +50,9 @@ const AddMedicinePageScreen = () => {
         }
         else if (pageName === 'PerDay') {
             setPageContent(<Times
-                type={type}
                 perDay={perDay}
-                setPerDay={setPerDay}
-                medicineName={medicineName}
-                doseCount={doseCount}
                 setTimes={setTimes}
-                times={times} />);
+            />);
             setPageName('Times');
         }
         else if (pageName === 'Times') {
@@ -69,7 +61,7 @@ const AddMedicinePageScreen = () => {
                 type={type}
                 doseCount={doseCount}
                 perDay={perDay}
-                times={times} 
+                times={times}
                 startDate={startDate}
                 endDate={endDate} />);
             setPageName('Finalize');
@@ -78,25 +70,38 @@ const AddMedicinePageScreen = () => {
 
     const goBack = () => {
         if (pageName === 'Type') {
-            setPageContent(<Name medicineName={medicineName} setMedicineName={setMedicineName} />);
+            setPageContent(<Name
+                medicineName={medicineName}
+                setMedicineName={setMedicineName} />);
             setPageName('Name');
         } else if (pageName === 'NumberOfTimes') {
-            setPageContent(<Type type={type} setType={setType} medicineName={medicineName} />);
+            setPageContent(<Type
+                type={type}
+                setType={setType}
+            />);
             setPageName('Type');
         } else if (pageName === 'PerDay') {
             setPageContent(<Dose
-                medicineName={medicineName}
                 type={type}
                 doseCount={doseCount}
                 setDoseCount={setDoseCount} />);
             setPageName('NumberOfTimes');
 
         } else if (pageName === 'Times') {
-            setPageContent(<PerDay type={type} perDay={perDay} setPerDay={setPerDay} medicineName={medicineName} doseCount={doseCount} />);
+            setPageContent(<PerDay
+                perDay={perDay}
+                setPerDay={setPerDay}
+                setStartDate={setStartDate}
+                setEndDate={setEndDate}
+                startDate={startDate}
+                endDate={endDate} />);
             setPageName('PerDay');
 
         } else if (pageName === 'Finalize') {
-            setPageContent(<Times type={type} perDay={perDay} setPerDay={setPerDay} medicineName={medicineName} doseCount={doseCount} setTimes={setTimes} times={times} />);
+            setPageContent(<Times
+                perDay={perDay}
+                setTimes={setTimes}
+            />);
             setPageName('Times');
         }
 
@@ -105,7 +110,7 @@ const AddMedicinePageScreen = () => {
     const finalize = () => {
         addMedicine(auth.currentUser.uid, medicineName, type, doseCount, perDay, times, startDate, endDate);
     };
-    
+
     // const resetForm = () => {
     //     setMedicineName('');
     //     setType('Please Select');
@@ -115,7 +120,14 @@ const AddMedicinePageScreen = () => {
     // }
     return (
         <View style={commonStyle.mainDiv}>
-            <Text>sdfsdfsd</Text>
+            <View style={commonStyle.header}>
+                {medicineName !== '' && <Text style={commonStyle.headerText}>{'Name: ' + medicineName}</Text>}
+                {type !== 'Please Chose' && <Text style={commonStyle.headerText}>{'Type: ' + type}</Text>}
+                {doseCount !== 0 && <Text style={commonStyle.headerText}>{'Dose Count: ' + doseCount}</Text>}
+                {perDay !== 'Please Chose' && <Text style={commonStyle.headerText}>{'Per day: ' + perDay}</Text>}
+                {perDay !== 'Please Chose' && <Text style={commonStyle.headerText}>{'Start date: ' + startDate.toLocaleDateString()}</Text>}
+                {perDay !== 'Please Chose' && <Text style={commonStyle.headerText}>{'End date: ' + endDate.toLocaleDateString()}</Text>}
+            </View>
             {pageContent}
             {pageName === 'Finalize' ?
                 (<CommonButton text="Add" onPress={finalize} />)

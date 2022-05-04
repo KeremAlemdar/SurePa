@@ -3,12 +3,10 @@ import React from 'react';
 import commonStyle from '../../commonStyle';
 import { TextInput } from 'react-native-element-textinput';
 
-const Dose = ({ medicineName, type, doseCount, setDoseCount }) => {
+const Dose = ({ type, doseCount, setDoseCount }) => {
 
     return (
         <View>
-            <Text>{medicineName}</Text>
-            <Text>{type}</Text>
             <TextInput
                 value={doseCount}
                 style={commonStyle.input}
