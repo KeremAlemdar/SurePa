@@ -69,8 +69,8 @@ export const addActivity = (patientId, name, duration) => {
     })
 };
 
-export const deleteMedicine = (patientId, medicineId) => {
-    db.collection("users").doc(patientId).collection("medicines").doc(medicineId).delete().then(() => {
+export const deleteMedicine = (patientId, selectedMedicine) => {
+    db.collection("users").doc(patientId).collection("medicines").doc(selectedMedicine).delete().then(() => {
         return ("Document successfully deleted!");
     }).catch((error) => {
         return ("Error removing document: ", error);
@@ -118,6 +118,7 @@ export const getNotifications = () => {
     const { uid } = auth.currentUser;
     const data = [];
     const now = new Date();
+    let count = 0;
     const formattedDate = now.getFullYear() + "-" + (now.getMonth() + 1) + "-" + now.getDate();
     return new Promise((resolve, reject) => {
         returnPatientMedicines(uid).then((medicines) => {
@@ -134,9 +135,9 @@ export const getNotifications = () => {
                                 dayValue: doc.data().dayValue,
                             });
                         });
-
+                        count++;
                     });
-                if (data.length === medicines.length){
+                if (count === medicines.length) {
                     resolve(data);
                 }
             });

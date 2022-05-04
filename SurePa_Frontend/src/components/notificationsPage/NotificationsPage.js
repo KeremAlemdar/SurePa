@@ -11,8 +11,9 @@ const NotificationsPage = ({ navigation }) => {
 
     useEffect(() => {
         const now = new Date();
+        const arr = [];
         getNotifications().then((notifications) => {
-            const notifs = notifications.map((notification) => {
+            notifications.forEach((notification) => {
                 const times = notification.times.map((time, id) => {
                     const pillTime = new Date();
                     const hour = time.split(":")[0];
@@ -22,15 +23,18 @@ const NotificationsPage = ({ navigation }) => {
                         (now.getTime() < pillTime.getTime() ? "waiting" : "expired");
                     return {
                         name: notification.name,
-                        time: time,
+                        timeVal: time,
+                        time: pillTime,
                         status: stat,
                         dayValue: notification.dayValue,
                         id: id
                     }
                 });
-                return times;
+                arr.push(...times);
             });
-            setNotifications(notifs[0]);
+            arr.sort((a, b) => a.time.getTime() - b.time.getTime());
+            setNotifications(arr);
+
         });
     }, []);
 
@@ -47,10 +51,10 @@ const NotificationsPage = ({ navigation }) => {
             <View style={styles.notificationList}>
                 {notifications.map((row, index) => {
                     return (
-                        <NotificationCard status={row.status}>
-                            <Text>{`${row.name}    ${row.time}`}</Text>
+                        <NotificationCard key={index} status={row.status}>
+                            <Text>{`${row.name}    ${row.timeVal}`}</Text>
                             {
-                                row.status !== 'accepted' ? (
+                                row.status !== 'accepted' && (
                                     <>
                                         <CommonButton text="İptal" onPress={() => cancelNotificationLocal(row)}></CommonButton>
                                         <CommonButton text="Kabul" onPress={() => {
@@ -58,13 +62,15 @@ const NotificationsPage = ({ navigation }) => {
                                             const copyNotifs = [...notifications];
                                             copyNotifs[index].status = "accepted";
                                             setNotifications(copyNotifs);
-                                        }}></CommonButton>
+                                        }}>
+                                        </CommonButton>
                                     </>
-                                ) : null
+                                )
                             }
                         </NotificationCard>
                     )
-                })}
+                })
+                }
             </View>
         </ScrollView >)
 };

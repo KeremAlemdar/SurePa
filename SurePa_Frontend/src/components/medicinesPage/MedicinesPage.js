@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, Button, StyleSheet, Pressable, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, ScrollView } from 'react-native';
 import { auth, db } from '../../services/DbCon';
-import { returnPatient } from '../../services/PatientController';
 import { deleteMedicine } from '../../services/PatientController';
 import commonStyle from '../../commonStyle';
 import CommonButton from '../button';
@@ -11,15 +10,17 @@ import NotificationCard from '../notificationCard/notificationCard';
 const MedicinesPage = ({ navigation }) => {
     const [directPage, setDirectPage] = useState('');
     const [medicines, setMedicines] = useState([]);
-    const [ready, setReady] = useState(false);
-
 
     useEffect(() => {
-        getMedicines();
-        setReady(true);
-        if (medicines.length != 0) {
-            console.log(medicines[0].currentData);
-        }
+        const arr = [];
+        const { uid } = auth.currentUser;
+
+        db.collection("users").doc(uid).collection("medicines").get().then((querySnapshot) => {
+            querySnapshot.forEach((doc, id) => {
+                arr.push({ id: id, currentData: doc.data() });
+            });
+            setMedicines(arr);
+        })
     }, []);
 
     useEffect(() => {
@@ -28,28 +29,12 @@ const MedicinesPage = ({ navigation }) => {
         }
     }, [directPage]);
 
-    const getMedicines = () => {
-        const arr = [];
-        const { uid } = auth.currentUser;
-        let currentData;
-        let count = 0;
 
-        db.collection("users").doc(uid).collection("medicines").get().then((querySnapshot) => {
-            querySnapshot.forEach((doc) => {
-                currentData = doc.data();
-                arr.push({ id: count, currentData });
-                count = count + 1;
-            });
-            setMedicines(arr);
-        })
-    };
-    const printMedicines = () => {
-        return (<Text>deneme</Text>);
-    };
-
-    const deleteMedicineLocal = () => {
+    const deleteMedicineLocal = (selectedMedicine) => {
         const { uid } = auth.currentUser;
-        deleteMedicine(uid, selectedMedicine.name);
+        const newMedicines = medicines.filter(medicine => medicine.currentData.name !== selectedMedicine);
+        setMedicines(newMedicines);
+        deleteMedicine(uid, selectedMedicine);
     };
     const addMedicine = (where) => {
         setDirectPage(where);
@@ -65,9 +50,9 @@ const MedicinesPage = ({ navigation }) => {
             <View style={styles.medicineList}>
                 {medicines.map((row, id) => {
                     return (
-                        <NotificationCard status={'non'}>
+                        <NotificationCard key={id} status={'non'}>
                             <Text style={styles.text}>{`Name: ${row.currentData.name}\nRemaining: ${row.currentData.numberOfDose}`}</Text>
-                            <CommonButton text='Sil' onPress={deleteMedicineLocal} />
+                            <CommonButton type={'delete'} text='Sil' onPress={() => deleteMedicineLocal(row.currentData.name)} />
                         </NotificationCard>
                     )
                 }
