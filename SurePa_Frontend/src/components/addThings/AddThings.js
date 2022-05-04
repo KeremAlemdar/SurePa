@@ -18,8 +18,8 @@ const AddThings = ({ navigation }) => {
     const buttons = (
         <View>
             <CommonButton text="Add Caregiver" onPress={() => setDirectPage('AddCareGiverPage')} />
-            <CommonButton text="Add randevu" onPress={() => setDirectPage('AddMeetingPage')} />
-            <CommonButton text="Add contact" onPress={() => onSubmit()} />
+            <CommonButton text="Add Meeting" onPress={() => setDirectPage('AddMeetingPage')} />
+            <CommonButton text="Add Contact" onPress={() => onSubmit()} />
         </View>
     );
 
