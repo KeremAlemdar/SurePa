@@ -1,16 +1,18 @@
 import React, { useState } from 'react';
-import { View, StyleSheet, Text } from 'react-native';
+import { View, StyleSheet, Text, Switch } from 'react-native';
 import DatePicker from 'react-native-date-picker'
 import { TextInput } from 'react-native-element-textinput';
 import commonStyle from '../../commonStyle';
 import { addActivity } from '../../services/PatientController';
 import { auth } from '../../services/DbCon';
 import CommonButton from '../button';
+import { SafeAreaView } from 'react-native-safe-area-context';
   
   
 const AddBloodSugar = () => {
     const [bloodSugar, setBloodSugar] = useState('');
-    const [hungry, setHungry] = useState('');
+    const [hungry, setHungry] = useState(false);
+    const [hungry2, setHungry2] = useState('');
     const [date, setDate] = useState(new Date());
     const [time, setTime] = useState(new Date());
     const [openDate, setOpenDate] = useState(false);
@@ -19,7 +21,9 @@ const AddBloodSugar = () => {
     const finalize = () => {
         addBloodSugar(auth.currentUser.uid, bloodSugar, hungry, date, time);
     };
-    
+    const toggleSwitch = (value) => {
+        setHungry(value);
+    };
     return (
         <View style={commonStyle.mainDiv}>
             <TextInput
@@ -34,8 +38,20 @@ const AddBloodSugar = () => {
                 onChangeText={changes => setBloodSugar(changes)}
                 errorMessage={'asd'}
             />
+            <SafeAreaView style={{flex:1}}>
+                <View style={styles.container}>
+                    <Text style={styles.text}>
+                        {hungry ? 'Hungry' : 'Satiated'}
+                    </Text>
+                    <Switch
+                        style= {{marginTop: 20}}
+                        onValueChange={toggleSwitch}
+                        value={hungry}
+                    />
+                </View>
+            </SafeAreaView>
             <TextInput
-                value={hungry}
+                value={hungry2}
                 style={commonStyle.input}
                 inputStyle={commonStyle.inputStyle}
                 labelStyle={commonStyle.labelStyle}
@@ -43,7 +59,7 @@ const AddBloodSugar = () => {
                 placeholder='Hungry/Satiated'
                 placeholderTextColor="gray"
                 focusColor="blue"
-                onChangeText={changes => setHungry(changes)}
+                onChangeText={changes => setHungry2(changes)}
                 errorMessage={'asd'}
             />
             <View style={styles.dateline}>
@@ -102,7 +118,13 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         marginHorizontal: 20
+    },
+    container: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center'
     }
+    
 });
       
 export default AddBloodSugar;
