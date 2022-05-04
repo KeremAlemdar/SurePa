@@ -37,24 +37,25 @@ export const addMedicine = async (patientId, medicineName, type, doseCount, perD
         endDate: endDate,
         numOfDays: days,
     });
-    await times.forEach((time, id) => {
-        collection.doc(medicineName).collection("times").doc(`time${id + 1}`).set({
-            time: time,
-            doseNo: id + 1
-        });
+    const timesArr = [];
+    await times.forEach((time) => {
+        timesArr.push(time);
     });
     const usages = [];
     for (let i = 0; i < perDay; i++) {
         usages[i] = false;
     }
     console.log(usages);
+    const tempDay = new Date(startDate);
     for (let i = 0; i < days; i++) {
-        startDate.setDate(startDate.getDate() + i - 1);
-        const date = startDate.getDate();
+        tempDay.setDate(startDate.getDate() + i);
+        const formattedDate = tempDay.getFullYear() + "-" + (tempDay.getMonth() + 1) + "-" + tempDay.getDate();
         collection.doc(medicineName).collection("usage").doc(`day${i + 1}`).set({
-            day: date,
+            day: formattedDate,
             perDay: perDay,
-            doses: usages, 
+            doses: usages,
+            times: timesArr,
+            dayValue: i + 1
         });
     }
     return true;
@@ -78,16 +79,16 @@ export const deleteMedicine = (patientId, medicineId) => {
 
 export const acceptNotification = (patientId, row) => {
     db.collection("users").doc(patientId).collection("medicines")
-    .doc(row.name).collection('usage').doc(`day${1}`)
-    .onSnapshot(documentSnapshot => {
-        const { doses } = documentSnapshot.data();
-        doses[row.doseNo - 1] = true;
-        db.collection("users").doc(patientId).collection("medicines")
-        .doc(row.name).collection('usage').doc(`day${1}`)
-        .update({
-            doses: doses,
+        .doc(row.name).collection('usage').doc(`day${row.dayValue}`)
+        .onSnapshot(documentSnapshot => {
+            const { doses } = documentSnapshot.data();
+            doses[row.id] = true;
+            db.collection("users").doc(patientId).collection("medicines")
+                .doc(row.name).collection('usage').doc(`day${row.dayValue}`)
+                .update({
+                    doses: doses,
+                });
         });
-    });
 };
 
 export const cancelNotification = (patientId, notificationId) => {
@@ -116,30 +117,28 @@ export const createNotification = (patientId) => {
 export const getNotifications = () => {
     const { uid } = auth.currentUser;
     const data = [];
-    let index = 0;
     const now = new Date();
+    const formattedDate = now.getFullYear() + "-" + (now.getMonth() + 1) + "-" + now.getDate();
     return new Promise((resolve, reject) => {
         returnPatientMedicines(uid).then((medicines) => {
             medicines.forEach(async (medicine) => {
-                await db.collection("users").doc(uid).collection('medicines').
-                    doc(medicine.name).collection('times').
-                    get().then((querySnapshot) => {
-                        querySnapshot.docs.forEach(doc => {
-                        const pillTime = new Date();
-                            const hour = doc.data().time.split(":")[0];
-                            const minute = doc.data().time.split(":")[1];
-                            pillTime.setHours(hour, minute, 0, 0);
-                            const pillStat = now.getTime() < pillTime.getTime() ? "waiting" : "expired";
+                await db.collection("users").doc(uid).collection('medicines').doc(medicine.name)
+                    .collection('usage').where('day', '==', formattedDate)
+                    .get().then((querySnapshot) => {
+                        querySnapshot.forEach((doc) => {
                             data.push({
                                 name: medicine.name,
-                                ...doc.data(),
-                                status: pillStat 
+                                perDay: medicine.perDay,
+                                times: doc.data().times,
+                                usage: doc.data().doses,
+                                dayValue: doc.data().dayValue,
                             });
                         });
-                        index++;
+
                     });
-                if (index == medicines.length)
+                if (data.length === medicines.length){
                     resolve(data);
+                }
             });
         });
     });

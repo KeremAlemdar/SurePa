@@ -7,8 +7,27 @@ const NotificationsPage = ({ navigation }) => {
     const [notifications, setNotifications] = useState([]);
 
     useEffect(() => {
+        const now = new Date();
         getNotifications().then((notifications) => {
-            setNotifications(notifications);
+            const notifs = notifications.map((notification) => {
+                const times = notification.times.map((time, id) => {
+                    const pillTime = new Date();
+                    const hour = time.split(":")[0];
+                    const minute = time.split(":")[1];
+                    pillTime.setHours(hour, minute, 0, 0);
+                    const stat = notification.usage[id] === true ? 'accepted' :
+                        (now.getTime() < pillTime.getTime() ? "waiting" : "expired");
+                    return {
+                        name: notification.name,
+                        time: time,
+                        status: stat,
+                        dayValue: notification.dayValue,
+                        id: id
+                    }
+                });
+                return times;
+            });
+            setNotifications(notifs[0]);
         });
     }, []);
 
@@ -16,11 +35,10 @@ const NotificationsPage = ({ navigation }) => {
         const { uid } = auth.currentUser;
         cancelNotification(uid, id);
     };
-    const acceptNotificationLocal = (id) => {
+    const acceptNotificationLocal = (notif) => {
         const { uid } = auth.currentUser;
-        acceptNotification(uid, id);
+        acceptNotification(uid, notif);
     };
-
     return (
         <View>
             <Text> NotificationsPage </Text>
@@ -33,7 +51,9 @@ const NotificationsPage = ({ navigation }) => {
                             <Button title="İptal" onPress={() => cancelNotificationLocal(row)}></Button>
                             <Button title="Kabul" onPress={() => {
                                 acceptNotificationLocal(row);
-                                setNotifications([...notifications, notifications[index].status = "accepted"]);
+                                const copyNotifs = [...notifications];
+                                copyNotifs[index].status = "accepted";
+                                setNotifications(copyNotifs);
                             }}></Button>
                         </View>
                     )
