@@ -48,18 +48,6 @@ const AddBloodSugar = () => {
                 </Text>
 
             </View>
-            <TextInput
-                value={hungry2}
-                style={commonStyle.input}
-                inputStyle={commonStyle.inputStyle}
-                labelStyle={commonStyle.labelStyle}
-                label="Hungry/Satiated"
-                placeholder='Hungry/Satiated'
-                placeholderTextColor="gray"
-                focusColor="blue"
-                onChangeText={changes => setHungry2(changes)}
-                errorMessage={'asd'}
-            />
             <View style={styles.dateline}>
                 <Text style={styles.text}>Date: </Text>
                 <Text style={styles.text1} onPress={() => setOpenDate(true)}>{date.toLocaleDateString()}</Text>
