@@ -3,7 +3,6 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Login from './components/loginPage';
-import AppCalendar from './components/calendar';
 import HomePage from './components/homePage';
 import Signup from './components/signUpPage';
 import AddBloodSugar from './components/addBloodSugar';
@@ -95,7 +94,6 @@ function HomeStackScreen() {
     const routes = [
         { name: 'HomePage', component: HomePage, options: { headerShown: false } },
         { name: 'NotificationsPage', component: NotificationsPage, options: { title: 'NotificationsPage' } },
-        { name: 'AppCalendar', component: AppCalendar, options: { title: 'AppCalendar' } },
         { name: 'ReportPage', component: ReportPage, options: { title: 'Weekly Report' } },
     ]
     return (
