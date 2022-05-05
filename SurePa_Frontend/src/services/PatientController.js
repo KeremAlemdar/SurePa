@@ -240,6 +240,25 @@ export const getCaregivers = () => {
     });
 };
 
+export const getPatients = () => {
+    const { uid } = auth.currentUser;
+    const arr = [];
+    return new Promise((resolve, reject) => {
+        db.collection("users").doc(uid).collection("patients").get().then((querySnapshot) => {
+            querySnapshot.docs.map(doc => {
+                returnPatient(doc.data().uid).then((patient) => {
+                    arr.push(patient);
+                }).catch((error) => {
+                    reject(error);
+                })
+            });
+            resolve(arr);
+        }).catch((error) => {
+            reject(error);
+        });
+    });
+};
+
 export const deleteCaregiver = (caregiverId) => {
     const { uid } = auth.currentUser;
     return new Promise((resolve, reject) => {
