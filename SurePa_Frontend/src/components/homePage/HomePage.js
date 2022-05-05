@@ -92,9 +92,9 @@ const HomePage = ({ navigation }) => {
                     <View>
                         <Button title="Reports" onPress={() => setDirectPage('ReportPage')} />
                     </View>
-                    <View>
+                    {/* <View>
                         <Button title="DailyScheduler" onPress={() => setDirectPage('dailyScheduler')} />
-                    </View>
+                    </View> */}
                 </View>
             </View>
         </View>

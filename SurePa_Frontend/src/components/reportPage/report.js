@@ -6,14 +6,14 @@ import commonStyle from '../../commonStyle';
 const ReportPage = ({ navigation }) => {
 
     const data = {
-        "username": "Kaan Bebiş",
+        "username": "denem1",
         "age": 31,
-        "date": "01.05.2021",
+        "date": "04.05.2022",
         "weekNo": 6,
         "medicines": [
             {
                 id: 1,
-                name: "Metoprolol",
+                name: "Parol",
                 remaining: 5,
                 usage: [
                     [true, false],
@@ -27,16 +27,28 @@ const ReportPage = ({ navigation }) => {
             },
             {
                 id: 2,
-                name: "Sulphamazetine",
+                name: "Metpamid",
                 remaining: 10,
                 usage: [
-                    [true],
-                    [true],
-                    [false],
-                    [false],
-                    [true],
-                    [false],
-                    [true],
+                    [true, false, true],
+                    [true, false, true],
+                    [false, false, true],
+                    [false, true, true],
+                    [true, false, false],
+                    [false, true, true],
+                    [true, false, true],
+                ]
+            },
+            {
+                id: 2,
+                name: "Arveles",
+                remaining: 10,
+                usage: [
+                    [false, false],
+                    [false, false],
+                    [false, false],
+                    [false, false],
+                    [false, false],
                 ]
             }
         ]
