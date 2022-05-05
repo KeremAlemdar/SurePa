@@ -1,80 +1,23 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, Image, StyleSheet, Button, TouchableOpacity, ScrollView, RefreshControl, ActivityIndicator } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, ActivityIndicator } from 'react-native';
 import PieChart from 'react-native-pie-chart';
-import { Row } from 'react-native-table-component';
 import commonStyle from '../../commonStyle';
 import { auth } from '../../services/DbCon';
-import { getReportData, returnPatient } from '../../services/PatientController';
+import { getBloodSugar, getReportData, returnPatient } from '../../services/PatientController';
+import { CSVLink, CSVDownload } from "react-csv";
 
-const wait = (timeout) => {
-    return new Promise(resolve => setTimeout(resolve, timeout));
-}
-
-const ReportPage = ({ navigation }) => {
-    const [refreshing, setRefreshing] = useState(false);
-
-    const onRefresh = React.useCallback(() => {
-        setRefreshing(true);
-        getUserData();
-        wait(2000).then(() => setRefreshing(false));
-    }, []);
-
-    const [userData, setUserData] = useState();
+const ReportPage = () => {
     const [patientInfo, setPatientInfo] = useState({
         uid: '',
         name: '',
         email: '',
         status: ''
     });
-    const [date, setDate] = useState();
+    const dateObj = new Date();
+    const date = `${dateObj.getDate()}.${dateObj.getMonth() + 1}.${dateObj.getFullYear()}`;
     const [medicineUsage, setMedicineUsage] = useState();
-
-    const dataOld = {
-        "username": "denem1",
-        "date": "04.05.2022",
-        "medicines": [
-            {
-                id: 1,
-                name: "Parol",
-                remaining: 5,
-                usage: [
-                    [true, false],
-                    [true, true],
-                    [true, false],
-                    [false, false],
-                    [true, true],
-                    [true, true],
-                    [true, false],
-                ]
-            },
-            {
-                id: 2,
-                name: "Metpamid",
-                remaining: 10,
-                usage: [
-                    [true, false, true],
-                    [true, false, true],
-                    [false, false, true],
-                    [false, true, true],
-                    [true, false, false],
-                    [false, true, true],
-                    [true, false, true],
-                ]
-            },
-            {
-                id: 2,
-                name: "Arveles",
-                remaining: 10,
-                usage: [
-                    [false, false],
-                    [false, false],
-                    [false, false],
-                    [false, false],
-                    [false, false],
-                ]
-            }
-        ]
-    }
+    const [bloodSugar, setBloodSugar] = useState([]);
+    const [rendera, setRendera] = useState(true);
 
     const renderMedicineItem = (medicine) => {
         let usedCount = 0;
@@ -94,13 +37,13 @@ const ReportPage = ({ navigation }) => {
         const sliceColor = ["#00ff00", "gray"];
 
         const usage = () => {
-            return <View style={styles.usageCircleWrapper}>
+            return (<View style={styles.usageCircleWrapper}>
                 {medicine.usage.map((usage, index) => (
                     <View style={styles.dailyUsage} key={index}>
                         <Text style={styles.textDay}>Day {index + 1}</Text>
                         {usage.map((dayList, indexInner) => (
                             <View
-                                key={indexInner}
+                                key={`${index}${indexInner}`}
                                 style={[styles.box,
                                 {
                                     backgroundColor: dayList ? "#00ff00" : "gray",
@@ -110,8 +53,8 @@ const ReportPage = ({ navigation }) => {
                         ))}
                     </View>
                 ))}
-            </View>
-        }
+            </View>)
+        };
 
         return <View>
             <Text style={styles.secondaryHeader}>
@@ -146,18 +89,21 @@ const ReportPage = ({ navigation }) => {
     }
 
     const displayListMedicineList = () => {
-        return <>
+        return (<>
             <View>
                 {medicineUsage.map(medicine => (
                     renderMedicineItem(medicine)
                 ))}
             </View>
-        </>
+        </>)
     }
 
-    async function getUserData() {
-        const response = await getReportData();
-        setUserData(response);
+    const getUserData = () => {
+        return new Promise((resolve) => {
+            getReportData().then(data => {
+                resolve(data);
+            });
+        });
     };
 
     const getProfileInfo = () => {
@@ -167,31 +113,37 @@ const ReportPage = ({ navigation }) => {
         });
     };
 
+    const getBloodSugarLocal = () => {
+        const bloodSuagrArr = [['Date', 'Blood Sugar', 'Status']];
+        getBloodSugar().then((res) => {
+            const temptArr = [];
+            res.map((item) => {
+                temptArr.push([item.date, item.bloodSugar, item.hungry]);
+                bloodSuagrArr.push(temptArr);
+            });
+            setBloodSugar(bloodSuagrArr);
+        });
+    }
+
     useEffect(() => {
-        getProfileInfo();
-        getUserData();
-        var date = new Date().getDate();
-        var month = new Date().getMonth() + 1;
-        var year = new Date().getFullYear();
-        const fullDate = `${date}.${month}.${year}`;
-        setDate(fullDate);
-        setData();
+        if (rendera) {
+            getProfileInfo();
+            getUserData().then(data => {
+                setMedicineData(data);
+            });
+            getBloodSugarLocal();
+            setRendera(false);
+        }
     }), [];
 
-    const setData = () => {
+    const setMedicineData = (userData) => {
         if (userData) {
-
             let medicineNameOld = '';
             let medicineArray = [];
-
             userData.forEach(row => {
                 let medicineNameCurrent = row.name;
-                console.log(`current med name ${medicineNameCurrent}`);
-
                 if (medicineNameOld == medicineNameCurrent) {
                     medicineArray[medicineArray.length - 1].usage = [...medicineArray[medicineArray.length - 1].usage, row.usage];
-                    console.log(`current med ussage ${row.usage}`);
-                    console.log(`eşitt current ${medicineNameCurrent} old = ${medicineNameOld}`);
                 } else {
                     let newMedicine = {
                         id: medicineArray.length,
@@ -200,18 +152,15 @@ const ReportPage = ({ navigation }) => {
                         usage: [row.usage]
                     }
                     medicineArray = [...medicineArray, newMedicine];
-                    console.log(`current med ussage ${row.usage}`);
                     medicineNameOld = row.name;
                 }
             });
             setMedicineUsage(medicineArray);
-            console.log(userData);
-            console.log(medicineArray);
         }
     }
-
     return (
         <ScrollView style={[commonStyle.mainDiv]}>
+            <CSVLink data={bloodSugar}>Download Bloodsugar Data</CSVLink>
             {medicineUsage
                 ? <>
                     <View style={commonStyle.container}>
@@ -230,9 +179,7 @@ const ReportPage = ({ navigation }) => {
                         {displayListMedicineList()}
                     </View>
                 </>
-                : <View style={styles.activityIndicatorCenter}>
-                    <ActivityIndicator size="large" color="#00ff00" />
-                </View>
+                : null
             }
         </ScrollView>
     );

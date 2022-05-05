@@ -3,7 +3,6 @@ import { View, StyleSheet, Text, Switch } from 'react-native';
 import DatePicker from 'react-native-date-picker'
 import { TextInput } from 'react-native-element-textinput';
 import commonStyle from '../../commonStyle';
-import { auth } from '../../services/DbCon';
 import { addBloodSugar } from '../../services/PatientController';
 import CommonButton from '../button';
 
@@ -11,14 +10,11 @@ import CommonButton from '../button';
 const AddBloodSugar = () => {
     const [bloodSugar, setBloodSugar] = useState('');
     const [hungry, setHungry] = useState(false);
-    const [hungry2, setHungry2] = useState('');
     const [date, setDate] = useState(new Date());
-    const [time, setTime] = useState(new Date());
     const [openDate, setOpenDate] = useState(false);
-    const [openTime, setOpenTime] = useState(false);
 
     const finalize = () => {
-        addBloodSugar({bloodSugar: bloodSugar, hungry: hungry, date: date, time: time});
+        addBloodSugar({bloodSugar: bloodSugar, hungry: hungry, date: date});
     };
     const toggleSwitch = (value) => {
         setHungry(value);
@@ -55,30 +51,14 @@ const AddBloodSugar = () => {
                     modal
                     open={openDate}
                     date={date}
-                    mode="date"
-                    onConfirm={(date) => {
+                    onConfirm={(res) => {
                         setOpenDate(false)
-                        setDate(date)
+                        const dateFormatted = res.getDay() + '-' + res.getMonth() + '-' + 
+                        res.getFullYear() + ' ' + res.getHours() + ':' + res.getMinutes() + ':' + res.getSeconds();
+                        setDate(dateFormatted)
                     }}
                     onCancel={() => {
                         setOpenDate(false)
-                    }}
-                />
-            </View>
-            <View style={[styles.dateline, { marginBottom: 14 }]}>
-                <Text style={styles.text}>Time: </Text>
-                <Text style={styles.text1} onPress={() => setOpenTime(true)}>{time.toLocaleTimeString()}</Text>
-                <DatePicker
-                    modal
-                    open={openTime}
-                    date={time}
-                    mode="time"
-                    onConfirm={(date) => {
-                        setOpenTime(false)
-                        setTime(date)
-                    }}
-                    onCancel={() => {
-                        setOpenTime(false)
                     }}
                 />
             </View>

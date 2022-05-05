@@ -277,7 +277,6 @@ export const deleteCaregiver = (caregiverId) => {
 };
 
 export const addPatient = (props) => {
-    console.log(props);
     const { uid } = auth.currentUser;
     return new Promise((resolve, reject) => {
         db.collection("users").doc(uid).set({
@@ -331,8 +330,7 @@ export const addBloodSugar = (props) => {
     const { uid } = auth.currentUser;
     return new Promise((resolve, reject) => {
         db.collection("users").doc(uid).collection("bloodSugar").doc().set({
-            ...props,
-            uid: uid
+            ...props
         }).then(() => {
             resolve("success");
         }).catch((error) => {
@@ -341,46 +339,20 @@ export const addBloodSugar = (props) => {
     });
 };
 
-export const getWeekReport = () => {
-    const mockData = {
-        "username": "Kaan Bebiş",
-        "age": 31,
-        "date": "01.05.2021",
-        "weekNo": 6,
-        "medicines": {
-            "Metoprolol": {
-                "remaining": 5,
-                "usage": {
-                    "01.05.2021": [true, false],
-                    "02.05.2021": [true, true],
-                    "03.05.2021": [true, false],
-                    "04.05.2021": [false, false],
-                    "05.05.2021": [true, true],
-                    "06.05.2021": [true, true],
-                    "07.05.2021": [true, true],
-                }
-            },
-            "Sulphamazetine": {
-                "remaining": 10,
-                "usage": {
-                    "01.05.2021": [true],
-                    "02.05.2021": [true],
-                    "03.05.2021": [false],
-                    "04.05.2021": [false],
-                    "05.05.2021": [true],
-                    "06.05.2021": [false],
-                    "07.05.2021": [true],
-                }
-            }
-        }
-    }
-    return mockData;
+export const getBloodSugar = () => {
+    const { uid } = auth.currentUser;
+    return new Promise((resolve, reject) => {
+        db.collection("users").doc(uid).collection("bloodSugar").get().then((querySnapshot) => {
+            resolve(querySnapshot.docs.map(doc => doc.data()));
+        }).catch((error) => {
+            reject(error);
+        });
+    });
 }
 
 export const getReportData = () => {
     const { uid } = auth.currentUser;
     const data = [];
-    const now = new Date();
     let count = 0;
     return new Promise((resolve, reject) => {
         returnPatientMedicines(uid).then((medicines) => {

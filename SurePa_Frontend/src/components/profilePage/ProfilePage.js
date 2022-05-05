@@ -45,7 +45,6 @@ const ProfilePage = ({ navigation }) => {
         returnPatient(uid).then((res) => {
             setPatientInfo(res);
         });
-        console.log(patientInfo);
     };
     return (
 
