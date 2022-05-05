@@ -90,9 +90,6 @@ const HomePage = ({ navigation }) => {
                         </TouchableOpacity>
                     </View>
                     <View>
-                        <Button title="Calendar" onPress={() => setDirectPage('AppCalendar')} />
-                    </View>
-                    <View>
                         <Button title="Reports" onPress={() => setDirectPage('ReportPage')} />
                     </View>
                     <View>

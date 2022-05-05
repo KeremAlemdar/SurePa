@@ -1,18 +1,30 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, Button, StyleSheet, ScrollView } from 'react-native';
+import { View, Text, Button, StyleSheet, ScrollView, RefreshControl } from 'react-native';
 import { auth } from '../../services/DbCon';
 import commonStyle from '../../commonStyle';
-import { acceptNotification, cancelNotification, getNotifications } from '../../services/PatientController';
+import { acceptNotification, getNotifications } from '../../services/PatientController';
 import CommonButton from '../button/Button';
 import NotificationCard from '../notificationCard/notificationCard';
 
-const NotificationsPage = ({ navigation }) => {
-    const [notifications, setNotifications] = useState([]);
+const wait = (timeout) => {
+    return new Promise(resolve => setTimeout(resolve, timeout));
+}
 
-    useEffect(() => {
+const NotificationsPage = () => {
+    const [notifications, setNotifications] = useState([]);
+    const [refreshing, setRefreshing] = useState(false);
+
+    const onRefresh = React.useCallback(() => {
+        setRefreshing(true);
+        getNotificationsLocal();
+        wait(2000).then(() => setRefreshing(false));
+    }, []);
+
+    const getNotificationsLocal = () => {
         const now = new Date();
+        const arr = [];
         getNotifications().then((notifications) => {
-            const notifs = notifications.map((notification) => {
+            notifications.forEach((notification) => {
                 const times = notification.times.map((time, id) => {
                     const pillTime = new Date();
                     const hour = time.split(":")[0];
@@ -22,49 +34,60 @@ const NotificationsPage = ({ navigation }) => {
                         (now.getTime() < pillTime.getTime() ? "waiting" : "expired");
                     return {
                         name: notification.name,
-                        time: time,
+                        timeVal: time,
+                        time: pillTime,
                         status: stat,
                         dayValue: notification.dayValue,
-                        id: id
+                        id: id,
+                        numberOfDose: notification.numberOfDose,
                     }
                 });
-                return times;
+                arr.push(...times);
             });
-            setNotifications(notifs[0]);
+            arr.sort((a, b) => a.time.getTime() - b.time.getTime());
+            setNotifications(arr);
+
         });
+    };
+
+    useEffect(() => {
+        getNotificationsLocal();
     }, []);
 
-    const cancelNotificationLocal = (id) => {
-        const { uid } = auth.currentUser;
-        cancelNotification(uid, id);
-    };
     const acceptNotificationLocal = (notif) => {
         const { uid } = auth.currentUser;
         acceptNotification(uid, notif);
     };
     return (
-        <ScrollView style={commonStyle.mainDiv}>
+        <ScrollView style={commonStyle.mainDiv}
+            refreshControl={
+                <RefreshControl
+                    refreshing={refreshing}
+                    onRefresh={onRefresh}
+                />
+            }>
             <View style={styles.notificationList}>
                 {notifications.map((row, index) => {
                     return (
-                        <NotificationCard status={row.status}>
-                            <Text>{`${row.name}    ${row.time}`}</Text>
+                        <NotificationCard key={index} status={row.status}>
+                            <Text>{`${row.name}    ${row.timeVal}`}</Text>
                             {
-                                row.status !== 'accepted' ? (
+                                (row.status === 'waiting' || row.status === 'expired') ? (
                                     <>
-                                        <CommonButton text="İptal" onPress={() => cancelNotificationLocal(row)}></CommonButton>
                                         <CommonButton text="Kabul" onPress={() => {
                                             acceptNotificationLocal(row);
                                             const copyNotifs = [...notifications];
                                             copyNotifs[index].status = "accepted";
                                             setNotifications(copyNotifs);
-                                        }}></CommonButton>
+                                        }}>
+                                        </CommonButton>
                                     </>
                                 ) : null
                             }
                         </NotificationCard>
                     )
-                })}
+                })
+                }
             </View>
         </ScrollView >)
 };

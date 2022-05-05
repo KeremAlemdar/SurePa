@@ -69,8 +69,8 @@ export const addActivity = (patientId, name, duration) => {
     })
 };
 
-export const deleteMedicine = (patientId, medicineId) => {
-    db.collection("users").doc(patientId).collection("medicines").doc(medicineId).delete().then(() => {
+export const deleteMedicine = (patientId, selectedMedicine) => {
+    db.collection("users").doc(patientId).collection("medicines").doc(selectedMedicine).delete().then(() => {
         return ("Document successfully deleted!");
     }).catch((error) => {
         return ("Error removing document: ", error);
@@ -89,13 +89,11 @@ export const acceptNotification = (patientId, row) => {
                     doses: doses,
                 });
         });
+    db.collection("users").doc(patientId).collection("medicines").doc(row.name).update({
+        numberOfDose: row.numberOfDose - 1,
+    });
 };
 
-export const cancelNotification = (patientId, notificationId) => {
-    db.collection("users").doc(patientId).collection("notifications").doc(notificationId).update({
-        status: "cancelled"
-    })
-};
 
 //yeni fonksiyon
 export const deleteNotification = (patientId, notificationId) => {
@@ -118,6 +116,7 @@ export const getNotifications = () => {
     const { uid } = auth.currentUser;
     const data = [];
     const now = new Date();
+    let count = 0;
     const formattedDate = now.getFullYear() + "-" + (now.getMonth() + 1) + "-" + now.getDate();
     return new Promise((resolve, reject) => {
         returnPatientMedicines(uid).then((medicines) => {
@@ -132,11 +131,12 @@ export const getNotifications = () => {
                                 times: doc.data().times,
                                 usage: doc.data().doses,
                                 dayValue: doc.data().dayValue,
+                                numberOfDose: medicine.numberOfDose,
                             });
                         });
-
+                        count++;
                     });
-                if (data.length === medicines.length){
+                if (count === medicines.length) {
                     resolve(data);
                 }
             });
@@ -302,6 +302,20 @@ export const getContacts = () => {
     return new Promise((resolve, reject) => {
         db.collection("users").doc(uid).collection("contacts").get().then((querySnapshot) => {
             resolve(querySnapshot.docs.map(doc => doc.data()));
+        }).catch((error) => {
+            reject(error);
+        });
+    });
+};
+
+export const addBloodSugar = (props) => {
+    const { uid } = auth.currentUser;
+    return new Promise((resolve, reject) => {
+        db.collection("users").doc(uid).collection("bloodSugar").doc().set({
+            ...props,
+            uid: uid
+        }).then(() => {
+            resolve("success");
         }).catch((error) => {
             reject(error);
         });

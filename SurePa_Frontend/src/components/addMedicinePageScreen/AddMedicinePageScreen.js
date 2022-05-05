@@ -13,8 +13,8 @@ import { auth } from '../../services/DbCon';
 
 const AddMedicinePageScreen = () => {
     const [medicineName, setMedicineName] = useState('');
-    const [type, setType] = useState('Please Chose');
-    const [perDay, setPerDay] = useState('Please Chose');
+    const [type, setType] = useState('Please Choose');
+    const [perDay, setPerDay] = useState('Please Choose');
     const [times, setTimes] = useState([]);
     const [doseCount, setDoseCount] = useState(0);
     const [startDate, setStartDate] = useState(new Date());
@@ -31,7 +31,7 @@ const AddMedicinePageScreen = () => {
             />);
             setPageName('Type');
         }
-        else if (pageName === 'Type' && type !== 'Please Chose') {
+        else if (pageName === 'Type' && type !== 'Please Choose') {
             setPageContent(<Dose
                 type={type}
                 doseCount={doseCount}
@@ -122,11 +122,11 @@ const AddMedicinePageScreen = () => {
         <View style={commonStyle.mainDiv}>
             <View style={commonStyle.header}>
                 {medicineName !== '' && <Text style={commonStyle.headerText}>{'Name: ' + medicineName}</Text>}
-                {type !== 'Please Chose' && <Text style={commonStyle.headerText}>{'Type: ' + type}</Text>}
+                {type !== 'Please Choose' && <Text style={commonStyle.headerText}>{'Type: ' + type}</Text>}
                 {doseCount !== 0 && <Text style={commonStyle.headerText}>{'Dose Count: ' + doseCount}</Text>}
-                {perDay !== 'Please Chose' && <Text style={commonStyle.headerText}>{'Per day: ' + perDay}</Text>}
-                {perDay !== 'Please Chose' && <Text style={commonStyle.headerText}>{'Start date: ' + startDate.toLocaleDateString()}</Text>}
-                {perDay !== 'Please Chose' && <Text style={commonStyle.headerText}>{'End date: ' + endDate.toLocaleDateString()}</Text>}
+                {perDay !== 'Please Choose' && <Text style={commonStyle.headerText}>{'Per day: ' + perDay}</Text>}
+                {perDay !== 'Please Choose' && <Text style={commonStyle.headerText}>{'Start date: ' + startDate.toLocaleDateString()}</Text>}
+                {perDay !== 'Please Choose' && <Text style={commonStyle.headerText}>{'End date: ' + endDate.toLocaleDateString()}</Text>}
             </View>
             {pageContent}
             {pageName === 'Finalize' ?
