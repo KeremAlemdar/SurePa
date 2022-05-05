@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { ScrollView, View, RefreshControl } from 'react-native';
 import commonStyle from '../../commonStyle';
-import { getCaregivers, getMeetings } from '../../services/PatientController';
+import { getCaregivers, getMeetings, getPatients } from '../../services/PatientController';
 import CommonButton from '../button';
 import CardView from '../cardView';
 
@@ -12,6 +12,7 @@ const wait = (timeout) => {
 const AddThings = ({ navigation }) => {
     const [directPage, setDirectPage] = useState('');
     const [caregivers, setCaregivers] = useState([]);
+    const [patients, setPatients] = useState([]);
     const [meetings, setMeetings] = useState([]);
     const [refreshing, setRefreshing] = useState(false);
 
@@ -29,6 +30,9 @@ const AddThings = ({ navigation }) => {
         });
         getMeetings().then((tmeetings) => {
             setMeetings(tmeetings);
+        });
+        getPatients().then((tpatients) => {
+            setPatients(tpatients);
         });
     };
 
@@ -76,6 +80,17 @@ const AddThings = ({ navigation }) => {
                                 key={id}
                                 title={meeting.title}
                                 text={`${meeting.details} \n ${meeting.date} \n ${meeting.time}`}
+                            />
+                        );
+                    })
+                }
+                {
+                    patients.map((patient, id) => {
+                        return (
+                            <CardView
+                                key={id}
+                                title={patient.name}
+                                text={'Patient'}
                             />
                         );
                     })
