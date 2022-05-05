@@ -56,7 +56,7 @@ const HomePage = ({ navigation }) => {
         locationLink = locationLink + latitude + "," + longitude;
         SendSMS.send({
             body: locationLink,
-            recipients: ['0123456789', '9876543210'],
+            recipients: ['+905362242845', '+9053654428455'],
             successTypes: ['sent', 'queued'],
             allowAndroidSendWithoutReadPermission: true
         }, (completed, cancelled, error) => {
