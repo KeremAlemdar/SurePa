@@ -16,6 +16,7 @@ import InvivtationsPage from './components/invitationsPage/InvivtationsPage';
 import AddMeeting from './components/addMeeting';
 import AddActivityPageScreen from './components/addActivityPageScreen';
 import ReportPage from './components/reportPage/report';
+import dailyScheduler from './components/dailySchedulerPage/dailyScheduler';
 const Stack = createNativeStackNavigator();
 
 const MedicinesPageStack = createNativeStackNavigator();
@@ -127,6 +128,7 @@ function HomeTabScreen() {
         { name: 'MedicinesPage', component: MedicinesPageStackScreen, options: { title: 'Medicines' } },
         { name: 'ProfilePage', component: ProfilePageStackScreen, options: { title: 'Profile' } },
         { name: 'ReportPage', component: ReportPage, options: { title: 'Reports' } },
+        { name: 'DailySchedulePage', component: dailyScheduler, options: { title: 'Daily Scheduler' } },
     ]
     return (
         <Tab.Navigator>
