@@ -358,3 +358,37 @@ export const getWeekReport = () => {
     return mockData;
 }
 
+export const getReportData = () => {
+    const { uid } = auth.currentUser;
+    const data = [];
+    const now = new Date();
+    let count = 0;
+    return new Promise((resolve, reject) => {
+        returnPatientMedicines(uid).then((medicines) => {
+            medicines.forEach(async (medicine) => {
+                await db.collection("users").doc(uid).collection('medicines').doc(medicine.name)
+                    .collection('usage')
+                    .get().then((querySnapshot) => {
+
+                        querySnapshot.forEach((doc) => {
+                            data.push({
+                                name: medicine.name,
+                                perDay: medicine.perDay,
+                                times: doc.data().times,
+                                usage: doc.data().doses,
+                                dayValue: doc.data().dayValue,
+                                numberOfDose: medicine.numberOfDose, // remainin
+                            });
+                        });
+
+                        count++;
+                    });
+
+                if (count === medicines.length) {
+                    resolve(data);
+                }
+            });
+        });
+    });
+};
+

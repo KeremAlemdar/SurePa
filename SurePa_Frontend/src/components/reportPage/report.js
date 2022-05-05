@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, Image, StyleSheet, Button, TouchableOpacity, ScrollView, RefreshControl } from 'react-native';
+import { View, Text, Image, StyleSheet, Button, TouchableOpacity, ScrollView, RefreshControl, ActivityIndicator } from 'react-native';
 import PieChart from 'react-native-pie-chart';
+import { Row } from 'react-native-table-component';
 import commonStyle from '../../commonStyle';
+import { auth } from '../../services/DbCon';
+import { getReportData, returnPatient } from '../../services/PatientController';
 
 const wait = (timeout) => {
     return new Promise(resolve => setTimeout(resolve, timeout));
@@ -12,15 +15,23 @@ const ReportPage = ({ navigation }) => {
 
     const onRefresh = React.useCallback(() => {
         setRefreshing(true);
-        // getThings();
+        getUserData();
         wait(2000).then(() => setRefreshing(false));
     }, []);
 
-    const data = {
+    const [userData, setUserData] = useState();
+    const [patientInfo, setPatientInfo] = useState({
+        uid: '',
+        name: '',
+        email: '',
+        status: ''
+    });
+    const [date, setDate] = useState();
+    const [medicineUsage, setMedicineUsage] = useState();
+
+    const dataOld = {
         "username": "denem1",
-        "age": 31,
         "date": "04.05.2022",
-        "weekNo": 6,
         "medicines": [
             {
                 id: 1,
@@ -137,38 +148,81 @@ const ReportPage = ({ navigation }) => {
     const displayListMedicineList = () => {
         return <>
             <View>
-                {data.medicines.map(medicine => (
+                {medicineUsage.map(medicine => (
                     renderMedicineItem(medicine)
                 ))}
             </View>
         </>
     }
 
+    async function getUserData() {
+        const response = await getReportData();
+        setUserData(response);
+    };
+
+    const getProfileInfo = () => {
+        const { uid } = auth.currentUser;
+        returnPatient(uid).then((res) => {
+            setPatientInfo(res);
+        });
+    };
+
+    useEffect(() => {
+        getProfileInfo();
+        getUserData();
+        var date = new Date().getDate();
+        var month = new Date().getMonth() + 1;
+        var year = new Date().getFullYear();
+        const fullDate = `${date}.${month}.${year}`;
+        setDate(fullDate);
+        setData();
+    }), [];
+
+    const setData = () => {
+        if (userData) {
+
+            let medicineNameOld = '';
+            let medicineArray = [];
+
+            userData.forEach(row => {
+                let medicineNameCurrent = row.name;
+                console.log(`current med name ${medicineNameCurrent}`);
+
+                if (medicineNameOld == medicineNameCurrent) {
+                    medicineArray[medicineArray.length - 1].usage = [...medicineArray[medicineArray.length - 1].usage, row.usage];
+                    console.log(`current med ussage ${row.usage}`);
+                    console.log(`eşitt current ${medicineNameCurrent} old = ${medicineNameOld}`);
+                } else {
+                    let newMedicine = {
+                        id: medicineArray.length,
+                        name: medicineNameCurrent,
+                        remaining: row.numberOfDose,
+                        usage: [row.usage]
+                    }
+                    medicineArray = [...medicineArray, newMedicine];
+                    console.log(`current med ussage ${row.usage}`);
+                    medicineNameOld = row.name;
+                }
+            });
+            setMedicineUsage(medicineArray);
+            console.log(userData);
+            console.log(medicineArray);
+        }
+    }
+
     return (
-        <ScrollView style={[commonStyle.mainDiv]}
-            refreshControl={
-                <RefreshControl
-                    refreshing={refreshing}
-                    onRefresh={onRefresh}
-                />
-            }>
-            {data
+        <ScrollView style={[commonStyle.mainDiv]}>
+            {medicineUsage
                 ? <>
                     <View style={commonStyle.container}>
                         <Text style={styles.header}>Weekly Report</Text>
                         <Text>
                             <Text style={styles.reportHeader}>Date: </Text>
-                            {data.date}
-                            <Text style={styles.reportHeader}>   Week : </Text>
-                            {data.weekNo}
+                            {date}
                         </Text>
                         <Text>
                             <Text style={styles.reportHeader}>User name: </Text>
-                            {data.username}
-                        </Text>
-                        <Text>
-                            <Text style={styles.reportHeader}>Age: </Text>
-                            {data.age}
+                            {patientInfo.name}
                         </Text>
                         <Text style={styles.header}>Medicine usage</Text>
                     </View>
@@ -176,7 +230,9 @@ const ReportPage = ({ navigation }) => {
                         {displayListMedicineList()}
                     </View>
                 </>
-                : <Text>Loading ...</Text>
+                : <View style={styles.activityIndicatorCenter}>
+                    <ActivityIndicator size="large" color="#00ff00" />
+                </View>
             }
         </ScrollView>
     );
@@ -225,6 +281,9 @@ const styles = StyleSheet.create({
     dailyUsage: {
         margin: 5
     },
+    activityIndicatorCenter: {
+        alignContent: 'center'
+    }
 });
 
 export default ReportPage;
