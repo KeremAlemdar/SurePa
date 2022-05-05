@@ -17,7 +17,6 @@ import InvivtationsPage from './components/invitationsPage/InvivtationsPage';
 import AddMeeting from './components/addMeeting';
 import AddActivityPageScreen from './components/addActivityPageScreen';
 import ReportPage from './components/reportPage/report';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 // import dailyScheduler from './components/dailySchedulerPage/dailyScheduler';
 LogBox.ignoreAllLogs();//Ignore all log notifications
 const Stack = createNativeStackNavigator();
@@ -126,46 +125,11 @@ function HomeTabScreen() {
         { name: 'InvitationsPage', component: InvivtationsPage, options: { title: 'See Invivtations' } },
     ]
     const routes = [
-        {
-            name: 'HomePage', component: HomeStackScreen, options: {
-                title: 'Home',
-                tabBarIcon: ({ color, size }) => (
-                    <MaterialCommunityIcons name="home" color={'black'} size={24} />
-                ),
-            }
-        },
-        {
-            name: 'AddThings', component: ThingsPageStackScreen, options: {
-                title: 'Add Things',
-                tabBarIcon: ({ color, size }) => (
-                    <MaterialCommunityIcons name="plus" color={'black'} size={12} />
-                ),
-            }
-        },
-        {
-            name: 'MedicinesPage', component: MedicinesPageStackScreen, options: {
-                title: 'Medicines',
-                tabBarIcon: ({ color, size }) => (
-                    <MaterialCommunityIcons name="pill" color={color} size={size} />
-                ),
-            }
-        },
-        {
-            name: 'ProfilePage', component: ProfilePageStackScreen, options: {
-                title: 'Profile',
-                tabBarIcon: ({ color, size }) => (
-                    <MaterialCommunityIcons name="profile" color={color} size={size} />
-                ),
-            }
-        },
-        {
-            name: 'ReportPage', component: ReportPage, options: {
-                title: 'Reports',
-                tabBarIcon: ({ color, size }) => (
-                    <MaterialCommunityIcons name="chart" color={color} size={size} />
-                ),
-            }
-        },
+        { name: 'HomePage', component: HomeStackScreen, options: { title: 'Home' } },
+        { name: 'AddThings', component: ThingsPageStackScreen, options: { title: 'Add Things' } },
+        { name: 'MedicinesPage', component: MedicinesPageStackScreen, options: { title: 'Medicines' } },
+        { name: 'ProfilePage', component: ProfilePageStackScreen, options: { title: 'Profile' } },
+        { name: 'ReportPage', component: ReportPage, options: { title: 'Reports' } },
         // { name: 'DailySchedulePage', component: dailyScheduler, options: { title: 'Daily Scheduler' } },
     ]
     return (

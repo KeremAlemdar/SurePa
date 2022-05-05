@@ -5,8 +5,7 @@ import SendSMS from 'react-native-sms';
 navigator.geolocation = require('@react-native-community/geolocation');
 const HomePage = ({ navigation }) => {
     const [directPage, setDirectPage] = useState('');
-    const [latitude, setLatitude] = useState(0);
-    const [longitude, setLongitude] = useState(0);
+   
     // isSignedIn ? (
     //     <>
     //       <Stack.Screen name="Home" component={HomeScreen} />
@@ -42,18 +41,15 @@ const HomePage = ({ navigation }) => {
         return new Promise((resolve, reject) => {
             navigator.geolocation.getCurrentPosition((position) => {
                 const { latitude, longitude } = position.coords;
-                setLatitude(latitude);
-                setLongitude(longitude);
-                resolve();
+                resolve([latitude, longitude]);
             })
         })
     };
 
 
-    let locationLink = "https://maps.google.com/?q="
     const sendSMS = async () => {
-        await getLocation();
-        locationLink = locationLink + latitude + "," + longitude;
+        const [lat, long] = await getLocation();
+        const locationLink = 'https://maps.google.com/?q=' + lat + "," + long;
         SendSMS.send({
             body: locationLink,
             recipients: ['+905362242845', '+9053654428455'],

@@ -1,9 +1,20 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, Image, StyleSheet, Button, TouchableOpacity, ScrollView } from 'react-native';
+import { View, Text, Image, StyleSheet, Button, TouchableOpacity, ScrollView, RefreshControl } from 'react-native';
 import PieChart from 'react-native-pie-chart';
 import commonStyle from '../../commonStyle';
 
+const wait = (timeout) => {
+    return new Promise(resolve => setTimeout(resolve, timeout));
+}
+
 const ReportPage = ({ navigation }) => {
+    const [refreshing, setRefreshing] = useState(false);
+
+    const onRefresh = React.useCallback(() => {
+        setRefreshing(true);
+        // getThings();
+        wait(2000).then(() => setRefreshing(false));
+    }, []);
 
     const data = {
         "username": "denem1",
@@ -134,7 +145,13 @@ const ReportPage = ({ navigation }) => {
     }
 
     return (
-        <ScrollView style={[commonStyle.mainDiv]}>
+        <ScrollView style={[commonStyle.mainDiv]}
+            refreshControl={
+                <RefreshControl
+                    refreshing={refreshing}
+                    onRefresh={onRefresh}
+                />
+            }>
             {data
                 ? <>
                     <View style={commonStyle.container}>
