@@ -12,9 +12,10 @@ const AddBloodSugar = () => {
     const [hungry, setHungry] = useState(false);
     const [date, setDate] = useState(new Date());
     const [openDate, setOpenDate] = useState(false);
+    const [formatedDate, setFormatedDate] = useState('');
 
     const finalize = () => {
-        addBloodSugar({bloodSugar: bloodSugar, hungry: hungry, date: date});
+        addBloodSugar({bloodSugar: bloodSugar, hungry: hungry, date: formatedDate});
     };
     const toggleSwitch = (value) => {
         setHungry(value);
@@ -46,7 +47,7 @@ const AddBloodSugar = () => {
             </View>
             <View style={styles.dateline}>
                 <Text style={styles.text}>Date: </Text>
-                <Text style={styles.text1} onPress={() => setOpenDate(true)}>{date.toLocaleDateString()}</Text>
+                <Text style={styles.text1} onPress={() => setOpenDate(true)}>{date.toLocaleString()}</Text>
                 <DatePicker
                     modal
                     open={openDate}
@@ -55,7 +56,8 @@ const AddBloodSugar = () => {
                         setOpenDate(false)
                         const dateFormatted = res.getDay() + '-' + res.getMonth() + '-' + 
                         res.getFullYear() + ' ' + res.getHours() + ':' + res.getMinutes() + ':' + res.getSeconds();
-                        setDate(dateFormatted)
+                        setDate(res)
+                        setFormatedDate(dateFormatted)
                     }}
                     onCancel={() => {
                         setOpenDate(false)

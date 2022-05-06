@@ -4,7 +4,6 @@ import PieChart from 'react-native-pie-chart';
 import commonStyle from '../../commonStyle';
 import { auth } from '../../services/DbCon';
 import { getBloodSugar, getReportData, returnPatient } from '../../services/PatientController';
-import { CSVLink, CSVDownload } from "react-csv";
 
 const ReportPage = () => {
     const [patientInfo, setPatientInfo] = useState({
@@ -116,10 +115,8 @@ const ReportPage = () => {
     const getBloodSugarLocal = () => {
         const bloodSuagrArr = [['Date', 'Blood Sugar', 'Status']];
         getBloodSugar().then((res) => {
-            const temptArr = [];
             res.map((item) => {
-                temptArr.push([item.date, item.bloodSugar, item.hungry]);
-                bloodSuagrArr.push(temptArr);
+                bloodSuagrArr.push([item.date, item.bloodSugar, item.hungry]);
             });
             setBloodSugar(bloodSuagrArr);
         });
@@ -160,7 +157,6 @@ const ReportPage = () => {
     }
     return (
         <ScrollView style={[commonStyle.mainDiv]}>
-            <CSVLink data={bloodSugar}>Download Bloodsugar Data</CSVLink>
             {medicineUsage
                 ? <>
                     <View style={commonStyle.container}>
@@ -179,7 +175,9 @@ const ReportPage = () => {
                         {displayListMedicineList()}
                     </View>
                 </>
-                : null
+                : <View style={styles.activityIndicatorCenter}>
+                    <ActivityIndicator size="large" color="#00ff00" />
+                </View>
             }
         </ScrollView>
     );
