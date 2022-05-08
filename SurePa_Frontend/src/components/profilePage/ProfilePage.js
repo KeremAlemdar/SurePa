@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, Button, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import commonStyle from '../../commonStyle';
-import { auth, db } from '../../services/DbCon';
+import { auth, db, fbLogout } from '../../services/DbCon';
 import { returnPatient } from '../../services/PatientController';
 
 import { getCaregivers, deleteCaregiver } from '../../services/PatientController';
+import CommonButton from '../button';
 import List from '../list/List';
 
 const ProfilePage = ({ navigation }) => {
@@ -61,9 +62,10 @@ const ProfilePage = ({ navigation }) => {
                             <Text style={styles.description}>pick your filter.</Text>
                             <Text style={styles.description}>Which me do you want?</Text>
                         </View>
-                        <TouchableOpacity style={styles.buttonContainer}>
-                            <Text onPress={() => setDirectPage('InvitationsPage')}>See Invitations</Text>
-                        </TouchableOpacity>
+                        <CommonButton customStyle={{ button: { padding: 30 } }} text={'See Invitations'} onPress={() => setDirectPage('InvitationsPage')} />
+                        <CommonButton customStyle={{ button: { backgroundColor: '#eeaaaf', padding: 60 }, text: { color: 'white' } }} 
+                        text={'Logout'} 
+                        onPress={() => { fbLogout().then(() => setDirectPage('Login')) }} />
                     </View>
                 </View>
             </View>
@@ -100,7 +102,7 @@ const styles = StyleSheet.create({
     },
     bodyContent: {
         alignItems: 'center',
-        padding: 30,
+        padding: 20,
     },
     name: {
         fontSize: 28,

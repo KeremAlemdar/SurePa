@@ -1,5 +1,5 @@
 import React from 'react';
-import { LogBox } from 'react-native';
+import { Button, Image, LogBox, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -17,6 +17,7 @@ import InvivtationsPage from './components/invitationsPage/InvivtationsPage';
 import AddMeeting from './components/addMeeting';
 import AddActivityPageScreen from './components/addActivityPageScreen';
 import ReportPage from './components/reportPage/report';
+import SendSMS from 'react-native-sms';
 // import dailyScheduler from './components/dailySchedulerPage/dailyScheduler';
 LogBox.ignoreAllLogs();//Ignore all log notifications
 const Stack = createNativeStackNavigator();
@@ -116,6 +117,36 @@ function HomeStackScreen() {
     );
 }
 
+const getLocation = () => {
+    return new Promise((resolve) => {
+        navigator.geolocation.getCurrentPosition((position) => {
+            const { latitude, longitude } = position.coords;
+            resolve([latitude, longitude]);
+        },
+            error => {
+                console.log(error);
+            },
+            { timeout: 10000 })
+    })
+};
+
+
+const sendSMS = async () => {
+    const [lat, long] = await getLocation();
+    const locationLink = 'https://maps.google.com/?q=' + lat + "," + long;
+    console.log(locationLink);
+    SendSMS.send({
+        body: locationLink,
+        recipients: ['+905362242845', '+9053654428455'],
+        successTypes: ['sent', 'queued'],
+        allowAndroidSendWithoutReadPermission: true
+    }, (completed, cancelled, error) => {
+
+        console.log('SMS Callback: completed: ' + completed + ' cancelled: ' + cancelled + 'error: ' + error);
+
+    });
+};
+
 const Tab = createBottomTabNavigator();
 function HomeTabScreen() {
     const unused = [
@@ -125,11 +156,11 @@ function HomeTabScreen() {
         { name: 'InvitationsPage', component: InvivtationsPage, options: { title: 'See Invivtations' } },
     ]
     const routes = [
-        { name: 'HomePage', component: HomeStackScreen, options: { title: 'Home' } },
-        { name: 'AddThings', component: ThingsPageStackScreen, options: { title: 'Add Things' } },
-        { name: 'MedicinesPage', component: MedicinesPageStackScreen, options: { title: 'Medicines' } },
-        { name: 'ProfilePage', component: ProfilePageStackScreen, options: { title: 'Profile' } },
-        { name: 'ReportPage', component: ReportPage, options: { title: 'Reports' } },
+        { name: 'HomePageStack', component: HomeStackScreen, options: { title: 'Home' } },
+        { name: 'AddThingsStack', component: ThingsPageStackScreen, options: { title: 'Add' } },
+        { name: 'MedicinesPageStack', component: MedicinesPageStackScreen, options: { title: 'Medicines' } },
+        { name: 'ProfilePageStack', component: ProfilePageStackScreen, options: { title: 'Profile' } },
+        { name: 'ReportPageStack', component: ReportPage, options: { title: 'Reports' } },
         // { name: 'DailySchedulePage', component: dailyScheduler, options: { title: 'Daily Scheduler' } },
     ]
     return (
@@ -141,7 +172,21 @@ function HomeTabScreen() {
                         key={name}
                         name={name}
                         component={component}
-                        options={options}
+                        options={{
+                            ...options,
+                            headerShown: true, headerRight: () => (
+                                <TouchableOpacity
+                                    style={styles.emergencyButton}
+                                    onPress={() => sendSMS()}>
+                                    <View style={styles.emergencyButtonContentWrapper}>
+                                        <Image style={styles.emergencyButtonIcon} source={require('../img/emergency-call.png')} />
+                                        <Text style={styles.emergencyButtonText}>
+                                            Emergency Button
+                                        </Text>
+                                    </View>
+                                </TouchableOpacity>
+                            )
+                        }}
                     />
                 );
             })}
@@ -174,5 +219,42 @@ const App = () => {
         </NavigationContainer>
     );
 };
+
+const styles = StyleSheet.create({
+    emergencyButton: {
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: '#eeaaaf',
+        borderRadius: 17,
+        width: '80%',
+        height: '80%',
+        padding: 10,
+    },
+    emergencyButtonText: {
+        fontSize: 15,
+        fontWeight: '800',
+        color: '#fff',
+        textAlign: 'center',
+        marginLeft: 10
+    },
+    emergencyButtonIcon: {
+        width: 35,
+        height: 35,
+    },
+    emergencyButtonContentWrapper: {
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'center',
+    }
+
+    /*
+    container: {
+        flex: 1,
+        justifyContent: 'center',
+        paddingTop: Constants.statusBarHeight,
+        backgroundColor: '#ecf0f1',
+    }*/
+});
 
 export default App;

@@ -74,7 +74,7 @@ const NotificationsPage = () => {
                             {
                                 (row.status === 'waiting' || row.status === 'expired') ? (
                                     <>
-                                        <CommonButton text="Kabul" onPress={() => {
+                                        <CommonButton text="Taken" onPress={() => {
                                             acceptNotificationLocal(row);
                                             const copyNotifs = [...notifications];
                                             copyNotifs[index].status = "accepted";

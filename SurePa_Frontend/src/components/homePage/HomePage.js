@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, Image, StyleSheet, Button, TouchableOpacity, CommonButton } from 'react-native';
 import commonStyle from '../../commonStyle';
-import SendSMS from 'react-native-sms';
+import NotificationsPage from '../notificationsPage';
 navigator.geolocation = require('@react-native-community/geolocation');
 const HomePage = ({ navigation }) => {
     const [directPage, setDirectPage] = useState('');
@@ -37,62 +37,11 @@ const HomePage = ({ navigation }) => {
     }, [directPage]);
 
 
-    const getLocation = () => {
-        return new Promise((resolve, reject) => {
-            navigator.geolocation.getCurrentPosition((position) => {
-                const { latitude, longitude } = position.coords;
-                resolve([latitude, longitude]);
-            })
-        })
-    };
-
-
-    const sendSMS = async () => {
-        const [lat, long] = await getLocation();
-        const locationLink = 'https://maps.google.com/?q=' + lat + "," + long;
-        SendSMS.send({
-            body: locationLink,
-            recipients: ['+905362242845', '+9053654428455'],
-            successTypes: ['sent', 'queued'],
-            allowAndroidSendWithoutReadPermission: true
-        }, (completed, cancelled, error) => {
-
-            console.log('SMS Callback: completed: ' + completed + ' cancelled: ' + cancelled + 'error: ' + error);
-
-        });
-    };
+    
 
     return (
         <View style={commonStyle.mainDiv}>
-            <View style={styles.all}>
-                <View style={styles.menu}>
-                    <View onTouchEnd={() => setDirectPage('NotificationsPage')} style={styles.menuItem}>
-                        <View><Image style={styles.image} source={require('../../../img/medicine.jpg')} /></View>
-                        <View><Text style={styles.header}>Notifications</Text></View>
-                    </View>
-                    <View style={styles.menuItem}>
-                        <TouchableOpacity
-                            style={styles.emergencyButton}
-                            onPress={() => sendSMS()}>
-                            <View style={styles.emergencyButtonContentWrapper}>
-                                <View><Image style={styles.emergencyButtonIcon} source={require('../../../img/emergency-call.png')} /></View>
-                                <Text style={styles.emergencyButtonText}>
-                                    Emergency
-                                </Text>
-                                <Text style={styles.emergencyButtonText}>
-                                    Button
-                                </Text>
-                            </View>
-                        </TouchableOpacity>
-                    </View>
-                    <View>
-                        <Button title="Reports" onPress={() => setDirectPage('ReportPage')} />
-                    </View>
-                    {/* <View>
-                        <Button title="DailyScheduler" onPress={() => setDirectPage('dailyScheduler')} />
-                    </View> */}
-                </View>
-            </View>
+            <NotificationsPage />
         </View>
     )
 };

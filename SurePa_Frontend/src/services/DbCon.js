@@ -33,6 +33,16 @@ export const fbRegister = (email, pass, name, status) => {
     });
 };
 
+export const fbLogout = () => {
+    return new Promise((resolve, reject) => {
+        auth.signOut().then(() => {
+            resolve();
+        }).catch(error => {
+            reject(error);
+        });
+    });
+}
+
 export const fbLogin = (email, pass) => {
     return auth.signInWithEmailAndPassword(email, pass);
 };
