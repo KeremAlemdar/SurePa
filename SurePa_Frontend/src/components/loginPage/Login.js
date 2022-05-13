@@ -7,8 +7,8 @@ import { TextInput } from 'react-native-element-textinput';
 import CommonButton from '../button';
 
 const Login = ({ navigation }) => {
-  const [email, setEmail] = useState('');
-  const [pass, setPass] = useState('');
+  const [email, setEmail] = useState('den1@a.com');
+  const [pass, setPass] = useState('asd123');
   const [directMain, setDirectMain] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
 
@@ -85,7 +85,7 @@ const Login = ({ navigation }) => {
           inputStyle={commonStyle.inputStyle}
           labelStyle={commonStyle.labelStyle}
           label="Password"
-          placeholder='Passwor'
+          placeholder='Password'
           placeholderTextColor="gray"
           focusColor="blue"
           secureTextEntry={true}

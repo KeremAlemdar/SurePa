@@ -1,9 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, ScrollView, ActivityIndicator } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, ActivityIndicator, RefreshControl } from 'react-native';
 import PieChart from 'react-native-pie-chart';
 import commonStyle from '../../commonStyle';
 import { auth } from '../../services/DbCon';
-import { getBloodSugar, getReportData, returnPatient } from '../../services/PatientController';
+import { getReportData, returnPatient } from '../../services/PatientController';
+
+const wait = (timeout) => {
+    return new Promise(resolve => setTimeout(resolve, timeout));
+}
 
 const ReportPage = () => {
     const [patientInfo, setPatientInfo] = useState({
@@ -15,8 +19,15 @@ const ReportPage = () => {
     const dateObj = new Date();
     const date = `${dateObj.getDate()}.${dateObj.getMonth() + 1}.${dateObj.getFullYear()}`;
     const [medicineUsage, setMedicineUsage] = useState();
-    const [bloodSugar, setBloodSugar] = useState([]);
     const [rendera, setRendera] = useState(true);
+    const [refreshing, setRefreshing] = useState(false);
+
+    const onRefresh = React.useCallback(() => {
+        setRefreshing(true);
+        setRendera(true);
+        wait(2000).then(() => setRefreshing(false));
+    }, []);
+
 
     const renderMedicineItem = (medicine) => {
         let usedCount = 0;
@@ -112,26 +123,16 @@ const ReportPage = () => {
         });
     };
 
-    const getBloodSugarLocal = () => {
-        const bloodSuagrArr = [['Date', 'Blood Sugar', 'Status']];
-        getBloodSugar().then((res) => {
-            res.map((item) => {
-                bloodSuagrArr.push([item.date, item.bloodSugar, item.hungry]);
-            });
-            setBloodSugar(bloodSuagrArr);
-        });
-    }
-
     useEffect(() => {
         if (rendera) {
             getProfileInfo();
+            console.log('deneme');
             getUserData().then(data => {
                 setMedicineData(data);
             });
-            getBloodSugarLocal();
             setRendera(false);
         }
-    }), [];
+    }), [rendera];
 
     const setMedicineData = (userData) => {
         if (userData) {
@@ -156,7 +157,13 @@ const ReportPage = () => {
         }
     }
     return (
-        <ScrollView style={[commonStyle.mainDiv]}>
+        <ScrollView style={[commonStyle.mainDiv]}
+            refreshControl={
+                <RefreshControl
+                    refreshing={refreshing}
+                    onRefresh={onRefresh}
+                />
+            }>
             {medicineUsage
                 ? <>
                     <View style={commonStyle.container}>

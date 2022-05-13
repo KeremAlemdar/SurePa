@@ -12,8 +12,8 @@ const List = ({
     const renderChild = (row, id) => {
         return (
             <CardView title={row.name} text={'Waiting invitation'} key={id}>
-                {accept && <CommonButton text="Accept" customStyle={{ button: { backgroundColor: '#dbeed4' } }} onPress={() => accept(row.uid)}></CommonButton>}
-                {deny && <CommonButton text="Delete" customStyle={{ button: { backgroundColor: '#eed4d4' } }} onPress={() => deny(row.uid)}></CommonButton>}
+                {accept && <CommonButton text="Accept" customStyle={{ button: { backgroundColor: '#dbeed4' }, text: {color: 'gray'} }} onPress={() => accept(row.uid)}></CommonButton>}
+                {deny && <CommonButton text="Delete" customStyle={{ button: { backgroundColor: '#eeaaaf' }, text: {color: 'white'} }} onPress={() => deny(row.uid)}></CommonButton>}
             </CardView>
         )
     };
